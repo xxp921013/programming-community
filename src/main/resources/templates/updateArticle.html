@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>修改文章</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/majiang.css">
+</head>
+<body class="main">
+<nav class="navbar navbar-default">
+    <div th:insert="head :: copy"></div>
+</nav>
+
+<div class="container-fluid" style="margin: 40px;background-color: white">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <h3><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h3>
+            <hr/>
+            <form action="/updateArticle" method="post">
+                <div>
+                    <input type="hidden" name="id" th:value="${article.id}">
+                </div>
+                <div class="form-group">
+                    <label for="tittle">问题标题 (简单扼要) :</label>
+                    <input type="text" class="form-control" name="tittle" id="tittle" th:value="${article.tittle}">
+                </div>
+                <div class="form-group">
+                    <label for="tittle">问题补充 (必填,请参照右侧提示) :</label>
+                    <textarea name="description" id="description" class="form-control" cols="30" rows="10"
+                              th:text="${article.description}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tittle">添加标签 :</label>
+                    <input type="text" class="form-control" name="tags" id="tags" th:value="${article.tags}">
+                </div>
+                <button type="submit" class="btn btn-success" style="float: right;margin-bottom: 15px">提交修改</button>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <h3>问题发起指南</h3>
+            <ul type="disc">
+                <li>问题标题:</li>
+                <br>
+                <br>
+                <li>问题补充:</li>
+                <br>
+                <br>
+                <li>选择标签:</li>
+                <br>
+                <br>
+                <li>关于积分:</li>
+                <br>
+                <br>
+            </ul>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-default">
+    <div th:insert="footer :: copy"></div>
+</nav>
+</body>
+</html>

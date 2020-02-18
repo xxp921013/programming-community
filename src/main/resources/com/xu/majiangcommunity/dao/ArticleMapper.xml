@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xu.majiangcommunity.dao.ArticleMapper">
+    <resultMap id="ArticleDTO" type="com.xu.majiangcommunity.dto.ArticleDTO">
+        <id property="id" column="id"></id>
+        <result column="tittle" property="tittle"></result>
+        <result column="description" property="description"></result>
+        <result column="gmt_create" property="gmtCreate"></result>
+        <result column="gmt_modified" property="gmtModified"></result>
+        <result column="creator" property="creator"></result>
+        <result column="comment_count" property="commentCount"></result>
+        <result column="view_count" property="viewCount"></result>
+        <result column="like_count" property="likeCount"></result>
+        <result column="tags" property="tags"></result>
+        <association property="user" javaType="com.xu.majiangcommunity.domain.User" column="creator"
+                     select="com.xu.majiangcommunity.dao.UserMapper.findById"></association>
+    </resultMap>
+    <resultMap id="ArticleDetailDTO" type="com.xu.majiangcommunity.dto.ArticleDetailDTO">
+        <id property="id" column="id"></id>
+        <result column="tittle" property="tittle"></result>
+        <result column="description" property="description"></result>
+        <result column="gmt_create" property="gmtCreate"></result>
+        <result column="gmt_modified" property="gmtModified"></result>
+        <result column="creator" property="creator"></result>
+        <result column="comment_count" property="commentCount"></result>
+        <result column="view_count" property="viewCount"></result>
+        <result column="like_count" property="likeCount"></result>
+        <result column="tags" property="tags"></result>
+        <association property="user" javaType="com.xu.majiangcommunity.domain.User" column="creator"
+                     select="com.xu.majiangcommunity.dao.UserMapper.findById"></association>
+        <collection property="rounds" ofType="com.xu.majiangcommunity.domain.Rounds">
+            <id column="rid" property="rid"/>
+            <result column="round_text" property="roundText"></result>
+            <result column="round_creator" property="roundCreator"></result>
+            <result column="name" property="name"></result>
+            <result column="image" property="image"></result>
+            <result column="r_create" property="gmtCreate"></result>
+            <result column="r_modified" property="gmtModified"></result>
+            <result column="thumbs_up" property="thumbsUp"/>
+            <result column="article_id" property="articleId"/>
+        </collection>
+    </resultMap>
+    <select id="findDTObyID" resultMap="ArticleDTO">
+        SELECT * FROM article a LEFT OUTER JOIN user u ON a.creator = u.id  order by a.gmt_modified desc
+    </select>
+    <select id="findArticleDetailById" resultMap="ArticleDetailDTO" parameterType="java.lang.Integer">
+        SELECT a.*,r.round_text,r.round_creator,r.name,r.image,r.gmt_create r_create,r.gmt_modified
+        r_modified,r.thumbs_up,r.article_id FROM article a LEFT JOIN rounds r ON a.id = r.article_id WHERE a.id = #{id};
+    </select>
+    <select id="findDTObyIDWithKeyWord" resultMap="ArticleDTO">
+        SELECT * FROM article a LEFT OUTER JOIN user u ON a.creator = u.id where tags OR tittle OR description REGEXP
+        #{keyWord}
+        order by a.gmt_modified desc
+    </select>
+</mapper>

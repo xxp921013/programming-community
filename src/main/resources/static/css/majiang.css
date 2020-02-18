@@ -1,0 +1,14 @@
+.main {
+    background-color: #efefef;
+}
+
+.head-image {
+    height: 38px;
+    width: 38px;
+}
+
+.reply-desc {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}

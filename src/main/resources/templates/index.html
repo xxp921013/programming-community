@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>开发社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/majiang.css">
+    <script th:inline="javascript">
+        $(function () {
+            var head = $("#hotRecent");
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                url: "http://localhost:8080/recentHot",
+                data: {},
+                cache: false,
+                async: true,
+                success: function (data) {
+                    if (data != null) {
+                        var lis = "";
+                        for (var i = 0; i < data.length; i++) {
+                            var article = data[i];
+                            var path = "/articleDetail?id=" + article.articleId;
+                            var li = '<li class="list-group-item" ><a href="' + path + '"><h5>' + article.tittle + '</h5></a></li>';
+                            lis += li;
+                        }
+                        $("#hotRecent").html(lis);
+                    }
+                }
+            });
+        })
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div th:insert="head :: copy"></div>
+</nav>
+<div class="container-fluid" style="margin: 40px;background-color: white">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <h3><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>发现</h3>
+            <hr/>
+            <div class="media" th:each="article :${articles.data}">
+                <div class="media-left">
+                    <a th:href="@{/articleDetail(id=${article.id})}">
+                        <img class="media-object img-thumbnail head-image"
+                             th:src="${article.user.image}">
+                    </a>
+                </div>
+                <div class="media-body" id="test">
+                    <a th:href="@{/articleDetail(id=${article.id})}"><h4 class="media-heading"
+                                                                         th:text="${article.tittle}"></h4></a>
+                    <span th:text="${#strings.abbreviate(article.description,10)}"></span><br>
+                    <span class="reply-desc"><span th:text="${article.commentCount}"></span> 个评论 •
+                            <span th:text="${article.viewCount}"></span> 次浏览 • <span
+                                th:text="${#dates.format(article.gmtCreate, 'yyyy-MM-dd')}"></span></span>
+                </div>
+                <hr>
+            </div>
+            <nav aria-label="Page navigation" style="float: right">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:class="${page == articles.pageNum}? 'active' :''" th:each="page :${articles.pages}"><a
+                            th:href="@{/(page=${page},keyWord=${keyWord})}"
+                            th:text="${page}"></a>
+                    </li>
+
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <h3 style="margin-left: 50px">热门话题</h3>
+            <ul id="hotRecent"></ul>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-default">
+    <div th:insert="footer :: copy"></div>
+</nav>
+
+</body>
+</html>

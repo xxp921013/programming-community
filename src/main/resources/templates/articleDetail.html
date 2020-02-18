@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>文章详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js"></script>
+    <script src="/js/lib/prettify.min.js"></script>
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
+    <link rel="stylesheet" href="/css/majiang.css">
+    <script th:inline="javascript">
+        function thumpUp(id) {
+            $.ajax({
+                type: 'put',
+                dataType: 'json',
+                url: "http://localhost:8080/thumpUp",
+                data: {rid: id},
+                cache: false,
+                async: true,
+                success: function (data) {
+                    if (data) {
+                        alert("点赞成功");
+                        location.reload();
+                    }
+                }
+            });
+        }
+
+        $(function () {
+            var s = [[${articleDetail.tags}]];
+            var head = $("#hotArticle");
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                url: "http://localhost:8080/hotArticle",
+                data: {tags: s},
+                cache: false,
+                async: true,
+                success: function (data) {
+                    if (data != null) {
+                        var lis = "";
+                        for (var i = 0; i < data.length; i++) {
+                            var article = data[i];
+                            var path = "/articleDetail?id=" + article.id;
+                            var li = '<li class="list-group-item" ><a href="' + path + '"><h5>' + article.tittle + '</h5></a></li>';
+                            lis += li;
+                        }
+                        $("#hotArticle").html(lis);
+                    }
+                }
+            });
+        })
+
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            editormd.markdownToHTML("test-markdown-view", {});
+        });
+    </script>
+</head>
+<body class="main">
+<nav class="navbar navbar-default">
+    <div th:insert="head :: copy"></div>
+</nav>
+
+<div class="container-fluid" style="margin: 40px;background-color: white">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <div class="jumbotron" style="background-color: white">
+                <h2 th:text="${articleDetail.tittle}"></h2>
+                <div><a th:href="@{/articleDetail(id=${articleDetail.user.accountId})}">
+                    <img class="media-object img-thumbnail head-image"
+                         th:src="${articleDetail.user.image}">
+                </a><span th:text="${articleDetail.user.name}"></span></div>
+                <div>                    <span class="reply-desc"><span th:text="${articleDetail.commentCount}"></span> 个评论 •
+                            <span th:text="${articleDetail.viewCount}"></span> 次浏览 • <span
+                            th:text="${#dates.format(articleDetail.gmtCreate, 'yyyy-MM-dd')}"></span></span></div>
+                <hr/>
+                <div id="test-markdown-view">
+                    <!-- Server-side output Markdown text -->
+                    <textarea style="display:none;" th:text="${articleDetail.description}">### Hello world!</textarea>
+                </div>
+                <span th:each="tag : ${ articleDetail.tags.split(',')}">
+                    <span class="label label-info glyphicon glyphicon-tag" th:text="${tag}"></span>&nbsp&nbsp
+                </span>
+            </div>
+            <div>
+                <h3>评论:</h3>
+                <hr>
+                <div th:if="${articleDetail.rounds !=null}">
+                    <div class="media" th:each="round :${articleDetail.rounds}">
+                        <div class="media-left">
+                            <img class="media-object img-thumbnail head-image"
+                                 th:src="${round.image}">
+                            <span th:text="${round.name}"></span>
+                            <br>
+                            <span style="color: #999999"
+                                  th:text="${#dates.format(round.gmtCreate, 'yyyy-MM-dd mm:ss')}"></span>
+                            <a href="#" th:onclick="'javascript : thumpUp(\'' + ${round.rid} + '\')'">
+                                <h7><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>点赞</h7>
+                            </a>
+                            <span th:text="${round.thumbsUp}"></span>
+                        </div>
+                        <br>
+                        <div class="media-body">
+                            <h4 class="media-heading"
+                                th:text="${round.roundText}"></h4>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form action="/addRound" method="post">
+
+                    <div class="form-group">
+                        <label for="roundText">添加评论 :</label>
+                        <textarea name="roundText" id="roundText" class="form-control" cols="30"
+                                  rows="10"></textarea>
+                    </div>
+                    <div>
+                        <input type="hidden" name="articleId" th:value="${articleDetail.id}">
+                        <input type="hidden" name="roundCreator" th:value="${session.user.accountId}">
+                        <input type="hidden" name="name" th:value="${session.user.name}">
+                        <input type="hidden" name="image" th:value="${session.user.image}">
+                    </div>
+                    <button type="submit" class="btn btn-success" style="float: right;margin-bottom: 15px">评论</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <h3 style="margin-left: 50px">热门文章</h3>
+            <ul id="hotArticle"></ul>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-default">
+    <div th:insert="footer :: copy"></div>
+</nav>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>麻将社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/majiang.css">
+</head>
+<body>
+<div th:fragment="copy">
+    <div class="container-fluid">
+        <!--        <div th:if="${session.error !=null}"><span th:text="${session.error}"></span></div>-->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">开发社区</span>
+            </button>
+            <a class="navbar-brand" href="/">开发社区</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left" action="/">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="keyWord" placeholder="搜索內容"
+                           th:value="${keyWord !=null ? keyWord :''}">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${session.user != null}">
+                    <a href="/publish">发布</a>
+                </li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span th:text="${session.user.getName()}"></span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/myRound(id=${session.user.accountId})}">
+                            <span class="badge" th:text="${session.user.newRound}"></span>
+                            最新回复</a></li>
+                        <li><a th:href="@{/userArticle(id=${session.user.accountId})}">我的文章</a></li>
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+                <li th:if="${session.user == null}">
+                    <a href="https://github.com/login/oauth/authorize?client_id=96f0a816bfa0bf266e06&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+</body>
+</html>

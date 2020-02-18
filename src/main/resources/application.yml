@@ -1,0 +1,27 @@
+server:
+  port: 8080
+token:
+  client_id: 96f0a816bfa0bf266e06
+  client_secret: e41f87cef4fd75708c7ddbd2302c5eced3cca96e
+  redirect_uri: http://localhost:8080/callback
+spring:
+  redis:
+    host: 192.168.199.133
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.199.133:3306/majiang?characterEncoding=UTF8
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  file:
+    max-size: 2MB
+  level:
+    root: info
+    com:
+      xu:
+        majiangcommunity:
+          dao: debug
+  path: K:\log\

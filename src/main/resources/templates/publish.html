@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>发布-麻将社区</title>
+    <script src="/js/jquery-3.3.1.min.js" type="application/javascript"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/editormd.css">
+    <link rel="stylesheet" href="/css/majiang.css">
+    <script>
+        function addTags(value) {
+            var val = $("#tags").val();
+            var s = $(value).text();
+            if (val.indexOf(s) != -1) {
+                return;
+            }
+            if (val) {
+                $("#tags").val(val + "," + s)
+            } else {
+                $("#tags").val(s);
+            }
+        }
+    </script>
+
+
+</head>
+<body class="main">
+<nav class="navbar navbar-default">
+    <div th:insert="head :: copy"></div>
+</nav>
+
+<div class="container-fluid" style="margin: 40px;background-color: white">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <h3><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h3>
+            <hr/>
+            <form action="/addArticle" method="post">
+                <div class="form-group">
+                    <label for="tittle">问题标题 (简单扼要) :</label>
+                    <input type="text" class="form-control" name="tittle" id="tittle" placeholder="问题标题...">
+                </div>
+                <div class="form-group" id="test-editor">
+                    <label for="tittle">问题补充 (必填,请参照右侧提示) :</label>
+                    <textarea name="description" id="description" style="display: none" class="form-control" cols="30"
+                              rows="10"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("test-editor", {
+                            width: "100%",
+                            height: 350,
+                            path: "/js/lib/",
+                            imageUpload: true,
+                            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                            imageUploadURL: "/file/upload"
+                        });
+                    });
+                </script>
+                <div class="form-group">
+                    <label for="tittle">添加标签 :</label>
+                    <input type="text" class="form-control" name="tags" id="tags" placeholder="选择标签"
+                           readonly="readonly">
+                    <span th:each="tag : ${ allowedtags}">
+                    <span class="label label-info glyphicon glyphicon-tag" onclick="addTags(this)"
+                          th:text="${tag}"></span>&nbsp&nbsp
+                </span>
+                </div>
+                <button type="submit" class="btn btn-success" style="float: right;margin-bottom: 15px">发布</button>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <h3>问题发起指南</h3>
+            <ul type="disc">
+                <li>问题标题:</li>
+                <br>
+                <br>
+                <li>问题补充:</li>
+                <br>
+                <br>
+                <li>选择标签:</li>
+                <br>
+                <br>
+                <li>关于积分:</li>
+                <br>
+                <br>
+            </ul>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-default">
+    <div th:insert="footer :: copy"></div>
+</nav>
+</body>
+</html>
