@@ -27,7 +27,7 @@ public class HotTagTask {
     @Autowired
     private RedisTemplate<String, Serializable> redisCacheTemplate;
 
-    @Scheduled(cron = "0/60 * * * * * ")
+    //@Scheduled(cron = "0/60 * * * * * ")
     public void getHotTask() {
         System.out.println("定时任务执行");
         long l = System.currentTimeMillis();

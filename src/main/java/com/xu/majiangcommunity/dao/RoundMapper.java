@@ -19,6 +19,9 @@ public interface RoundMapper {
     @Update("update rounds set thumbs_up = thumbs_up+1 where rid=#{id}")
     int thumpUp(Integer id);
 
-    @Select("SELECT * FROM rounds r LEFT JOIN (SELECT id  FROM article a WHERE creator = #{id} ) a ON r.`article_id` = a.id")
-    List<Rounds> findRoundByUid(Integer id);
+    @Select("SELECT * FROM rounds r inner JOIN (SELECT id  FROM article a WHERE creator = #{id} ) a ON r.`article_id` = a.id")
+    List<Rounds> findRoundByUid(String id);
+
+    @Select("SELECT count(*) FROM rounds r inner JOIN (SELECT id  FROM article a WHERE creator = #{id} ) a ON r.`article_id` = a.id")
+    int countMyRound(String id);
 }

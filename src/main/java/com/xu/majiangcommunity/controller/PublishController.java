@@ -58,13 +58,13 @@ public class PublishController {
         article.setGmtModified(DateUtil.current(false));
         article.setViewCount(0);
         article.setLikeCount(0);
-        article.setCreator(Integer.valueOf(byToken.getAccountId()));
+        article.setCreator(byToken.getAccountId());
         articleService.addArticle(article);
         return "redirect:/";
     }
 
     @GetMapping("/userArticle")
-    public String getUserArticle(@RequestParam(value = "id", required = false) Integer id, @RequestParam(value = "page", required = false, defaultValue = "1") Integer page, HttpServletRequest req, Model model) {
+    public String getUserArticle(@RequestParam(value = "id", required = false) String id, @RequestParam(value = "page", required = false, defaultValue = "1") Integer page, HttpServletRequest req, Model model) {
         if (id == null) {
             return "redirect:/";
         }
@@ -78,7 +78,7 @@ public class PublishController {
     }
 
     @GetMapping("/myRound")
-    public String getMyNewRound(@RequestParam("id") Integer id, @RequestParam(value = "page", required = false) Integer page, Model model) {
+    public String getMyNewRound(@RequestParam("id") String id, @RequestParam(value = "page", required = false) Integer page, Model model) {
         if (page == null || page <= 0) {
             page = 1;
         }

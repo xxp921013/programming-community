@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <script src="/js/jquery-3.3.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/css/majiang.css">
 </head>
 <body>
@@ -45,16 +45,25 @@
                             <span class="badge" th:text="${session.user.newRound}"></span>
                             最新回复</a></li>
                         <li><a th:href="@{/userArticle(id=${session.user.accountId})}">我的文章</a></li>
-                        <li><a href="#">个人资料</a></li>
+                        <li><a th:href="@{/localUser/userDetail(id=${session.user.id})}">个人资料</a></li>
                         <li><a href="#">退出登录</a></li>
                     </ul>
                 </li>
                 <li th:if="${session.user == null}">
-                    <a href="https://github.com/login/oauth/authorize?client_id=96f0a816bfa0bf266e06&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a>
+                    <a href="https://github.com/login/oauth/authorize?client_id=96f0a816bfa0bf266e06&redirect_uri=http://localhost:8080/callback&scope=user&state=1">github登录</a>
+                </li>
+                <li th:if="${session.user == null}">
+                    <a href="/localUser/do_login">登录</a>
+                </li>
+                <li th:if="${session.user == null}">
+                    <a href="/localUser/do_register">注册</a>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </div>
 </body>
+<script>
+
+</script>
 </html>

@@ -8,6 +8,7 @@ import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.GithubTokenDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.CORBA.PUBLIC_MEMBER;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.ClassUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +41,7 @@ public class MajiangCommunityApplicationTests {
 
     @Test
     public void demo1() {
-        ArticleDetailDTO articleDetailById = articleMapper.findArticleDetailById(2);
+        ArticleDetailDTO articleDetailById = articleMapper.findArticleDetailById("2");
         System.out.println(articleDetailById);
     }
 
@@ -70,5 +72,13 @@ public class MajiangCommunityApplicationTests {
         System.out.println(s);
         List<Article> lastDayArticle = articleMapper.getLastDayArticle(t);
         System.out.println(lastDayArticle);
+    }
+
+    @Test
+    public void demo5() {
+        String path = ClassUtils.getDefaultClassLoader().getResource("static/images").getPath();
+        String substring = path.substring(1, path.length());
+        System.out.println(substring);
+
     }
 }

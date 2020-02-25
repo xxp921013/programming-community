@@ -68,7 +68,7 @@ public class ArticleService {
         return listPageResult;
     }
 
-    public PageResult<List<Article>> findArticleByCreator(Integer id, Integer page) {
+    public PageResult<List<Article>> findArticleByCreator(String id, Integer page) {
         PageHelper.startPage(page, 5);
         List<Article> articles = articleMapper.findArticleByCreator(id);
         PageInfo<Article> articlePageInfo = new PageInfo<>(articles);
@@ -94,16 +94,16 @@ public class ArticleService {
         return listPageResult;
     }
 
-    public ArticleDetailDTO getArticleDetail(Integer id) {
+    public ArticleDetailDTO getArticleDetail(String id) {
         ArticleDetailDTO articleDetailById = articleMapper.findArticleDetailById(id);
         return articleDetailById;
     }
 
-    public void viewArticle(Integer id) {
+    public void viewArticle(String id) {
         articleMapper.viewArticle(id);
     }
 
-    public void commentArticle(Integer articleId) {
+    public void commentArticle(String articleId) {
         articleMapper.commentArticle(articleId);
     }
 
@@ -141,5 +141,10 @@ public class ArticleService {
         BoundZSetOperations<String, Serializable> zSetOps = redisCacheTemplate.boundZSetOps(HOTARTICLE);
         Set<Serializable> range = zSetOps.reverseRange(0, 10);
         return range;
+    }
+
+    public int countMyArticle(String accountId) {
+        int i = articleMapper.countByCreator(accountId);
+        return i;
     }
 }

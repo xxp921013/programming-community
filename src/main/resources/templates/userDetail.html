@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>文章详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/layui.css">
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js"></script>
+    <script src="/js/lib/prettify.min.js"></script>
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
+    <link rel="stylesheet" href="/css/majiang.css">
+    <script src="/js/layui.js"></script>
+    <script th:inline="javascript">
+        //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+        layui.use('element', function () {
+            var element = layui.element;
+
+            //…
+        });
+    </script>
+</head>
+<body class="main">
+<nav class="navbar navbar-default">
+    <div th:insert="head :: copy"></div>
+</nav>
+
+<div class="container-fluid" style="margin: 40px;background-color: white">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">个人资料</li>
+            <li>修改头像</li>
+            <li>权限分配</li>
+            <li>商品管理</li>
+            <li>订单管理</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <span>用户名: <span th:text="${userDetail.name}" style="font-weight: bold;font-size: large"></span> </span><br>
+                <hr>
+                <span>我发布的文章数: <span th:text="${userDetail.articleCount}"
+                                     style="font-weight: bold;font-size: large"></span> </span><br>
+                <hr>
+                <span>我的回复数: <span th:text="${userDetail.roundCount}" style="font-weight: bold;font-size: large"></span> </span>
+                <hr>
+            </div>
+            <div class="layui-tab-item">
+                <div>
+                    <img th:src="${userDetail.image}" width="100px" height="100px" id="headImg">
+                    <input type="hidden" name="userName" id="name" th:value="${userDetail.name}">
+                </div>
+
+                <!--                <form enctype="multipart/form-data" id="uploadForm" method="post" action="/localUser/uploadImg">-->
+                <!--                    <input type='file' name='file' id='pic_img'>-->
+                <!--                    <input type='hidden' name='username' id='userId' th:hidden="${userDetail.name}">-->
+                <!--                    <input type='submit' value='点击上传'>-->
+                <!--                </form>-->
+                <br>
+                <br>
+                <div>
+                    <button type="button" class="layui-btn" id="test1">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+                <br><br><br>
+                <div>
+                    <input class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal" type="button" value="保存"
+                           onclick="updateHead()">
+                </div>
+            </div>
+            <div class="layui-tab-item">内容3</div>
+            <div class="layui-tab-item">内容4</div>
+            <div class="layui-tab-item">内容5</div>
+        </div>
+    </div>
+
+</div>
+<nav class="navbar navbar-default">
+    <div th:insert="footer :: copy"></div>
+</nav>
+</body>
+<script>
+    // function upload() {
+    //     var formData = new FormData($("#uploadForm")[0])  //创建一个forData
+    //     formData.append('img', $('#pic_img')[0].files[0]) //把file添加进去  name命名为img
+    //     $.ajax({
+    //         url: "http://localhost:8080/localUser/",
+    //         data: formData,
+    //         type: "POST",
+    //         async: false,
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+    //         success: function (data) {
+    //             window.location.reload();
+    //         },
+    //         error: function () {
+    //             alert("文件上传失败,请重新上传")
+    //         }
+    //     })
+    // }
+</script>
+<script>
+
+    layui.use('upload', function () {
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            , url: '/localUser/uploadImg' //上传接口
+            , acceptMime: 'image/*'
+            , accept: 'images'
+            , done: function (res) {
+                //上传完毕回调
+                if (res.success == 1) {
+                    alert(res.message);
+                    $("#headImg").attr("src", res.url);
+                }
+            }
+            , error: function () {
+                alert("文件格式错误");
+            }
+        });
+    });
+
+    function updateHead() {
+        var attr = $("#name").attr("value");
+        var src = $("#headImg").attr("src");
+        $.ajax({
+            type: 'put',
+            dataType: 'json',
+            url: "http://localhost:8080/localUser/doUploadHead",
+            data: {
+                name: attr,
+                url: src
+            },
+            cache: false,
+            async: true,
+            success: function (data) {
+                if (data) {
+                    if (data.code == 200) {
+                        alert("修改成功成功");
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            }
+        });
+    }
+</script>
+</html>

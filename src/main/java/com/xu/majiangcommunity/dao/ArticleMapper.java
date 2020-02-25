@@ -21,16 +21,16 @@ public interface ArticleMapper {
     List<ArticleDTO> findDTObyIDWithKeyWord(String keyWord);
 
     @Select("select * from article where creator = #{id} order by gmt_modified desc ")
-    List<Article> findArticleByCreator(Integer id);
+    List<Article> findArticleByCreator(String id);
 
-    ArticleDetailDTO findArticleDetailById(Integer id);
+    ArticleDetailDTO findArticleDetailById(String id);
 
     @Update("UPDATE article SET view_count = view_count +1 WHERE id =#{id}")
-    void viewArticle(Integer id);
+    void viewArticle(String id);
 
     @Update("UPDATE article SET comment" +
             "_count = comment_count +1 WHERE id =#{id}")
-    void commentArticle(Integer articleId);
+    void commentArticle(String articleId);
 
     @Select("select * from article where id = #{id}")
     Article findById(Integer id);
@@ -46,4 +46,7 @@ public interface ArticleMapper {
 
     @Select("select * from article where gmt_modified>#{time} ")
     List<Article> getLastDayArticle(Long time);
+
+    @Select("select count(*) from article where creator=#{accountId}  ")
+    int countByCreator(String accountId);
 }

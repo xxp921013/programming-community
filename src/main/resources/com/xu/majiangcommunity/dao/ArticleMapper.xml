@@ -41,9 +41,9 @@
         </collection>
     </resultMap>
     <select id="findDTObyID" resultMap="ArticleDTO">
-        SELECT * FROM article a LEFT OUTER JOIN user u ON a.creator = u.id  order by a.gmt_modified desc
+        SELECT * FROM article a LEFT OUTER JOIN user u ON a.creator = u.account_id  order by a.gmt_modified desc
     </select>
-    <select id="findArticleDetailById" resultMap="ArticleDetailDTO" parameterType="java.lang.Integer">
+    <select id="findArticleDetailById" resultMap="ArticleDetailDTO" parameterType="java.lang.String">
         SELECT a.*,r.round_text,r.round_creator,r.name,r.image,r.gmt_create r_create,r.gmt_modified
         r_modified,r.thumbs_up,r.article_id FROM article a LEFT JOIN rounds r ON a.id = r.article_id WHERE a.id = #{id};
     </select>

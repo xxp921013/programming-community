@@ -31,7 +31,7 @@ public class RoundService {
         return i;
     }
 
-    public PageResult<List<Rounds>> findRoundByUid(Integer id, Integer page) {
+    public PageResult<List<Rounds>> findRoundByUid(String id, Integer page) {
         PageHelper.startPage(page, 10);
         List<Rounds> rounds = roundMapper.findRoundByUid(id);
         PageInfo<Rounds> roundPageInfo = new PageInfo<>(rounds);
@@ -55,5 +55,9 @@ public class RoundService {
         }
         result.setPages(pages);
         return result;
+    }
+
+    public int countMyRound(String accountId) {
+        return roundMapper.countMyRound(accountId);
     }
 }

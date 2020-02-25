@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>注册-麻将社区</title>
+    <script src="/js/jquery-3.3.1.min.js" type="application/javascript"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/editormd.css">
+    <link rel="stylesheet" href="/css/majiang.css">
+    <script>
+        function addTags(value) {
+            var val = $("#tags").val();
+            var s = $(value).text();
+            if (val.indexOf(s) != -1) {
+                return;
+            }
+            if (val) {
+                $("#tags").val(val + "," + s)
+            } else {
+                $("#tags").val(s);
+            }
+        }
+    </script>
+
+
+</head>
+<body class="main">
+<nav class="navbar navbar-default">
+    <div th:insert="head :: copy"></div>
+</nav>
+
+<div class="container-fluid" style="margin: 40px;background-color: white">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <h3><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>注册</h3>
+            <hr/>
+            <form method="post" id="loginForm" action="/localUser/registry">
+                <div class="form-group">
+                    <label for="username">用户名 :</label>
+                    <input type="text" maxlength="15" minlength="6" required="true" class="form-control" name="name"
+                           id="username"
+                           placeholder="用户名 6-15位...">
+                </div>
+                <div class="form-group">
+                    <label for="password">密码 :</label>
+                    <input type="password" maxlength="15" minlength="6" required="true" class="form-control"
+                           name="accountId"
+                           id="password"
+                           placeholder="密码 6-15位...">
+                </div>
+                <button type="submit" class="btn btn-success"
+                        style="float: right;margin-bottom: 15px">注册
+                </button>
+            </form>
+            <br>
+            <br>
+            <div th:if="${msg != null}">
+                <div class="alert alert-danger" role="alert" th:text="${msg}"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<nav class="navbar navbar-default">
+    <div th:insert="footer :: copy"></div>
+</nav>
+</body>
+<script>
+</script>
+</html>

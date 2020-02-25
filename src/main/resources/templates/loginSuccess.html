@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>注册-麻将社区</title>
+    <script src="/js/jquery-3.3.1.min.js" type="application/javascript"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/editormd.css">
+    <link rel="stylesheet" href="/css/majiang.css">
+    <script>
+        function countDown() {
+            //获取初始时间
+            var time = document.getElementById("Time");
+
+            //获取到id为time标签中的数字时间
+            if (time.innerHTML == 0) {
+                //等于0时清除计时，并跳转该指定页面
+                window.location.href = "http://localhost:8080/";
+            } else {
+                time.innerHTML = time.innerHTML - 1;
+            }
+        }
+
+        //1000毫秒调用一次
+        window.setInterval("countDown()", 1000);
+    </script>
+    <style>
+        #Time, #p {
+            font-size: 50px;
+            text-align: center;
+        }
+
+        #Font, #p {
+            font-size: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="main">
+<nav class="navbar navbar-default">
+    <div th:insert="head :: copy"></div>
+</nav>
+
+<div class="container-fluid" style="margin: 40px;background-color: white">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <font color="red"><p id="Time">5</p></font>
+            <p id="Font">登录成功,将跳转至主页</p>
+        </div>
+
+    </div>
+</div>
+<nav class="navbar navbar-default">
+    <div th:insert="footer :: copy"></div>
+</nav>
+</body>
+
+
+</html>

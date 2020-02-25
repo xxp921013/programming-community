@@ -6,7 +6,22 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="/css/majiang.css">
+    <script>
+        function addTags(value) {
+            var val = $("#tags").val();
+            var s = $(value).text();
+            if (val.indexOf(s) != -1) {
+                return;
+            }
+            if (val) {
+                $("#tags").val(val + "," + s)
+            } else {
+                $("#tags").val(s);
+            }
+        }
+    </script>
 </head>
 <body class="main">
 <nav class="navbar navbar-default">
@@ -33,7 +48,12 @@
                 </div>
                 <div class="form-group">
                     <label for="tittle">添加标签 :</label>
-                    <input type="text" class="form-control" name="tags" id="tags" th:value="${article.tags}">
+                    <input type="text" class="form-control" name="tags" id="tags" th:value="${article.tags}"
+                           readonly="readonly">
+                    <span th:each="tag : ${ allowedtags}">
+                    <span class="label label-info glyphicon glyphicon-tag" onclick="addTags(this)"
+                          th:text="${tag}"></span>&nbsp&nbsp
+                </span>
                 </div>
                 <button type="submit" class="btn btn-success" style="float: right;margin-bottom: 15px">提交修改</button>
             </form>

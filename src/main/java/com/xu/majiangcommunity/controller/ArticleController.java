@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping("/articleDetail")
-    public String getArticleDetail(@RequestParam("id") Integer id, Model model) {
+    public String getArticleDetail(@RequestParam("id") String id, Model model) {
         ArticleDetailDTO articleDetailDTO = articleService.getArticleDetail(id);
         if (articleDetailDTO != null) {
             articleService.viewArticle(id);
@@ -34,6 +35,20 @@ public class ArticleController {
     @GetMapping("/modifiedArticle")
     public String modifiedArticle(@RequestParam("id") Integer id, Model model) {
         Article byId = articleService.findById(id);
+        List<String> tags = new ArrayList<>();
+        tags.add("java");
+        tags.add("spring");
+        tags.add("spring boot");
+        tags.add("spring mvc");
+        tags.add("jvm");
+        tags.add("html");
+        tags.add("css");
+        tags.add("redis");
+        tags.add("mq");
+        tags.add("mysql");
+        tags.add("juc");
+        tags.add("es");
+        model.addAttribute("allowedtags", tags);
         model.addAttribute("article", byId);
         return "updateArticle";
     }
