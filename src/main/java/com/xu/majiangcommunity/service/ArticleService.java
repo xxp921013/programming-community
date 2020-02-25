@@ -10,6 +10,7 @@ import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class ArticleService {
         articleMapper.addArticle(article);
     }
 
+    @Cacheable(value = "findAll", key = "#page+'-'+#keyWord")
     public PageResult<List<ArticleDTO>> findAll(Integer page, String keyWord) {
         PageHelper.startPage(page, 5);
         List<ArticleDTO> dtObyID = null;
@@ -123,6 +125,7 @@ public class ArticleService {
         articleMapper.deleteArticle(id);
     }
 
+    @Cacheable(value = "hotArticle", key = "#tags")
     public List<Article> getHotArticle(String tags) {
         PageHelper.startPage(1, 10);
         String replace = StrUtil.replace(tags, ",", "|");
