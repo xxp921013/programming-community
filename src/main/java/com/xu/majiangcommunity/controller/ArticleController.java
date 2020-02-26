@@ -2,9 +2,13 @@ package com.xu.majiangcommunity.controller;
 
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.HotArticle;
+import com.xu.majiangcommunity.domain.Tag;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
+import com.xu.majiangcommunity.dto.BaseResponseBody;
 import com.xu.majiangcommunity.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundZSetOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +25,9 @@ import java.util.Set;
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private RedisTemplate<String, Serializable> redisCacheTemplate;
+    private static final String HOT_TAG = "HotTag:";
 
     @GetMapping("/articleDetail")
     public String getArticleDetail(@RequestParam("id") String id, Model model) {
@@ -78,5 +85,13 @@ public class ArticleController {
     public Set<Serializable> getRecent() {
         Set<Serializable> recent = articleService.getRecent();
         return recent;
+    }
+
+    @ResponseBody
+    @GetMapping("/hotTags")
+    public BaseResponseBody<Set> hotTags() {
+        BoundZSetOperations<String, Serializable> zSetOps = redisCacheTemplate.boundZSetOps(HOT_TAG);
+        Set<Serializable> serializables = zSetOps.reverseRange(0, 5);
+        return new BaseResponseBody<>(200, "查找热门标签成功", serializables);
     }
 }

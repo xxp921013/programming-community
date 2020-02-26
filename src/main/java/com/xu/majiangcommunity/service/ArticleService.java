@@ -36,7 +36,7 @@ public class ArticleService {
         articleMapper.addArticle(article);
     }
 
-    @Cacheable(value = "findAll", key = "#page+'-'+#keyWord")
+    //@Cacheable(value = "findAll", key = "#page+'-'+#keyWord")
     public PageResult<List<ArticleDTO>> findAll(Integer page, String keyWord) {
         PageHelper.startPage(page, 5);
         List<ArticleDTO> dtObyID = null;

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="/css/majiang.css">
     <script th:inline="javascript">
         $(function () {
@@ -31,6 +32,29 @@
                     }
                 }
             });
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                url: "http://localhost:8080/hotTags",
+                data: {},
+                cache: false,
+                async: true,
+                success: function (data) {
+                    if (data != null) {
+                        var tags = data.data;
+                        var buts = "";
+                        for (var i = 0; i < tags.length; i++) {
+                            var tag = tags[i];
+                            var but = "<a href='" + tag.url + "'><button class='btn btn-primary' type='button'>" + tag.name + "</button></a>&nbsp;&nbsp;";
+                            // var path = "/articleDetail?id=" + article.articleId;
+                            // var li = '<li class="list-group-item" ><a href="' + path + '"><h5>' + article.tittle + '</h5></a></li>';
+                            // lis += li;
+                            buts += but;
+                        }
+                        $("#hotTags").html(buts);
+                    }
+                }
+            });
         })
 
     </script>
@@ -44,6 +68,10 @@
         <div class="col-lg-9 col-md-12 col-sm-12">
             <h3><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>发现</h3>
             <hr/>
+            <h4 style="color: #9d1e15">热门标签:</h4>
+            <div id="hotTags">
+
+            </div>
             <div class="media" th:each="article :${articles.data}">
                 <div class="media-left">
                     <a th:href="@{/articleDetail(id=${article.id})}">

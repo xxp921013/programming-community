@@ -16,6 +16,12 @@ public class BaseResponseBody<T> implements Serializable {
     public BaseResponseBody() {
     }
 
+    public BaseResponseBody(int code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
     public BaseResponseBody(int code, String message) {
         this.code = code;
         this.message = message;
