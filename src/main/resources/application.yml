@@ -6,7 +6,7 @@ token:
   redirect_uri: http://localhost:8080/callback
 spring:
   redis:
-    host: 192.168.199.133
+    host: 192.168.199.134
     jedis:
       pool:
         max-active: 10
@@ -15,7 +15,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.199.133:3306/majiang?characterEncoding=UTF8
+    url: jdbc:mysql://192.168.199.134:3306/majiang?characterEncoding=UTF8
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
@@ -35,3 +35,8 @@ mj:
       - image/jpeg
       - image/png
       - image/bmp
+minio:
+  endpoint: http://192.168.199.134:9090 #MinIO服务所在地址
+  bucketName: image #存储桶名称
+  accessKey: minioadmin #访问的key
+  secretKey: minioadmin #访问的秘钥

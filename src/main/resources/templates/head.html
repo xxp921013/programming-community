@@ -46,7 +46,7 @@
                             最新回复</a></li>
                         <li><a th:href="@{/userArticle(id=${session.user.accountId})}">我的文章</a></li>
                         <li><a th:href="@{/localUser/userDetail(id=${session.user.id})}">个人资料</a></li>
-                        <li><a href="#">退出登录</a></li>
+                        <li><a href="/localUser/logout">退出登录</a></li>
                     </ul>
                 </li>
                 <li th:if="${session.user == null}">
