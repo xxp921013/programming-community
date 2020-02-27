@@ -79,6 +79,7 @@ public class MajiangCommunityApplicationTests {
         String path = ClassUtils.getDefaultClassLoader().getResource("static/images").getPath();
         String substring = path.substring(1, path.length());
         System.out.println(substring);
-
+        String property = System.getProperty("user.home");
+        System.out.println(property);
     }
 }

@@ -8,11 +8,13 @@ import com.xu.majiangcommunity.domain.Rounds;
 import com.xu.majiangcommunity.dto.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class RoundService {
 
     @Autowired

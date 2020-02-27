@@ -7,6 +7,7 @@ import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.HotArticle;
 import com.xu.majiangcommunity.domain.Tag;
 import com.xu.majiangcommunity.service.ArticleService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundZSetOperations;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class HotTagTask {
     private static final Long DAYS = 86400000L;
     private static final String HOTARTICLE = "HotArticle:";
@@ -35,6 +37,7 @@ public class HotTagTask {
 
     @Scheduled(cron = "0/60 * * * * * ")
     public void getHotTask() {
+        log.info("热门文章定时任务执行");
         System.out.println("热门文章定时任务执行");
         long l = System.currentTimeMillis();
         long t = l - DAYS;
@@ -57,9 +60,10 @@ public class HotTagTask {
         return hotArticle;
     }
 
-   // @Scheduled(cron = "0/60 * * * * * ")
+    // @Scheduled(cron = "0/60 * * * * * ")
     @Scheduled(cron = "* * 0/12 * * ? ")
     public void getHotTags() {
+        log.info("热门标签定时任务执行");
         System.out.println("热门标签定时任务执行");
         long l = System.currentTimeMillis();
         long t = l - (DAYS * 7);

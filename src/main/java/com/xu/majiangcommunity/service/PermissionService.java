@@ -6,7 +6,10 @@ import java.util.List;
 import com.xu.majiangcommunity.domain.PermissionExample;
 import com.xu.majiangcommunity.domain.Permission;
 import com.xu.majiangcommunity.dao.PermissionMapper;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class PermissionService{
 
     @Resource

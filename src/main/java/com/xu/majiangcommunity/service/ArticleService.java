@@ -9,11 +9,14 @@ import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.PageResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import sun.rmi.runtime.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class ArticleService {
     private static final String HOTARTICLE = "HotArticle:";
     @Autowired
@@ -112,6 +117,7 @@ public class ArticleService {
     public Article findById(Integer id) {
         Article article = articleMapper.findById(id);
         if (article == null) {
+            log.error("[异常文章id],{}", id);
             throw new RuntimeException("查找不到此文章");
         }
         return article;

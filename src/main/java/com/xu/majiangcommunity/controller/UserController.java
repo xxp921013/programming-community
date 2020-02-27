@@ -15,6 +15,7 @@ import com.xu.majiangcommunity.service.ArticleService;
 import com.xu.majiangcommunity.service.RoundService;
 import com.xu.majiangcommunity.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -28,6 +29,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -38,6 +40,7 @@ import java.util.UUID;
 @Controller
 @CrossOrigin
 @EnableConfigurationProperties(MjConfig.class)
+@Slf4j
 public class UserController {
     @Autowired
     UserService userService;
@@ -49,8 +52,9 @@ public class UserController {
     MjConfig mjConfig;
 
     @PostMapping("/registry")
-    public String registryLocalUser(User user, HttpServletResponse resp, Model model) {
+    public String registryLocalUser(User user, HttpServletRequest req, HttpServletResponse resp, Model model) {
         if (StrUtil.isBlank(user.getAccountId()) || StrUtil.isBlank(user.getName())) {
+            log.error("[空的用户名或密码],ip:{}", req.getRemoteAddr());
             throw new GlobalException(ExcetionEnmu.USERNAME_PASSWORD_EMPTY);
         }
         String password = user.getAccountId();
@@ -121,6 +125,7 @@ public class UserController {
     public FileDto uploadImg(MultipartFile file) throws IOException {
         Boolean tag = isAllowTags(file.getContentType());
         if (!tag) {
+            log.error("[错误文件传到后台],文件名:{}", file.getOriginalFilename());
             throw new GlobalException(ExcetionEnmu.FILE_TYPE_ERROR);
         }
         String path = ClassUtils.getDefaultClassLoader().getResource("static/images").getPath();
