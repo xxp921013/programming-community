@@ -36,6 +36,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.security.InvalidKeyException;
@@ -98,7 +99,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(User user) {
+    public String login(User user, HttpSession session) {
         String username = user.getName();
         String password = user.getAccountId();
         password = new Md5Hash(password, username, 3).toString();
@@ -115,7 +116,7 @@ public class UserController {
         return "loginSuccess";
     }
 
-    @GetMapping("userDetail")
+    @GetMapping("/userDetail")
     public String userDetail(Integer id, Model model) {
         User byId = userService.getById(id);
         String accountId = byId.getAccountId();

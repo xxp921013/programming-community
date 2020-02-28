@@ -13,6 +13,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptors).addPathPatterns("/userArticle").addPathPatterns("/addArticle").addPathPatterns("/publish");
+        registry.addInterceptor(authInterceptors).addPathPatterns("/userArticle").addPathPatterns("/addArticle").addPathPatterns("/publish").addPathPatterns("/**/userDetail");
     }
 }

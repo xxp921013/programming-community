@@ -113,6 +113,11 @@
             <artifactId>minio</artifactId>
             <version>3.0.10</version>
         </dependency>
+        <!--spring-session-->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

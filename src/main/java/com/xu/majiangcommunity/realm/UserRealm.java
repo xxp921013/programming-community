@@ -53,6 +53,7 @@ public class UserRealm extends AuthorizingRealm {
                     .getRequestAttributes()).getResponse();
             Cookie token = new Cookie("token", user.getToken());
             token.setPath("/");
+            token.setMaxAge(60 * 60 * 24 * 7);
             response.addCookie(token);
             return info;
         }
