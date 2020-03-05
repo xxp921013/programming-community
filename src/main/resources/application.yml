@@ -1,12 +1,34 @@
 server:
   port: 8080
+  tomcat:
+    max-threads: 1000
+    min-spare-threads: 500
 token:
   client_id: 96f0a816bfa0bf266e06
   client_secret: e41f87cef4fd75708c7ddbd2302c5eced3cca96e
   redirect_uri: http://localhost:8080/callback
 spring:
+  rabbitmq:
+    host: 192.168.199.135
+    username: root
+    password: root
+    virtual-host: mj
+    template:
+      #重试参数
+      retry:
+        enabled: true
+        initial-interval: 10000ms
+        max-interval: 30000ms
+        multiplier: 2
+    #发送确认
+    publisher-confirms: true
+    publisher-returns: true
+  data:
+    elasticsearch:
+      cluster-name: xxp-cluster
+      cluster-nodes: 192.168.199.135:9301
   redis:
-    host: 192.168.199.134
+    host: 192.168.199.135
     jedis:
       pool:
         max-active: 10
@@ -15,7 +37,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.199.134:3306/majiang?characterEncoding=UTF8
+    url: jdbc:mysql://192.168.199.135:3306/majiang?characterEncoding=UTF8
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
@@ -36,7 +58,7 @@ mj:
       - image/png
       - image/bmp
 minio:
-  endpoint: http://192.168.199.134:9090 #MinIO服务所在地址
+  endpoint: http://192.168.199.135:9090 #MinIO服务所在地址
   bucketName: image #存储桶名称
   accessKey: minioadmin #访问的key
   secretKey: minioadmin #访问的秘钥

@@ -4,21 +4,26 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.xu.majiangcommunity.dao.ArticleMapper;
+import com.xu.majiangcommunity.dao.ArticleRepo;
 import com.xu.majiangcommunity.domain.Article;
+import com.xu.majiangcommunity.domain.ArticleEs;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.GithubTokenDTO;
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ClassUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +35,7 @@ public class MajiangCommunityApplicationTests {
     @Autowired
     private StringRedisTemplate srt;
     private static final Long DAYS = 86400000L;
+
 
     @Test
     public void contextLoads() {
@@ -81,5 +87,9 @@ public class MajiangCommunityApplicationTests {
         System.out.println(substring);
         String property = System.getProperty("user.home");
         System.out.println(property);
+    }
+
+    @Test
+    public void demo6() {
     }
 }

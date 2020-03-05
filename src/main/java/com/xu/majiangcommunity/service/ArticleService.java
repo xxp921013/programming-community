@@ -4,19 +4,27 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xu.majiangcommunity.constant.MqConstant;
 import com.xu.majiangcommunity.dao.ArticleMapper;
+import com.xu.majiangcommunity.dao.ArticleRepo;
 import com.xu.majiangcommunity.domain.Article;
+import com.xu.majiangcommunity.domain.ArticleEs;
+import com.xu.majiangcommunity.domain.ArticleExample;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.PageResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.rmi.runtime.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,10 +43,17 @@ public class ArticleService {
     private UserService userService;
     @Autowired
     private RedisTemplate<String, Serializable> redisCacheTemplate;
-
+    @Autowired
+    private ArticleRepo articleRepo;
+    @Autowired
+    private AmqpTemplate at;
 
     public void addArticle(Article article) {
-        articleMapper.addArticle(article);
+        articleMapper.insertSelective(article);
+        Integer id = article.getId();
+        if (id != null && id != 0) {
+            at.convertAndSend(MqConstant.ARTICLE_EXCHANGE, MqConstant.ARTICLE_ROUTING_KEY_ADD, id);
+        }
     }
 
     //@Cacheable(value = "findAll", key = "#page+'-'+#keyWord")
@@ -156,4 +171,87 @@ public class ArticleService {
         int i = articleMapper.countByCreator(accountId);
         return i;
     }
+
+    public PageResult<List<ArticleEs>> findAllByEs(Integer page, String keyWord) {
+        Sort sort = new Sort(Sort.Direction.DESC, "gmtModified");
+        Pageable of = PageRequest.of(page - 1, 5, sort);
+        ArrayList<ArticleEs> articleEs = new ArrayList<>();
+        Page<ArticleEs> articleEsPage;
+        if (StrUtil.isNotBlank(keyWord)) {
+            articleEsPage = articleRepo.findAllByDescriptionLikeOrTittleLike(keyWord, keyWord, of);
+        } else {
+            articleEsPage = articleRepo.findAll(of);
+        }
+
+        PageResult<List<ArticleEs>> listPageResult = new PageResult<>();
+        listPageResult.setData(articleEsPage.getContent());
+        listPageResult.setPageNum(page);
+        ArrayList<Integer> pages = null;
+        if (page == 1 && articleEsPage.getTotalPages() >= 5) {
+            pages = CollectionUtil.newArrayList(1, 2, 3, 4, 5);
+        } else if (articleEsPage.getTotalPages() <= 5) {
+            pages = new ArrayList<Integer>();
+            for (int i = 1; i <= articleEsPage.getTotalPages(); i++) {
+                pages.add(i);
+            }
+        } else {
+            pages = new ArrayList<Integer>();
+            for (int i = page - 1; i <= page + 3; i++) {
+                pages.add(i);
+            }
+        }
+        listPageResult.setPages(pages);
+        // listPageResult.setPages();
+        return listPageResult;
+    }
+
+    public long countByExample(ArticleExample example) {
+        return articleMapper.countByExample(example);
+    }
+
+    public int deleteByExample(ArticleExample example) {
+        return articleMapper.deleteByExample(example);
+    }
+
+    public int deleteByPrimaryKey(Integer id) {
+        return articleMapper.deleteByPrimaryKey(id);
+    }
+
+    public int insert(Article record) {
+        return articleMapper.insert(record);
+    }
+
+    public int insertSelective(Article record) {
+        return articleMapper.insertSelective(record);
+    }
+
+    public List<Article> selectByExample(ArticleExample example) {
+        return articleMapper.selectByExample(example);
+    }
+
+    public Article selectByPrimaryKey(Integer id) {
+        return articleMapper.selectByPrimaryKey(id);
+    }
+
+    public int updateByExampleSelective(Article record, ArticleExample example) {
+        return articleMapper.updateByExampleSelective(record, example);
+    }
+
+    public int updateByExample(Article record, ArticleExample example) {
+        return articleMapper.updateByExample(record, example);
+    }
+
+    public int updateByPrimaryKeySelective(Article record) {
+        return articleMapper.updateByPrimaryKeySelective(record);
+    }
+
+    public int updateByPrimaryKey(Article record) {
+        return articleMapper.updateByPrimaryKey(record);
+    }
+
+    public ArticleDTO findOneById(Integer id) {
+        ArticleDTO oneById = articleMapper.findOneById(id);
+        return oneById;
+    }
 }
+

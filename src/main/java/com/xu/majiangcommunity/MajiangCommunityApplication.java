@@ -13,6 +13,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 public class MajiangCommunityApplication {
 
     public static void main(String[] args) {
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
         SpringApplication.run(MajiangCommunityApplication.class, args);
     }
 

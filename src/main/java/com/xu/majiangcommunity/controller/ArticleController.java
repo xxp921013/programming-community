@@ -1,8 +1,13 @@
 package com.xu.majiangcommunity.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.xu.majiangcommunity.dao.ArticleMapper;
+import com.xu.majiangcommunity.dao.ArticleRepo;
 import com.xu.majiangcommunity.domain.Article;
+import com.xu.majiangcommunity.domain.ArticleEs;
 import com.xu.majiangcommunity.domain.HotArticle;
 import com.xu.majiangcommunity.domain.Tag;
+import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
 import com.xu.majiangcommunity.service.ArticleService;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +34,10 @@ public class ArticleController {
     @Autowired
     private RedisTemplate<String, Serializable> redisCacheTemplate;
     private static final String HOT_TAG = "HotTag:";
+    @Autowired
+    private ArticleMapper articleMapper;
+    @Autowired
+    private ArticleRepo articleRepo;
 
     @GetMapping("/articleDetail")
     public String getArticleDetail(@RequestParam("id") String id, Model model) {
@@ -93,5 +103,21 @@ public class ArticleController {
         BoundZSetOperations<String, Serializable> zSetOps = redisCacheTemplate.boundZSetOps(HOT_TAG);
         Set<Serializable> serializables = zSetOps.reverseRange(0, 5);
         return new BaseResponseBody<>(200, "查找热门标签成功", serializables);
+    }
+
+    @ResponseBody
+    @GetMapping("/build")
+    public String build() {
+        List<ArticleDTO> dtObyID = articleMapper.findDTObyID();
+        ArticleEs articleEs = null;
+        ArrayList<ArticleEs> articleEss = new ArrayList<>();
+        for (ArticleDTO articleDTO : dtObyID) {
+            articleEs = new ArticleEs();
+            BeanUtil.copyProperties(articleDTO, articleEs);
+            articleEs.setUserImg(articleDTO.getUser().getImage());
+            articleEss.add(articleEs);
+        }
+        articleRepo.saveAll(articleEss);
+        return "成功";
     }
 }

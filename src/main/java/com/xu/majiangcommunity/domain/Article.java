@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Data
 public class Article {
     private Integer id;
     private String tittle;

@@ -1,16 +1,38 @@
 package com.xu.majiangcommunity.dao;
 
 import com.xu.majiangcommunity.domain.Article;
-import com.xu.majiangcommunity.dto.ArticleDTO;
-import com.xu.majiangcommunity.dto.ArticleDetailDTO;
-import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Service;
+import com.xu.majiangcommunity.domain.ArticleExample;
 
 import java.util.List;
 
-@Mapper
+import com.xu.majiangcommunity.dto.ArticleDTO;
+import com.xu.majiangcommunity.dto.ArticleDetailDTO;
+import org.apache.ibatis.annotations.*;
+
 public interface ArticleMapper {
-    @Insert("insert into article (tittle,description,gmt_create,gmt_modified,creator,comment_count,view_count,like_count,tags) values(#{tittle},#{description},#{gmtCreate},#{gmtModified},#{creator},#{commentCount},#{viewCount},#{likeCount},#{tags})")
+    long countByExample(ArticleExample example);
+
+    int deleteByExample(ArticleExample example);
+
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(Article record);
+
+    int insertSelective(Article record);
+
+    List<Article> selectByExample(ArticleExample example);
+
+    Article selectByPrimaryKey(Integer id);
+
+    int updateByExampleSelective(@Param("record") Article record, @Param("example") ArticleExample example);
+
+    int updateByExample(@Param("record") Article record, @Param("example") ArticleExample example);
+
+    int updateByPrimaryKeySelective(Article record);
+
+    int updateByPrimaryKey(Article record);
+
+    @Insert(value = {"insert into article (tittle,description,gmt_create,gmt_modified,creator,comment_count,view_count,like_count,tags) values(#{tittle},#{description},#{gmtCreate},#{gmtModified},#{creator},#{commentCount},#{viewCount},#{likeCount},#{tags})"})
     void addArticle(Article article);
 
     @Select("select * from article")
@@ -49,4 +71,6 @@ public interface ArticleMapper {
 
     @Select("select count(*) from article where creator=#{accountId}  ")
     int countByCreator(String accountId);
+
+    ArticleDTO findOneById(Integer id);
 }

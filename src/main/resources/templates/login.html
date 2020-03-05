@@ -8,66 +8,76 @@
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <script src="/js/vector.js" type="application/javascript"></script>
     <link rel="stylesheet" href="/css/editormd.css">
     <link rel="stylesheet" href="/css/majiang.css">
-    <script>
-        function addTags(value) {
-            var val = $("#tags").val();
-            var s = $(value).text();
-            if (val.indexOf(s) != -1) {
-                return;
-            }
-            if (val) {
-                $("#tags").val(val + "," + s)
-            } else {
-                $("#tags").val(s);
-            }
-        }
-    </script>
-
+    <link rel="stylesheet" href="/css/login.css">
 
 </head>
 <body class="main">
 <nav class="navbar navbar-default">
     <div th:insert="head :: copy"></div>
 </nav>
-
-<div class="container-fluid" style="margin: 40px;background-color: white">
-    <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12">
-            <h3><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>登录</h3>
-            <hr/>
-            <form method="post" id="loginForm" action="/localUser/login">
-                <div class="form-group">
-                    <label for="username">用户名 :</label>
-                    <input type="text" maxlength="15" minlength="6" required="true" class="form-control" name="name"
-                           id="username"
-                           placeholder="用户名 6-15位...">
-                </div>
-                <div class="form-group">
-                    <label for="password">密码 :</label>
-                    <input type="password" maxlength="15" minlength="6" required="true" class="form-control"
-                           name="accountId"
-                           id="password"
-                           placeholder="密码 6-15位...">
-                </div>
-                <button type="submit" class="btn btn-success"
-                        style="float: right;margin-bottom: 15px">登录
-                </button>
+<div id="container">
+    <div id="output">
+        <div class="containerT">
+            <h1>用户登录</h1>
+            <form class="form" id="entry_form" method="post" action="/localUser/login">
+                <input type="text" placeholder="用户名" id="entry_name" name="name" maxlength="15" minlength="6"
+                       required="true">
+                <input type="password" name="accountId" placeholder="密码" id="entry_password" maxlength="15"
+                       minlength="6"
+                       required="true">
+                <button type="submit" id="entry_btn">登录</button>
+                <div id="prompt" class="prompt"></div>
             </form>
-            <br>
-            <br>
-            <div th:if="${msg != null}">
-                <div class="alert alert-danger" role="alert" th:text="${msg}"></div>
-            </div>
         </div>
-
     </div>
 </div>
+<!--<div class="container-fluid" style="margin: 40px;background-color: white">-->
+<!--    <div class="row">-->
+<!--        <div class="col-lg-9 col-md-12 col-sm-12">-->
+<!--            <h3><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>登录</h3>-->
+<!--            <hr/>-->
+<!--            <form method="post" id="loginForm" action="/localUser/login">-->
+<!--                <div class="form-group">-->
+<!--                    <label for="username">用户名 :</label>-->
+<!--                    <input type="text" maxlength="15" minlength="6" required="true" class="form-control" name="name"-->
+<!--                           id="username"-->
+<!--                           placeholder="用户名 6-15位...">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <label for="password">密码 :</label>-->
+<!--                    <input type="password" maxlength="15" minlength="6" required="true" class="form-control"-->
+<!--                           name="accountId"-->
+<!--                           id="password"-->
+<!--                           placeholder="密码 6-15位...">-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-success"-->
+<!--                        style="float: right;margin-bottom: 15px">登录-->
+<!--                </button>-->
+<!--            </form>-->
+<!--            <br>-->
+<!--            <br>-->
+<div th:if="${msg != null}">
+    <div class="alert alert-danger" role="alert" th:text="${msg}"></div>
+</div>
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <nav class="navbar navbar-default">
     <div th:insert="footer :: copy"></div>
 </nav>
 </body>
-<script>
+<script type="text/javascript">
+    $(function () {
+        Victor("container", "output");   //登陆背景函数
+        $("#entry_name").focus();
+        $(document).keydown(function (event) {
+            if (event.keyCode == 13) {
+                $("#entry_btn").click();
+            }
+        });
+    });
 </script>
 </html>

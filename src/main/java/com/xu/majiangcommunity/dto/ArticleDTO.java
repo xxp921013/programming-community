@@ -6,9 +6,10 @@ import com.xu.majiangcommunity.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import sun.java2d.pipe.AAShapePipe;
 
-
+@ToString
 public class ArticleDTO {
     public Integer getId() {
         return id;
