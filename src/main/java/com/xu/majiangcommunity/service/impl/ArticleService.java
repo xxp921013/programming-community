@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xu.majiangcommunity.constant.MqConstant;
+import com.xu.majiangcommunity.constant.SortConstant;
 import com.xu.majiangcommunity.dao.ArticleMapper;
 import com.xu.majiangcommunity.dao.ArticleRepo;
 import com.xu.majiangcommunity.domain.Article;
@@ -201,13 +202,14 @@ public class ArticleService implements ArticleServiceIf {
 
     @Override
 
-    public PageResult<List<ArticleEs>> findAllByEs(Integer page, String keyWord) {
-        Sort sort = new Sort(Sort.Direction.DESC, "gmtModified");
+    public PageResult<List<ArticleEs>> findAllByEs(Integer page, String keyWord, String sortType) {
+        Sort sort = getSort(sortType);
         Pageable of = PageRequest.of(page - 1, 5, sort);
         ArrayList<ArticleEs> articleEs = new ArrayList<>();
         Page<ArticleEs> articleEsPage;
         if (StrUtil.isNotBlank(keyWord)) {
-            articleEsPage = articleRepo.findAllByDescriptionLikeOrTittleLike(keyWord, keyWord, of);
+            String replace = keyWord.replace(" ", "");
+            articleEsPage = articleRepo.findAllByDescriptionLikeOrTittleLike(replace, replace, of);
         } else {
             articleEsPage = articleRepo.findAll(of);
         }
@@ -215,23 +217,35 @@ public class ArticleService implements ArticleServiceIf {
         PageResult<List<ArticleEs>> listPageResult = new PageResult<>();
         listPageResult.setData(articleEsPage.getContent());
         listPageResult.setPageNum(page);
-        ArrayList<Integer> pages = null;
-        if (page == 1 && articleEsPage.getTotalPages() >= 5) {
-            pages = CollectionUtil.newArrayList(1, 2, 3, 4, 5);
-        } else if (articleEsPage.getTotalPages() <= 5) {
-            pages = new ArrayList<Integer>();
-            for (int i = 1; i <= articleEsPage.getTotalPages(); i++) {
-                pages.add(i);
-            }
-        } else {
-            pages = new ArrayList<Integer>();
-            for (int i = page - 1; i <= page + 3; i++) {
-                pages.add(i);
-            }
-        }
-        listPageResult.setPages(pages);
-        // listPageResult.setPages();
+//        ArrayList<Integer> pages = null;
+//        if (page == 1 && articleEsPage.getTotalPages() >= 5) {
+//            pages = CollectionUtil.newArrayList(1, 2, 3, 4, 5);
+//        } else if (articleEsPage.getTotalPages() <= 5) {
+//            pages = new ArrayList<Integer>();
+//            for (int i = 1; i <= articleEsPage.getTotalPages(); i++) {
+//                pages.add(i);
+//            }
+//        } else {
+//            pages = new ArrayList<Integer>();
+//            for (int i = page - 1; i <= page + 3; i++) {
+//                pages.add(i);
+//            }
+//        }
+//        listPageResult.setPages(pages);
+        listPageResult.setTotal(articleEsPage.getTotalPages());
         return listPageResult;
+    }
+
+    private Sort getSort(String sortType) {
+        Sort sort = null;
+        if ("1".equals(sortType)) {
+            sort = new Sort(Sort.Direction.DESC, SortConstant.BY_ARTICLE_UPDATE);
+        } else if ("2".equals(sortType)) {
+            sort = new Sort(Sort.Direction.DESC, SortConstant.BY_ARTICLE_VIEWCOUNT);
+        } else {
+            sort = new Sort(Sort.Direction.DESC, SortConstant.BY_ARTICLE_COMMENTCOUNT);
+        }
+        return sort;
     }
 
     @Override

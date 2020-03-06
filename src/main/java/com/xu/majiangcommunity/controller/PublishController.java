@@ -33,8 +33,8 @@ public class PublishController {
         List<String> tags = new ArrayList<>();
         tags.add("java");
         tags.add("spring");
-        tags.add("spring boot");
-        tags.add("spring mvc");
+        tags.add("springBoot");
+        tags.add("springMvc");
         tags.add("jvm");
         tags.add("html");
         tags.add("css");

@@ -8,23 +8,39 @@
     <link rel="stylesheet" href="/css/bs.css">
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-
     <link rel="stylesheet" href="/css/majiang.css">
+    <link rel="stylesheet" type="text/css" href="css/default.css">
+    <link href="dist/pagination.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="dist/pagination.js"></script>
+    <style type="text/css">
+        ul, li {
+            list-style: none;
+        }
+
+        #wrapper {
+            width: 900px;
+            margin: 20px auto;
+        }
+
+        .data-container {
+            margin-top: 5px;
+        }
+
+        .data-container ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .data-container li {
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            background: #66677c;
+            color: #fff;
+        }
+    </style>
     <script th:inline="javascript">
         $(function () {
-            var total = [[${articles.total}]];
-            var curr = [[${articles.pageNum}]];
-            var keyWord = [[${keyWord}]];
-            var text = '<li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
-            for (var i = 1; i <= total; i++) {
-                if (i == curr) {
-                    text += '<li class="active" ><a href="/?page=' + i + '&keyWord=' + keyWord + '" >' + i + '</a></li>';
-                } else {
-                    text += '<li  ><a href="/?page=' + i + '&keyWord=' + keyWord + '" >' + i + '</a></li>';
-                }
-            }
-            text += '<li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
-            $("#pagination").html(text);
             var head = $("#hotRecent");
             $.ajax({
                 type: 'get',
@@ -73,13 +89,65 @@
         })
 
     </script>
+    <script>
+        $(function () {
+
+            function createDemo(name) {
+                var container = $('#pagination-' + name);
+                var sources = function () {
+                    var result = [];
+
+                    for (var i = 1; i < 196; i++) {
+                        result.push(i);
+                    }
+
+                    return result;
+                }();
+
+                var options = {
+                    dataSource: sources,
+                    className: 'paginationjs-theme-blue',
+                    callback: function (response, pagination) {
+                        window.console && console.log(response, pagination);
+
+                        var dataHtml = '<ul>';
+
+                        $.each(response, function (index, item) {
+                            dataHtml += '<li>' + item + '</li>';
+                        });
+
+                        dataHtml += '</ul>';
+
+                        container.prev().html(dataHtml);
+                    }
+                };
+
+                //$.pagination(container, options);
+
+                container.addHook('beforeInit', function () {
+                    window.console && console.log('beforeInit...');
+                });
+                container.pagination(options);
+
+                container.addHook('beforePageOnClick', function () {
+                    window.console && console.log('beforePageOnClick...');
+                    //return false
+                });
+
+                return container;
+            }
+
+            createDemo('demo1');
+
+        });
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default">
     <div th:insert="head :: copy"></div>
 </nav>
-<!--<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">-->
-<!--</div>-->
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+</div>
 <div class="container-fluid" style="margin: 40px;background-color: white;">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
@@ -88,22 +156,8 @@
             <hr/>
             <h4 style="color: #9d1e15">热门标签:</h4>
             <div id="hotTags">
-            </div>
-            <hr>
-            <nav aria-label="Page navigation">
-                <ul class="pagination" id="sort">
-                    <li th:class="${sortType == '1'}? 'active' :''"><a
-                            th:href="@{/(page=${articles.pageNum},keyWord=${keyWord},sortType=1)}"><span>最新发布</span></a>
-                    </li>
-                    <li th:class="${sortType == '2'}? 'active' :''"><a
-                            th:href="@{/(page=${articles.pageNum},keyWord=${keyWord},sortType=2)}"><span>最多点击</span></a>
-                    </li>
-                    <li th:class="${sortType == '3'}? 'active' :''"><a
-                            th:href="@{/(page=${articles.pageNum},keyWord=${keyWord},sortType=3)}"><span>最多回复</span></a>
-                    </li>
 
-                </ul>
-            </nav>
+            </div>
             <div class="media" th:each="article :${articles.data}">
                 <div class="media-left">
                     <a th:href="@{/articleDetail(id=${article.id})}">
@@ -121,15 +175,12 @@
                 </div>
                 <hr>
             </div>
-            <nav aria-label="Page navigation" style="float: right">
-                <ul class="pagination" id="pagination">
-                    <!--                                        <li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>-->
-                    <!--                                        <li th:class="${page == articles.pageNum}? 'active' :''" th:each="page :${articles.pages}"><a-->
-                    <!--                                                th:href="@{/(page=${page},keyWord=${keyWord})}" th:text="${page}"></a></li>-->
-
-                    <!--                                        <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>-->
-                </ul>
-            </nav>
+            <div id="wrapper">
+                <section>
+                    <div class="data-container"></div>
+                    <div id="pagination-demo1"></div>
+                </section>
+            </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
             <h2 style="margin-left: 50px">热门话题</h2>

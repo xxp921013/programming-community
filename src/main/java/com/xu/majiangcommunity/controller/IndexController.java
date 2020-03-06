@@ -30,8 +30,9 @@ public class IndexController {
     public String getIndex(@CookieValue(value = "token", required = false) String token,
                            HttpServletRequest req, Model model,
                            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
-                           @RequestParam(value = "keyWord", required = false) String keyWord) {
-        System.out.println(keyWord);
+                           @RequestParam(value = "keyWord", required = false) String keyWord,
+                           @RequestParam(value = "sortType", required = false, defaultValue = "1") String sortType) {
+        System.out.println(sortType);
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -46,11 +47,20 @@ public class IndexController {
         if (page == null || page <= 0) {
             page = 1;
         }
+        if ("null".equals(keyWord)) {
+            keyWord = null;
+        }
         if (StrUtil.isNotBlank(keyWord)) {
             model.addAttribute("keyWord", keyWord);
         }
-        PageResult<List<ArticleEs>> allByEs = articleService.findAllByEs(page, keyWord);
+        PageResult<List<ArticleEs>> allByEs = articleService.findAllByEs(page, keyWord, sortType);
         model.addAttribute("articles", allByEs);
+        model.addAttribute("sortType", sortType);
         return "index";
+    }
+
+    @GetMapping("/page")
+    public String goPage() {
+        return "paging";
     }
 }

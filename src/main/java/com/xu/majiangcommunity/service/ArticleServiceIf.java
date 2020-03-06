@@ -39,7 +39,7 @@ public interface ArticleServiceIf {
 
     int countMyArticle(String accountId);
 
-    PageResult<List<ArticleEs>> findAllByEs(Integer page, String keyWord);
+    PageResult<List<ArticleEs>> findAllByEs(Integer page, String keyWord, String sortType);
 
     long countByExample(ArticleExample example);
 
