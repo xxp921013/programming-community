@@ -2,11 +2,10 @@ package com.xu.majiangcommunity.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.xu.majiangcommunity.domain.User;
-import com.xu.majiangcommunity.service.UserService;
+import com.xu.majiangcommunity.service.impl.UserService;
 import com.xu.majiangcommunity.utils.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

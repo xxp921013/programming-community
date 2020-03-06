@@ -1,4 +1,4 @@
-package com.xu.majiangcommunity.service;
+package com.xu.majiangcommunity.service.impl;
 
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;

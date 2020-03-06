@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/majiang.css">
     <script th:inline="javascript">
         function thumpUp(id) {
+            alert(id);
             $.ajax({
                 type: 'put',
                 dataType: 'json',
@@ -22,9 +23,11 @@
                 cache: false,
                 async: true,
                 success: function (data) {
-                    if (data) {
+                    if (data.data) {
                         alert("点赞成功");
                         location.reload();
+                    } else {
+                        alert(data.message)
                     }
                 }
             });
@@ -41,10 +44,11 @@
                 cache: false,
                 async: true,
                 success: function (data) {
-                    if (data != null) {
+                    if (data != null && data.code == 200) {
+                        var articles = data.data;
                         var lis = "";
-                        for (var i = 0; i < data.length; i++) {
-                            var article = data[i];
+                        for (var i = 0; i < articles.length; i++) {
+                            var article = articles[i];
                             var path = "/articleDetail?id=" + article.id;
                             var li = '<li class="list-group-item" ><a href="' + path + '"><h5>' + article.tittle + '</h5></a></li>';
                             lis += li;

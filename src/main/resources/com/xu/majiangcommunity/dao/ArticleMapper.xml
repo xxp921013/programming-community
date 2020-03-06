@@ -1,338 +1,346 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xu.majiangcommunity.dao.ArticleMapper">
-  <resultMap id="BaseResultMap" type="com.xu.majiangcommunity.domain.Article">
-    <!--@mbg.generated-->
-    <!--@Table article-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="tittle" jdbcType="VARCHAR" property="tittle" />
-    <result column="description" jdbcType="LONGVARCHAR" property="description" />
-    <result column="gmt_create" jdbcType="BIGINT" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="BIGINT" property="gmtModified" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
-    <result column="view_count" jdbcType="INTEGER" property="viewCount" />
-    <result column="like_count" jdbcType="INTEGER" property="likeCount" />
-    <result column="tags" jdbcType="VARCHAR" property="tags" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <!--@mbg.generated-->
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+    <resultMap id="BaseResultMap" type="com.xu.majiangcommunity.domain.Article">
+        <!--@mbg.generated-->
+        <!--@Table article-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="tittle" jdbcType="VARCHAR" property="tittle"/>
+        <result column="description" jdbcType="LONGVARCHAR" property="description"/>
+        <result column="gmt_create" jdbcType="BIGINT" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="BIGINT" property="gmtModified"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="view_count" jdbcType="INTEGER" property="viewCount"/>
+        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
+        <result column="tags" jdbcType="VARCHAR" property="tags"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <!--@mbg.generated-->
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <!--@mbg.generated-->
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <!--@mbg.generated-->
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, tittle, description, gmt_create, gmt_modified, creator, comment_count, view_count,
+        like_count, tags
+    </sql>
+    <select id="selectByExample" parameterType="com.xu.majiangcommunity.domain.ArticleExample"
+            resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <if test="distinct">
+            distinct
         </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, tittle, description, gmt_create, gmt_modified, creator, comment_count, view_count, 
-    like_count, tags
-  </sql>
-  <select id="selectByExample" parameterType="com.xu.majiangcommunity.domain.ArticleExample" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from article
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from article
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    <!--@mbg.generated-->
-    delete from article
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.xu.majiangcommunity.domain.ArticleExample">
-    <!--@mbg.generated-->
-    delete from article
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xu.majiangcommunity.domain.Article" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into article (tittle, description, gmt_create, 
-      gmt_modified, creator, comment_count, 
-      view_count, like_count, tags
-      )
-    values (#{tittle,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}, #{gmtCreate,jdbcType=BIGINT}, 
-      #{gmtModified,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{commentCount,jdbcType=INTEGER}, 
-      #{viewCount,jdbcType=INTEGER}, #{likeCount,jdbcType=INTEGER}, #{tags,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xu.majiangcommunity.domain.Article" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into article
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="tittle != null">
-        tittle,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="gmtCreate != null">
-        gmt_create,
-      </if>
-      <if test="gmtModified != null">
-        gmt_modified,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="commentCount != null">
-        comment_count,
-      </if>
-      <if test="viewCount != null">
-        view_count,
-      </if>
-      <if test="likeCount != null">
-        like_count,
-      </if>
-      <if test="tags != null">
-        tags,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="tittle != null">
-        #{tittle,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="gmtCreate != null">
-        #{gmtCreate,jdbcType=BIGINT},
-      </if>
-      <if test="gmtModified != null">
-        #{gmtModified,jdbcType=BIGINT},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="commentCount != null">
-        #{commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="viewCount != null">
-        #{viewCount,jdbcType=INTEGER},
-      </if>
-      <if test="likeCount != null">
-        #{likeCount,jdbcType=INTEGER},
-      </if>
-      <if test="tags != null">
-        #{tags,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.xu.majiangcommunity.domain.ArticleExample" resultType="java.lang.Long">
-    <!--@mbg.generated-->
-    select count(*) from article
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    <!--@mbg.generated-->
-    update article
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.tittle != null">
+        <include refid="Base_Column_List"/>
+        from article
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from article
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.xu.majiangcommunity.domain.ArticleExample">
+        <!--@mbg.generated-->
+        delete from article
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xu.majiangcommunity.domain.Article"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into article (tittle, description, gmt_create,
+        gmt_modified, creator, comment_count,
+        view_count, like_count, tags
+        )
+        values (#{tittle,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}, #{gmtCreate,jdbcType=BIGINT},
+        #{gmtModified,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{commentCount,jdbcType=INTEGER},
+        #{viewCount,jdbcType=INTEGER}, #{likeCount,jdbcType=INTEGER}, #{tags,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xu.majiangcommunity.domain.Article"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tittle != null">
+                tittle,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="commentCount != null">
+                comment_count,
+            </if>
+            <if test="viewCount != null">
+                view_count,
+            </if>
+            <if test="likeCount != null">
+                like_count,
+            </if>
+            <if test="tags != null">
+                tags,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tittle != null">
+                #{tittle,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=BIGINT},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=BIGINT},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="commentCount != null">
+                #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="viewCount != null">
+                #{viewCount,jdbcType=INTEGER},
+            </if>
+            <if test="likeCount != null">
+                #{likeCount,jdbcType=INTEGER},
+            </if>
+            <if test="tags != null">
+                #{tags,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.xu.majiangcommunity.domain.ArticleExample"
+            resultType="java.lang.Long">
+        <!--@mbg.generated-->
+        select count(*) from article
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        <!--@mbg.generated-->
+        update article
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.tittle != null">
+                tittle = #{record.tittle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.gmtCreate != null">
+                gmt_create = #{record.gmtCreate,jdbcType=BIGINT},
+            </if>
+            <if test="record.gmtModified != null">
+                gmt_modified = #{record.gmtModified,jdbcType=BIGINT},
+            </if>
+            <if test="record.creator != null">
+                creator = #{record.creator,jdbcType=VARCHAR},
+            </if>
+            <if test="record.commentCount != null">
+                comment_count = #{record.commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.viewCount != null">
+                view_count = #{record.viewCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.likeCount != null">
+                like_count = #{record.likeCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.tags != null">
+                tags = #{record.tags,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        <!--@mbg.generated-->
+        update article
+        set id = #{record.id,jdbcType=INTEGER},
         tittle = #{record.tittle,jdbcType=VARCHAR},
-      </if>
-      <if test="record.description != null">
         description = #{record.description,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.gmtCreate != null">
         gmt_create = #{record.gmtCreate,jdbcType=BIGINT},
-      </if>
-      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=BIGINT},
-      </if>
-      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.commentCount != null">
         comment_count = #{record.commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="record.viewCount != null">
         view_count = #{record.viewCount,jdbcType=INTEGER},
-      </if>
-      <if test="record.likeCount != null">
         like_count = #{record.likeCount,jdbcType=INTEGER},
-      </if>
-      <if test="record.tags != null">
-        tags = #{record.tags,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    <!--@mbg.generated-->
-    update article
-    set id = #{record.id,jdbcType=INTEGER},
-      tittle = #{record.tittle,jdbcType=VARCHAR},
-      description = #{record.description,jdbcType=LONGVARCHAR},
-      gmt_create = #{record.gmtCreate,jdbcType=BIGINT},
-      gmt_modified = #{record.gmtModified,jdbcType=BIGINT},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      comment_count = #{record.commentCount,jdbcType=INTEGER},
-      view_count = #{record.viewCount,jdbcType=INTEGER},
-      like_count = #{record.likeCount,jdbcType=INTEGER},
-      tags = #{record.tags,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xu.majiangcommunity.domain.Article">
-    <!--@mbg.generated-->
-    update article
-    <set>
-      <if test="tittle != null">
-        tittle = #{tittle,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
+        tags = #{record.tags,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xu.majiangcommunity.domain.Article">
+        <!--@mbg.generated-->
+        update article
+        <set>
+            <if test="tittle != null">
+                tittle = #{tittle,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=BIGINT},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=BIGINT},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="commentCount != null">
+                comment_count = #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="viewCount != null">
+                view_count = #{viewCount,jdbcType=INTEGER},
+            </if>
+            <if test="likeCount != null">
+                like_count = #{likeCount,jdbcType=INTEGER},
+            </if>
+            <if test="tags != null">
+                tags = #{tags,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xu.majiangcommunity.domain.Article">
+        <!--@mbg.generated-->
+        update article
+        set tittle = #{tittle,jdbcType=VARCHAR},
         description = #{description,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=BIGINT},
-      </if>
-      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=BIGINT},
-      </if>
-      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="commentCount != null">
         comment_count = #{commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="viewCount != null">
         view_count = #{viewCount,jdbcType=INTEGER},
-      </if>
-      <if test="likeCount != null">
         like_count = #{likeCount,jdbcType=INTEGER},
-      </if>
-      <if test="tags != null">
-        tags = #{tags,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xu.majiangcommunity.domain.Article">
-    <!--@mbg.generated-->
-    update article
-    set tittle = #{tittle,jdbcType=VARCHAR},
-      description = #{description,jdbcType=LONGVARCHAR},
-      gmt_create = #{gmtCreate,jdbcType=BIGINT},
-      gmt_modified = #{gmtModified,jdbcType=BIGINT},
-      creator = #{creator,jdbcType=VARCHAR},
-      comment_count = #{commentCount,jdbcType=INTEGER},
-      view_count = #{viewCount,jdbcType=INTEGER},
-      like_count = #{likeCount,jdbcType=INTEGER},
-      tags = #{tags,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        tags = #{tags,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
     <resultMap id="ArticleDTO" type="com.xu.majiangcommunity.dto.ArticleDTO">
-        <id column="id" property="id" />
-        <result column="tittle" property="tittle" />
-        <result column="description" property="description" />
-        <result column="gmt_create" property="gmtCreate" />
-        <result column="gmt_modified" property="gmtModified" />
-        <result column="creator" property="creator" />
-        <result column="comment_count" property="commentCount" />
-        <result column="view_count" property="viewCount" />
-        <result column="like_count" property="likeCount" />
-        <result column="tags" property="tags" />
-        <association column="creator" javaType="com.xu.majiangcommunity.domain.User" property="user" select="com.xu.majiangcommunity.dao.UserMapper.findById" />
+        <id column="id" property="id"/>
+        <result column="tittle" property="tittle"/>
+        <result column="description" property="description"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="creator" property="creator"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="tags" property="tags"/>
+        <association column="creator" javaType="com.xu.majiangcommunity.domain.User" property="user"
+                     select="com.xu.majiangcommunity.dao.UserMapper.findById"/>
     </resultMap>
     <resultMap id="ArticleDetailDTO" type="com.xu.majiangcommunity.dto.ArticleDetailDTO">
-        <id column="id" property="id" />
-        <result column="tittle" property="tittle" />
-        <result column="description" property="description" />
-        <result column="gmt_create" property="gmtCreate" />
-        <result column="gmt_modified" property="gmtModified" />
-        <result column="creator" property="creator" />
-        <result column="comment_count" property="commentCount" />
-        <result column="view_count" property="viewCount" />
-        <result column="like_count" property="likeCount" />
-        <result column="tags" property="tags" />
-        <association column="creator" javaType="com.xu.majiangcommunity.domain.User" property="user" select="com.xu.majiangcommunity.dao.UserMapper.findById" />
+        <id column="id" property="id"/>
+        <result column="tittle" property="tittle"/>
+        <result column="description" property="description"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="creator" property="creator"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="tags" property="tags"/>
+        <association column="creator" javaType="com.xu.majiangcommunity.domain.User" property="user"
+                     select="com.xu.majiangcommunity.dao.UserMapper.findById"/>
         <collection ofType="com.xu.majiangcommunity.domain.Rounds" property="rounds">
-            <id column="rid" property="rid" />
-            <result column="round_text" property="roundText" />
-            <result column="round_creator" property="roundCreator" />
-            <result column="name" property="name" />
-            <result column="image" property="image" />
-            <result column="r_create" property="gmtCreate" />
-            <result column="r_modified" property="gmtModified" />
-            <result column="thumbs_up" property="thumbsUp" />
-            <result column="article_id" property="articleId" />
+            <id column="rid" property="rid"/>
+            <result column="round_text" property="roundText"/>
+            <result column="round_creator" property="roundCreator"/>
+            <result column="name" property="name"/>
+            <result column="image" property="image"/>
+            <result column="r_create" property="gmtCreate"/>
+            <result column="r_modified" property="gmtModified"/>
+            <result column="thumbs_up" property="thumbsUp"/>
+            <result column="article_id" property="articleId"/>
         </collection>
     </resultMap>
     <select id="findDTObyID" resultMap="ArticleDTO">
@@ -340,7 +348,8 @@
     </select>
     <select id="findArticleDetailById" parameterType="java.lang.String" resultMap="ArticleDetailDTO">
         SELECT a.*,r.round_text,r.round_creator,r.name,r.image,r.gmt_create r_create,r.gmt_modified
-        r_modified,r.thumbs_up,r.article_id FROM article a LEFT JOIN rounds r ON a.id = r.article_id WHERE a.id = #{id};
+        r_modified,r.thumbs_up,r.article_id,r.rid FROM article a LEFT JOIN rounds r ON a.id = r.article_id WHERE a.id
+        = #{id};
     </select>
     <select id="findDTObyIDWithKeyWord" resultMap="ArticleDTO">
         SELECT * FROM article a LEFT OUTER JOIN user u ON a.creator = u.id where tags OR tittle OR description REGEXP

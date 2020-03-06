@@ -1,4 +1,4 @@
-package com.xu.majiangcommunity.service;
+package com.xu.majiangcommunity.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.github.pagehelper.PageHelper;

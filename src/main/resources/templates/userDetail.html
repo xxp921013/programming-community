@@ -33,9 +33,9 @@
         <ul class="layui-tab-title">
             <li class="layui-this">个人资料</li>
             <li>修改头像</li>
-            <li>权限分配</li>
-            <li>商品管理</li>
-            <li>订单管理</li>
+            <!--            <li>权限分配</li>-->
+            <!--            <li>商品管理</li>-->
+            <!--            <li>订单管理</li>-->
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
@@ -71,9 +71,9 @@
                            onclick="updateHead()">
                 </div>
             </div>
-            <div class="layui-tab-item">内容3</div>
-            <div class="layui-tab-item">内容4</div>
-            <div class="layui-tab-item">内容5</div>
+            <!--            <div class="layui-tab-item">内容3</div>-->
+            <!--            <div class="layui-tab-item">内容4</div>-->
+            <!--            <div class="layui-tab-item">内容5</div>-->
         </div>
     </div>
 
@@ -116,7 +116,7 @@
             , accept: 'images'
             , done: function (res) {
                 //上传完毕回调
-                if (res.success == 1) {
+                if (res.code == 200) {
                     alert(res.message);
                     $("#headImg").attr("src", res.url);
                 }

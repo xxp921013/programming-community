@@ -2,7 +2,7 @@ package com.xu.majiangcommunity.aop;
 
 import cn.hutool.core.date.DateUtil;
 import com.xu.majiangcommunity.domain.WebLog;
-import com.xu.majiangcommunity.service.WebLogService;
+import com.xu.majiangcommunity.service.impl.WebLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -17,7 +17,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.net.URL;
 
 @Aspect
 @Slf4j

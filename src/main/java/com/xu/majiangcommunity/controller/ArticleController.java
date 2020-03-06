@@ -5,12 +5,10 @@ import com.xu.majiangcommunity.dao.ArticleMapper;
 import com.xu.majiangcommunity.dao.ArticleRepo;
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.ArticleEs;
-import com.xu.majiangcommunity.domain.HotArticle;
-import com.xu.majiangcommunity.domain.Tag;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
-import com.xu.majiangcommunity.service.ArticleService;
+import com.xu.majiangcommunity.service.impl.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -85,16 +82,16 @@ public class ArticleController {
 
     @GetMapping("/hotArticle")
     @ResponseBody
-    public List<Article> getHotArticle(@RequestParam("tags") String tags) {
+    public BaseResponseBody<List<Article>> getHotArticle(@RequestParam("tags") String tags) {
         List<Article> articles = articleService.getHotArticle(tags);
-        return articles;
+        return new BaseResponseBody<List<Article>>(200, "查找热门文章成功", articles);
     }
 
     @ResponseBody
     @GetMapping("/recentHot")
-    public Set<Serializable> getRecent() {
+    public BaseResponseBody<Set<Serializable>> getRecent() {
         Set<Serializable> recent = articleService.getRecent();
-        return recent;
+        return new BaseResponseBody<>(200, "查找成功", recent);
     }
 
     @ResponseBody

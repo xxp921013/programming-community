@@ -1,15 +1,11 @@
 package com.xu.majiangcommunity.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.xu.majiangcommunity.constant.MqConstant;
-import com.xu.majiangcommunity.dao.ArticleMapper;
-import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.ArticleEs;
 import com.xu.majiangcommunity.domain.User;
-import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.PageResult;
-import com.xu.majiangcommunity.service.ArticleService;
-import com.xu.majiangcommunity.service.UserService;
+import com.xu.majiangcommunity.service.impl.ArticleService;
+import com.xu.majiangcommunity.service.impl.UserService;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Struct;
 import java.util.List;
-
-import static org.apache.ibatis.ognl.DynamicSubscript.all;
 
 @Controller
 public class IndexController {

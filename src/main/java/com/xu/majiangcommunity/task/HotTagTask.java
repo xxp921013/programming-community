@@ -1,12 +1,10 @@
 package com.xu.majiangcommunity.task;
 
 
-import cn.hutool.core.bean.BeanUtil;
-import com.xu.majiangcommunity.dao.ArticleMapper;
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.HotArticle;
 import com.xu.majiangcommunity.domain.Tag;
-import com.xu.majiangcommunity.service.ArticleService;
+import com.xu.majiangcommunity.service.impl.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +14,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component

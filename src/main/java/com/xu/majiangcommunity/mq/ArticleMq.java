@@ -5,7 +5,7 @@ import com.xu.majiangcommunity.constant.MqConstant;
 import com.xu.majiangcommunity.dao.ArticleRepo;
 import com.xu.majiangcommunity.domain.ArticleEs;
 import com.xu.majiangcommunity.dto.ArticleDTO;
-import com.xu.majiangcommunity.service.ArticleService;
+import com.xu.majiangcommunity.service.impl.ArticleService;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;

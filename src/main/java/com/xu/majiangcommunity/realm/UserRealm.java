@@ -1,20 +1,17 @@
 package com.xu.majiangcommunity.realm;
 
-import com.sun.xml.internal.ws.client.ResponseContext;
 import com.xu.majiangcommunity.domain.User;
 import com.xu.majiangcommunity.domain.UserExample;
-import com.xu.majiangcommunity.service.UserService;
+import com.xu.majiangcommunity.service.impl.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.xu.majiangcommunity.service;
+package com.xu.majiangcommunity.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
@@ -13,6 +13,7 @@ import com.xu.majiangcommunity.domain.ArticleExample;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.PageResult;
+import com.xu.majiangcommunity.service.ArticleServiceIf;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class ArticleService {
+public class ArticleService implements ArticleServiceIf {
     private static final String HOTARTICLE = "HotArticle:";
     @Autowired
     private ArticleMapper articleMapper;
@@ -48,6 +50,7 @@ public class ArticleService {
     @Autowired
     private AmqpTemplate at;
 
+    @Override
     public void addArticle(Article article) {
         articleMapper.insertSelective(article);
         Integer id = article.getId();
@@ -57,6 +60,8 @@ public class ArticleService {
     }
 
     //@Cacheable(value = "findAll", key = "#page+'-'+#keyWord")
+    @Override
+
     public PageResult<List<ArticleDTO>> findAll(Integer page, String keyWord) {
         PageHelper.startPage(page, 5);
         List<ArticleDTO> dtObyID = null;
@@ -90,6 +95,8 @@ public class ArticleService {
         return listPageResult;
     }
 
+    @Override
+
     public PageResult<List<Article>> findArticleByCreator(String id, Integer page) {
         PageHelper.startPage(page, 5);
         List<Article> articles = articleMapper.findArticleByCreator(id);
@@ -116,18 +123,27 @@ public class ArticleService {
         return listPageResult;
     }
 
+    @Override
+
     public ArticleDetailDTO getArticleDetail(String id) {
         ArticleDetailDTO articleDetailById = articleMapper.findArticleDetailById(id);
         return articleDetailById;
     }
 
+    @Override
+
+
     public void viewArticle(String id) {
         articleMapper.viewArticle(id);
     }
 
+    @Override
+
     public void commentArticle(String articleId) {
         articleMapper.commentArticle(articleId);
     }
+
+    @Override
 
     public Article findById(Integer id) {
         Article article = articleMapper.findById(id);
@@ -138,13 +154,19 @@ public class ArticleService {
         return article;
     }
 
+    @Override
+
     public void updateArticle(Article article) {
         articleMapper.updateArticle(article);
     }
 
+    @Override
+
     public void deleteArticle(Integer id) {
         articleMapper.deleteArticle(id);
     }
+
+    @Override
 
     @Cacheable(value = "hotArticle", key = "#tags")
     public List<Article> getHotArticle(String tags) {
@@ -155,11 +177,14 @@ public class ArticleService {
         return articles;
     }
 
+    @Override
+
     public List<Article> getLastDayArticle(Long time) {
         List<Article> articles = articleMapper.getLastDayArticle(time);
         return articles;
     }
 
+    @Override
 
     public Set<Serializable> getRecent() {
         BoundZSetOperations<String, Serializable> zSetOps = redisCacheTemplate.boundZSetOps(HOTARTICLE);
@@ -167,10 +192,14 @@ public class ArticleService {
         return range;
     }
 
+    @Override
+
     public int countMyArticle(String accountId) {
         int i = articleMapper.countByCreator(accountId);
         return i;
     }
+
+    @Override
 
     public PageResult<List<ArticleEs>> findAllByEs(Integer page, String keyWord) {
         Sort sort = new Sort(Sort.Direction.DESC, "gmtModified");
@@ -205,49 +234,73 @@ public class ArticleService {
         return listPageResult;
     }
 
+    @Override
+
     public long countByExample(ArticleExample example) {
         return articleMapper.countByExample(example);
     }
+
+    @Override
 
     public int deleteByExample(ArticleExample example) {
         return articleMapper.deleteByExample(example);
     }
 
+    @Override
+
     public int deleteByPrimaryKey(Integer id) {
         return articleMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
 
     public int insert(Article record) {
         return articleMapper.insert(record);
     }
 
+    @Override
+
     public int insertSelective(Article record) {
         return articleMapper.insertSelective(record);
     }
+
+    @Override
 
     public List<Article> selectByExample(ArticleExample example) {
         return articleMapper.selectByExample(example);
     }
 
+    @Override
+
     public Article selectByPrimaryKey(Integer id) {
         return articleMapper.selectByPrimaryKey(id);
     }
+
+    @Override
 
     public int updateByExampleSelective(Article record, ArticleExample example) {
         return articleMapper.updateByExampleSelective(record, example);
     }
 
+    @Override
+
     public int updateByExample(Article record, ArticleExample example) {
         return articleMapper.updateByExample(record, example);
     }
+
+    @Override
 
     public int updateByPrimaryKeySelective(Article record) {
         return articleMapper.updateByPrimaryKeySelective(record);
     }
 
+    @Override
+
     public int updateByPrimaryKey(Article record) {
         return articleMapper.updateByPrimaryKey(record);
     }
+
+    @Override
 
     public ArticleDTO findOneById(Integer id) {
         ArticleDTO oneById = articleMapper.findOneById(id);

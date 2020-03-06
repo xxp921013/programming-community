@@ -1,8 +1,9 @@
 package com.xu.majiangcommunity.controller;
 
 import com.xu.majiangcommunity.domain.Rounds;
-import com.xu.majiangcommunity.service.ArticleService;
-import com.xu.majiangcommunity.service.RoundService;
+import com.xu.majiangcommunity.dto.BaseResponseBody;
+import com.xu.majiangcommunity.service.impl.ArticleService;
+import com.xu.majiangcommunity.service.impl.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +29,14 @@ public class RoundController {
 
     @PutMapping("/thumpUp")
     @ResponseBody
-    public boolean thumpUp(@RequestParam("rid") Integer rid) {
-        int i = roundService.thumpUp(rid);
+    public BaseResponseBody<Boolean> thumpUp(@RequestParam("rid") String rid) {
+        System.out.println(rid);
+        int i = roundService.thumpUp(Integer.valueOf(rid));
+
         if (i >= 1) {
-            return true;
+            return new BaseResponseBody<Boolean>(200, "点赞成功", true);
+
         }
-        return false;
+        return new BaseResponseBody<Boolean>(500, "点赞失败", false);
     }
 }

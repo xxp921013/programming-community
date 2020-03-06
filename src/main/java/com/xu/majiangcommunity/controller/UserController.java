@@ -9,17 +9,16 @@ import com.xu.majiangcommunity.config.MjConfig;
 import com.xu.majiangcommunity.domain.User;
 import com.xu.majiangcommunity.domain.UserExample;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
-import com.xu.majiangcommunity.dto.FileDto;
+import com.xu.majiangcommunity.dto.FileResponseBody;
 import com.xu.majiangcommunity.dto.UserDTO;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
-import com.xu.majiangcommunity.service.ArticleService;
-import com.xu.majiangcommunity.service.RoundService;
-import com.xu.majiangcommunity.service.UserService;
+import com.xu.majiangcommunity.service.impl.ArticleService;
+import com.xu.majiangcommunity.service.impl.RoundService;
+import com.xu.majiangcommunity.service.impl.UserService;
 
 import io.minio.MinioClient;
 import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -28,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
@@ -38,7 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.nio.channels.FileChannel;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -132,7 +129,7 @@ public class UserController {
 
     @PostMapping("/uploadImg")
     @ResponseBody
-    public FileDto uploadImg(MultipartFile file) throws IOException {
+    public FileResponseBody uploadImg(MultipartFile file) throws IOException {
         Boolean tag = isAllowTags(file.getContentType());
         if (!tag) {
             log.error("[错误文件传到后台],文件名:{}", file.getOriginalFilename());
@@ -144,12 +141,10 @@ public class UserController {
             String fileName = DateUtil.now() + originalFilename;
             minioClient.putObject(minioConfig.getBucketName(), fileName, file.getInputStream(), file.getContentType());
             log.info("[文件上传成功],{}", file.getOriginalFilename());
-            FileDto fileDto = new FileDto();
-            fileDto.setMessage("上传成功");
-            fileDto.setSuccess(1);
+
             String url = minioClient.getObjectUrl(minioConfig.getBucketName(), fileName);
-            fileDto.setUrl(url);
-            return fileDto;
+
+            return new FileResponseBody(200, "文件上传成功", url);
         } catch (InvalidEndpointException e) {
             e.printStackTrace();
             log.error("文件上传错误!");

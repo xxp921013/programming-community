@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.xu.majiangcommunity.GlobalException;
 import com.xu.majiangcommunity.config.MinioConfig;
 import com.xu.majiangcommunity.config.MjConfig;
-import com.xu.majiangcommunity.dto.FileDto;
+import com.xu.majiangcommunity.dto.FileResponseBody;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
 import io.minio.MinioClient;
 import io.minio.errors.*;
@@ -34,7 +34,7 @@ public class FileController {
 
     @RequestMapping("/file/upload")
     //RequestParam名称固定不能修改
-    public FileDto uploadFile(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file) {
+    public FileResponseBody uploadFile(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file) {
         Boolean tag = isAllowTags(file.getContentType());
         if (!tag) {
             log.error("[错误文件传到后台],文件名:{}", file.getOriginalFilename());
@@ -46,12 +46,8 @@ public class FileController {
             String fileName = DateUtil.now() + originalFilename;
             minioClient.putObject(MD_BUCKET, fileName, file.getInputStream(), file.getContentType());
             log.info("[文件上传成功],{}", file.getOriginalFilename());
-            FileDto fileDto = new FileDto();
-            fileDto.setMessage("上传成功");
-            fileDto.setSuccess(1);
             String url = minioClient.getObjectUrl(MD_BUCKET, fileName);
-            fileDto.setUrl(url);
-            return fileDto;
+            return new FileResponseBody(200, "文件上传成功", url, 1);
         } catch (InvalidEndpointException e) {
             e.printStackTrace();
             log.error("文件上传错误!");

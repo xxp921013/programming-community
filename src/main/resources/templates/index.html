@@ -21,10 +21,11 @@
                 cache: false,
                 async: true,
                 success: function (data) {
-                    if (data != null) {
+                    if (data != null && data.code == 200) {
                         var lis = "";
-                        for (var i = 0; i < data.length; i++) {
-                            var article = data[i];
+                        var articles = data.data;
+                        for (var i = 0; i < articles.length; i++) {
+                            var article = articles[i];
                             var path = "/articleDetail?id=" + article.articleId;
                             var li = '<li class="list-group-item" ><a href="' + path + '"><h4>' + article.tittle + '</h4></a></li>';
                             lis += li;
