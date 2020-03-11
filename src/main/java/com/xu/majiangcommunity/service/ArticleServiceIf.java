@@ -64,4 +64,6 @@ public interface ArticleServiceIf {
     int updateByPrimaryKey(Article record);
 
     ArticleDTO findOneById(Integer id);
+
+    Integer getViewCount(Integer id);
 }

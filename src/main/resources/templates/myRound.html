@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>我的回复</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -51,13 +52,13 @@
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
             <div class="list-group">
-                <a href="#" class="list-group-item active"
+                <a th:href="@{/userArticle}" class="list-group-item active"
                    th:class="${selection == '我的文章'? 'list-group-item active':'list-group-item'}">
                     我的文章
                 </a>
                 <a href="#" class="list-group-item"
                    th:class="${selection == '我的回复'? 'list-group-item active':'list-group-item'}">
-                    <span class="badge" th:text="${session.user.newRound}"></span>
+                    <span class="badge" sec:authentication="principal.newRound"></span>
                     最新回复</a>
             </div>
         </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>文章详情</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -14,7 +15,6 @@
     <link rel="stylesheet" href="/css/majiang.css">
     <script th:inline="javascript">
         function thumpUp(id) {
-            alert(id);
             $.ajax({
                 type: 'put',
                 dataType: 'json',
@@ -76,10 +76,10 @@
         <div class="col-lg-9 col-md-12 col-sm-12">
             <div class="jumbotron" style="background-color: white">
                 <h2 th:text="${articleDetail.tittle}"></h2>
-                <div><a th:href="@{/articleDetail(id=${articleDetail.user.accountId})}">
+                <div><a th:href="@{/articleDetail(id=${articleDetail.user.username})}">
                     <img class="media-object img-thumbnail head-image"
                          th:src="${articleDetail.user.image}">
-                </a><span th:text="${articleDetail.user.name}"></span></div>
+                </a><span th:text="${articleDetail.user.username}"></span></div>
                 <div>                    <span class="reply-desc"><span th:text="${articleDetail.commentCount}"></span> 个评论 •
                             <span th:text="${articleDetail.viewCount}"></span> 次浏览 • <span
                             th:text="${#dates.format(articleDetail.gmtCreate, 'yyyy-MM-dd')}"></span></span></div>
@@ -128,9 +128,6 @@
                     </div>
                     <div>
                         <input type="hidden" name="articleId" th:value="${articleDetail.id}">
-                        <input type="hidden" name="roundCreator" th:value="${session.user.accountId}">
-                        <input type="hidden" name="name" th:value="${session.user.name}">
-                        <input type="hidden" name="image" th:value="${session.user.image}">
                     </div>
                     <button type="submit" class="btn btn-success" style="float: right;margin-bottom: 15px">评论</button>
                 </form>

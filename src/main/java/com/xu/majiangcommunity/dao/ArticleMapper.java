@@ -1,4 +1,5 @@
 package com.xu.majiangcommunity.dao;
+import org.apache.ibatis.annotations.Param;
 
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.ArticleExample;
@@ -19,7 +20,7 @@ public interface ArticleMapper {
     int insert(Article record);
 
     int insertSelective(Article record);
-
+    
     List<Article> selectByExample(ArticleExample example);
 
     Article selectByPrimaryKey(Integer id);
@@ -73,4 +74,8 @@ public interface ArticleMapper {
     int countByCreator(String accountId);
 
     ArticleDTO findOneById(Integer id);
+
+    Integer findViewCountById(@Param("id")Integer id);
+
+
 }

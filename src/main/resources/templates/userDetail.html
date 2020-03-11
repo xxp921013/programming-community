@@ -39,7 +39,7 @@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <span>用户名: <span th:text="${userDetail.name}" style="font-weight: bold;font-size: large"></span> </span><br>
+                <span>用户名: <span th:text="${userDetail.username}" style="font-weight: bold;font-size: large"></span> </span><br>
                 <hr>
                 <span>我发布的文章数: <span th:text="${userDetail.articleCount}"
                                      style="font-weight: bold;font-size: large"></span> </span><br>
@@ -50,7 +50,6 @@
             <div class="layui-tab-item">
                 <div>
                     <img th:src="${userDetail.image}" width="100px" height="100px" id="headImg">
-                    <input type="hidden" name="userName" id="name" th:value="${userDetail.name}">
                 </div>
 
                 <!--                <form enctype="multipart/form-data" id="uploadForm" method="post" action="/localUser/uploadImg">-->
@@ -128,14 +127,12 @@
     });
 
     function updateHead() {
-        var attr = $("#name").attr("value");
         var src = $("#headImg").attr("src");
         $.ajax({
             type: 'put',
             dataType: 'json',
             url: "http://localhost:8080/localUser/doUploadHead",
             data: {
-                name: attr,
                 url: src
             },
             cache: false,

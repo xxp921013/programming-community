@@ -2,12 +2,8 @@ package com.xu.majiangcommunity.dto;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.xu.majiangcommunity.domain.Article;
-import com.xu.majiangcommunity.domain.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.xu.majiangcommunity.domain.SecurityUser;
 import lombok.ToString;
-import sun.java2d.pipe.AAShapePipe;
 
 @ToString
 public class ArticleDTO {
@@ -91,11 +87,11 @@ public class ArticleDTO {
         this.tags = tags;
     }
 
-    public User getUser() {
+    public SecurityUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(SecurityUser user) {
         this.user = user;
     }
 
@@ -109,7 +105,7 @@ public class ArticleDTO {
     private Integer viewCount;
     private Integer likeCount;
     private String tags;
-    private User user;
+    private SecurityUser user;
 
     public ArticleDTO() {
     }

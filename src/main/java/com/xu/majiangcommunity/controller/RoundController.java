@@ -1,7 +1,11 @@
 package com.xu.majiangcommunity.controller;
 
+import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.domain.Rounds;
+import com.xu.majiangcommunity.domain.SecurityUser;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
+import com.xu.majiangcommunity.enums.ExcetionEnmu;
+import com.xu.majiangcommunity.interceptor.UserInterceptor;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import com.xu.majiangcommunity.service.impl.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,13 @@ public class RoundController {
 
     @PostMapping("/addRound")
     public String addRound(Rounds rounds) {
+        SecurityUser user = UserInterceptor.getUser();
+        if (user == null) {
+            throw new UserException(ExcetionEnmu.TEST_THROW);
+        }
+        rounds.setImage(user.getImage());
+        rounds.setName(user.getUsername());
+        rounds.setRoundCreator(user.getUsername());
         rounds.setGmtCreate(System.currentTimeMillis());
         rounds.setGmtModified(System.currentTimeMillis());
         roundService.addRound(rounds);

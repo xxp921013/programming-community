@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.xu.majiangcommunity.dao.RoundMapper;
 import com.xu.majiangcommunity.domain.Rounds;
 import com.xu.majiangcommunity.dto.PageResult;
+import com.xu.majiangcommunity.service.SecurityUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +21,12 @@ public class RoundService {
     @Autowired
     private RoundMapper roundMapper;
 
+
     @Autowired
-    private UserService userService;
+    private SecurityUserService securityUserService;
 
     public void addRound(Rounds round) {
-        userService.plusNewRound(round.getArticleId());
+        securityUserService.plusNewRound(round.getArticleId());
         roundMapper.addRound(round);
     }
 

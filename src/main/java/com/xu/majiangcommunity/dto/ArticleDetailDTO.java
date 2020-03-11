@@ -1,7 +1,7 @@
 package com.xu.majiangcommunity.dto;
 
 import com.xu.majiangcommunity.domain.Rounds;
-import com.xu.majiangcommunity.domain.User;
+import com.xu.majiangcommunity.domain.SecurityUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +22,6 @@ public class ArticleDetailDTO {
     private Integer viewCount;
     private Integer likeCount;
     private String tags;
-    private User user;
+    private SecurityUser user;
     private List<Rounds> rounds;
 }

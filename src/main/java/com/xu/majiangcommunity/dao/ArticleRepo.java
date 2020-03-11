@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-public interface ArticleRepo extends ElasticsearchRepository<ArticleEs, Integer> {
+public interface ArticleRepo extends ElasticsearchRepository<ArticleEs, Integer>{
     Page<ArticleEs> findAllByDescriptionLikeOrTittleLike(String keyWord, String keyWord2, Pageable pageable);
+
 }

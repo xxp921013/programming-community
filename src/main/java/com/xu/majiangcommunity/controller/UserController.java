@@ -4,42 +4,37 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xu.majiangcommunity.GlobalException;
+import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.config.MinioConfig;
 import com.xu.majiangcommunity.config.MjConfig;
-import com.xu.majiangcommunity.domain.User;
-import com.xu.majiangcommunity.domain.UserExample;
+import com.xu.majiangcommunity.domain.SecurityUser;
+import com.xu.majiangcommunity.domain.SecurityUserExample;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
 import com.xu.majiangcommunity.dto.FileResponseBody;
 import com.xu.majiangcommunity.dto.UserDTO;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
+import com.xu.majiangcommunity.interceptor.UserInterceptor;
+import com.xu.majiangcommunity.service.SecurityUserService;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import com.xu.majiangcommunity.service.impl.RoundService;
-import com.xu.majiangcommunity.service.impl.UserService;
-
 import io.minio.MinioClient;
 import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.UUID;
 
 @RequestMapping("/localUser")
 @Controller
@@ -47,8 +42,7 @@ import java.util.UUID;
 @EnableConfigurationProperties({MjConfig.class, MinioConfig.class})
 @Slf4j
 public class UserController {
-    @Autowired
-    UserService userService;
+
     @Autowired
     RoundService roundService;
     @Autowired
@@ -57,27 +51,29 @@ public class UserController {
     MjConfig mjConfig;
     @Autowired
     MinioConfig minioConfig;
+    @Autowired
+    BCryptPasswordEncoder encoder;
+    @Autowired
+    private SecurityUserService securityUserService;
 
     @PostMapping("/registry")
-    public String registryLocalUser(User user, HttpServletRequest req, HttpServletResponse resp, Model model) {
-        if (StrUtil.isBlank(user.getAccountId()) || StrUtil.isBlank(user.getName())) {
+    public String registryLocalUser(SecurityUser user, HttpServletRequest req, HttpServletResponse resp, Model model) {
+        if (StrUtil.isBlank(user.getPassword()) || StrUtil.isBlank(user.getUsername())) {
             log.error("[空的用户名或密码],ip:{}", req.getRemoteAddr());
             throw new GlobalException(ExcetionEnmu.USERNAME_PASSWORD_EMPTY);
         }
-        String password = user.getAccountId();
-        String username = user.getName();
-        password = new Md5Hash(password, username, 3).toString();
-        user.setAccountId(password);
-        UserExample userExample = new UserExample();
-        userExample.or().andNameEqualTo(username);
-        List<User> users = userService.selectByExample(userExample);
+        String password = user.getPassword();
+        String username = user.getUsername();
+        password = encoder.encode(password);
+        user.setPassword(password);
+        SecurityUserExample example = new SecurityUserExample();
+        example.or().andUsernameEqualTo(username);
+        List<SecurityUser> users = securityUserService.selectByExample(example);
         if (users != null && users.size() != 0) {
             model.addAttribute("msg", "用户名重复请重新输入");
             return "registry";
         }
-        String token = String.valueOf(UUID.randomUUID());
-        user.setToken(token);
-        int i = userService.insertSelective(user);
+        int i = securityUserService.insertSelective(user);
         if (i != 1) {
             model.addAttribute("msg", "注册失败,请重新注册");
             return "registry";
@@ -90,38 +86,28 @@ public class UserController {
         return "registry";
     }
 
-    @GetMapping("/do_login")
-    public String do_login() {
+
+    @GetMapping("/login")
+    public String login() {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login(User user, HttpSession session) {
-        String username = user.getName();
-        String password = user.getAccountId();
-        password = new Md5Hash(password, username, 3).toString();
-        UsernamePasswordToken upToken = new UsernamePasswordToken(username, password);
-        //1.获取subject
-        Subject subject = SecurityUtils.getSubject();
-
-        //获取session
-        String sid = (String) subject.getSession().getId();
-
-        //2.调用subject进行登录
-        subject.login(upToken);
-
+    @GetMapping("/loginSuccess")
+    public String loginSuccess() {
         return "loginSuccess";
     }
 
     @GetMapping("/userDetail")
-    public String userDetail(Integer id, Model model) {
-        User byId = userService.getById(id);
-        String accountId = byId.getAccountId();
+    public String userDetail(Model model) {
+        SecurityUser user = UserInterceptor.getUser();
+        if (user == null) {
+            throw new UserException(ExcetionEnmu.TEST_THROW);
+        }
         UserDTO userDTO = new UserDTO();
-        BeanUtil.copyProperties(byId, userDTO);
-        int s = roundService.countMyRound(accountId);
+        BeanUtil.copyProperties(user, userDTO);
+        int s = roundService.countMyRound(user.getUsername());
         userDTO.setRoundCount(s);
-        int y = articleService.countMyArticle(accountId);
+        int y = articleService.countMyArticle(user.getUsername());
         userDTO.setArticleCount(y);
         model.addAttribute("userDetail", userDTO);
         return "userDetail";
@@ -193,22 +179,26 @@ public class UserController {
         return false;
     }
 
-    @PutMapping("doUploadHead")
+    @PutMapping("/doUploadHead")
     @ResponseBody
-    public BaseResponseBody doUploadHead(@RequestParam("name") String name, @RequestParam("url") String url) {
-        int i = userService.updateHeadByName(name, url);
+    public BaseResponseBody doUploadHead(@RequestParam("url") String url) {
+        SecurityUser user = UserInterceptor.getUser();
+        if (user == null) {
+            throw new UserException(ExcetionEnmu.TEST_THROW);
+        }
+        int i = securityUserService.updateHeadByName(user.getUsername(), url);
         if (i != 1) {
-            new BaseResponseBody<>(500, "修改失败");
+            return new BaseResponseBody<>(500, "修改失败");
         }
         return new BaseResponseBody(200, "修改成功");
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletResponse resp, HttpServletRequest req) {
-        req.getSession().removeAttribute("user");
-        Cookie token = new Cookie("token", "");
-        token.setPath("/");
-        resp.addCookie(token);
-        return "redirect:/";
-    }
+//    @GetMapping("/logout")
+//    public String logout(HttpServletResponse resp, HttpServletRequest req) {
+//        req.getSession().removeAttribute("user");
+//        Cookie token = new Cookie("token", "");
+//        token.setPath("/");
+//        resp.addCookie(token);
+//        return "redirect:/";
+//    }
 }

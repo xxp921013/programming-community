@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    private String name;
+    private String username;
     private String image;
     private Integer roundCount;
     private Integer ArticleCount;

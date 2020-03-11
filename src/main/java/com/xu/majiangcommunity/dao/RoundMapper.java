@@ -24,4 +24,5 @@ public interface RoundMapper {
 
     @Select("SELECT count(*) FROM rounds r inner JOIN (SELECT id  FROM article a WHERE creator = #{id} ) a ON r.`article_id` = a.id")
     int countMyRound(String id);
+
 }

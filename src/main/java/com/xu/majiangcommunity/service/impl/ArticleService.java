@@ -43,8 +43,6 @@ public class ArticleService implements ArticleServiceIf {
     private ArticleMapper articleMapper;
 
     @Autowired
-    private UserService userService;
-    @Autowired
     private RedisTemplate<String, Serializable> redisCacheTemplate;
     @Autowired
     private ArticleRepo articleRepo;
@@ -319,6 +317,12 @@ public class ArticleService implements ArticleServiceIf {
     public ArticleDTO findOneById(Integer id) {
         ArticleDTO oneById = articleMapper.findOneById(id);
         return oneById;
+    }
+
+    @Override
+    public Integer getViewCount(Integer id) {
+
+        return articleMapper.findViewCountById(id);
     }
 }
 

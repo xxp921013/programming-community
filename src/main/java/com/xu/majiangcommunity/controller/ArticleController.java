@@ -42,6 +42,14 @@ public class ArticleController {
         if (articleDetailDTO != null) {
             articleService.viewArticle(id);
         }
+        Integer idi = Integer.valueOf(id);
+        Integer view = articleService.getViewCount(idi);
+        ArticleEs articleEs = new ArticleEs();
+        BeanUtil.copyProperties(articleDetailDTO, articleEs);
+        articleEs.setId(idi);
+        articleEs.setViewCount(view);
+        articleEs.setUserImg(articleDetailDTO.getUser().getImage());
+        articleRepo.save(articleEs);
         model.addAttribute("articleDetail", articleDetailDTO);
         return "articleDetail";
     }

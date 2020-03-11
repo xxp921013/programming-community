@@ -1,5 +1,6 @@
 package com.xu.majiangcommunity;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -91,5 +92,7 @@ public class MajiangCommunityApplicationTests {
 
     @Test
     public void demo6() {
+        DateTime dateTime = DateUtil.offsetSecond(new Date(), 7);
+        System.out.println(dateTime);
     }
 }

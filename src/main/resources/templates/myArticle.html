@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>我的文章</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -61,9 +62,9 @@
                     <span class="badge" th:text="${myArticle.total}"></span>
                     我的文章
                 </a>
-                <a th:href="@{/myRound(id=${session.user.accountId})}" class="list-group-item"
+                <a th:href="@{/myRound}" class="list-group-item"
                    th:class="${selection == 'newRound'? 'list-group-item active':'list-group-item'}">
-                    <span class="badge" th:text="${session.user.newRound}"></span>
+                    <span class="badge" sec:authentication="principal.newRound"></span>
                     最新回复</a>
             </div>
         </div>
