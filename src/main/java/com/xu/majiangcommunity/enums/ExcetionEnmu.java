@@ -17,7 +17,6 @@ public enum ExcetionEnmu {
     FILE_TYPE_ERROR(500, "文件类型错误"),
     USER_NO_LOGIN(10001, "用户未登录"),
     FILE_SERVER_ERROR(500, "文件服务错误");
-
     private int code;
     private String message;
 }
