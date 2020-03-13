@@ -13,6 +13,7 @@
     <script src="/js/lib/prettify.min.js"></script>
     <link rel="stylesheet" href="/css/editormd.preview.min.css">
     <link rel="stylesheet" href="/css/majiang.css">
+    <link rel="stylesheet" href="/css/bs.css">
     <!--    <script src="/js/layui.js"></script>-->
     <!--    <link rel="stylesheet" href="/css/layui.css">-->
     <script th:inline="javascript">
@@ -52,7 +53,7 @@
                         for (var i = 0; i < articles.length; i++) {
                             var article = articles[i];
                             var path = "/articleDetail?id=" + article.id;
-                            var li = '<li class="list-group-item" ><a href="' + path + '"><h5>' + article.tittle + '</h5></a></li>';
+                            var li = '<li class="list-group-item" ><a href="' + path + '"><h4>' + article.tittle + '</h4></a></li>';
                             lis += li;
                         }
                         $("#hotArticle").html(lis);
@@ -136,7 +137,7 @@
                 </div>
             </div>
             <div>
-                <h3>评论:</h3>
+                <h4 style="color: black">评论:</h4>
                 <hr>
                 <div th:if="${articleDetail.rounds !=null}">
                     <div class="media" th:each="round :${articleDetail.rounds}">
@@ -154,8 +155,8 @@
                         </div>
                         <br>
                         <div class="media-body">
-                            <h4 class="media-heading"
-                                th:text="${round.roundText}"></h4>
+                            <h5 style="color: black;font-weight: bold" class="media-heading"
+                                th:text="${round.roundText}"></h5>
                         </div>
                         <hr>
                     </div>
@@ -177,7 +178,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
-            <h3 style="margin-left: 50px;margin-top: 50px;margin-bottom: 30px">热门文章</h3>
+            <h2 style="margin-left: 50px;margin-top: 50px;margin-bottom: 30px">热门文章</h2>
             <ul id="hotArticle"></ul>
         </div>
     </div>
