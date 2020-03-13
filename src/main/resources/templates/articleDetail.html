@@ -13,6 +13,8 @@
     <script src="/js/lib/prettify.min.js"></script>
     <link rel="stylesheet" href="/css/editormd.preview.min.css">
     <link rel="stylesheet" href="/css/majiang.css">
+    <!--    <script src="/js/layui.js"></script>-->
+    <!--    <link rel="stylesheet" href="/css/layui.css">-->
     <script th:inline="javascript">
         function thumpUp(id) {
             $.ajax({
@@ -59,6 +61,39 @@
             });
         })
 
+        function addCollection() {
+            var id = [[${articleDetail.id}]];
+            $.ajax({
+                type: 'put',
+                dataType: 'json',
+                url: "http://localhost:8080/localUser/addCollection",
+                data: {articleId: id},
+                cache: false,
+                async: true,
+                success: function (data) {
+                    if (data != null && data.code == 200) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+
+        function removeCollection() {
+            var id = [[${articleDetail.id}]];
+            $.ajax({
+                type: 'delete',
+                dataType: 'json',
+                url: "http://localhost:8080/localUser/removeCollection",
+                data: {articleId: id},
+                cache: false,
+                async: true,
+                success: function (data) {
+                    if (data != null && data.code == 200) {
+                        location.reload();
+                    }
+                }
+            });
+        }
     </script>
     <script type="text/javascript">
         $(function () {
@@ -91,6 +126,14 @@
                 <span th:each="tag : ${ articleDetail.tags.split(',')}">
                     <span class="label label-info glyphicon glyphicon-tag" th:text="${tag}"></span>&nbsp&nbsp
                 </span>
+                <br>
+                <br>
+                <div style="float: right" th:if="${collectionType=='1'}">
+                    <button type="button" class="btn btn-primary" onclick="addCollection()">收藏</button>
+                </div>
+                <div style="float: right" th:if="${collectionType=='2'}">
+                    <button type="button" class="btn btn-default" onclick="removeCollection()">取消收藏</button>
+                </div>
             </div>
             <div>
                 <h3>评论:</h3>
@@ -134,7 +177,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
-            <h3 style="margin-left: 50px">热门文章</h3>
+            <h3 style="margin-left: 50px;margin-top: 50px;margin-bottom: 30px">热门文章</h3>
             <ul id="hotArticle"></ul>
         </div>
     </div>

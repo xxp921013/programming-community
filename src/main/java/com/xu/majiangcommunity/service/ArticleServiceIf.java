@@ -5,6 +5,7 @@ import com.xu.majiangcommunity.domain.ArticleEs;
 import com.xu.majiangcommunity.domain.ArticleExample;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
+import com.xu.majiangcommunity.dto.BaseResponseBody;
 import com.xu.majiangcommunity.dto.PageResult;
 
 import java.io.Serializable;
@@ -66,4 +67,6 @@ public interface ArticleServiceIf {
     ArticleDTO findOneById(Integer id);
 
     Integer getViewCount(Integer id);
+
+    PageResult<List<ArticleEs>> findByIds(List<Integer> ids, Integer page);
 }

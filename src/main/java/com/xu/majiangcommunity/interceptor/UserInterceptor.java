@@ -1,6 +1,8 @@
 package com.xu.majiangcommunity.interceptor;
 
+import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.domain.SecurityUser;
+import com.xu.majiangcommunity.enums.ExcetionEnmu;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -46,6 +48,10 @@ public class UserInterceptor implements HandlerInterceptor {
     }
 
     public static SecurityUser getUser() {
-        return tl.get();
+        SecurityUser user = tl.get();
+//        if (user == null) {
+//            throw new UserException(ExcetionEnmu.TEST_THROW);
+//        }
+        return user;
     }
 }

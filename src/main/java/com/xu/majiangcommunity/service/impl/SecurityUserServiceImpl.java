@@ -2,6 +2,9 @@ package com.xu.majiangcommunity.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

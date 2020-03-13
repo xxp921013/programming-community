@@ -14,11 +14,11 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableCaching
 @EnableRedisHttpSession
 @EnableGlobalMethodSecurity(prePostEnabled = true)//开启注解权限控制
-public class MajiangCommunityApplication {
+public class ProgrammingCommunityApplication {
 
     public static void main(String[] args) {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
-        SpringApplication.run(MajiangCommunityApplication.class, args);
+        SpringApplication.run(ProgrammingCommunityApplication.class, args);
     }
 
     @Bean

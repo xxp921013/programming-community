@@ -367,4 +367,7 @@
         from article
         where id=#{id,jdbcType=INTEGER}
     </select>
+
+
+
 </mapper>

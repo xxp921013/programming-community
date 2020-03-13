@@ -5,19 +5,20 @@ import com.xu.majiangcommunity.dao.ArticleMapper;
 import com.xu.majiangcommunity.dao.ArticleRepo;
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.ArticleEs;
+import com.xu.majiangcommunity.domain.SecurityUser;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
+import com.xu.majiangcommunity.interceptor.UserInterceptor;
+import com.xu.majiangcommunity.service.ArticleCollectionService;
 import com.xu.majiangcommunity.service.impl.ArticleService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class ArticleController {
     private ArticleMapper articleMapper;
     @Autowired
     private ArticleRepo articleRepo;
+    @Autowired
+    private ArticleCollectionService articleCollectionService;
 
     @GetMapping("/articleDetail")
     public String getArticleDetail(@RequestParam("id") String id, Model model) {
@@ -51,6 +54,19 @@ public class ArticleController {
         articleEs.setUserImg(articleDetailDTO.getUser().getImage());
         articleRepo.save(articleEs);
         model.addAttribute("articleDetail", articleDetailDTO);
+        SecurityUser user = UserInterceptor.getUser();
+        if (user != null) {
+            List<Integer> articleIds = articleCollectionService.getUserCollectionArticleIds(user.getUsername());
+            System.out.println(articleIds);
+            if (articleIds.contains(Integer.valueOf(id))) {
+                model.addAttribute("collectionType", "2");
+            } else {
+                model.addAttribute("collectionType", "1");
+            }
+        } else {
+            model.addAttribute("collectionType", "1");
+        }
+
         return "articleDetail";
     }
 
@@ -125,4 +141,6 @@ public class ArticleController {
         articleRepo.saveAll(articleEss);
         return "成功";
     }
+
+
 }

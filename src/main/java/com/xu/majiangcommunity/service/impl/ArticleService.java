@@ -324,5 +324,18 @@ public class ArticleService implements ArticleServiceIf {
 
         return articleMapper.findViewCountById(id);
     }
+
+    @Override
+    public PageResult<List<ArticleEs>> findByIds(List<Integer> ids, Integer page) {
+        Pageable of = PageRequest.of(page - 1, 5);
+        Page<ArticleEs> byIdIn = articleRepo.findByIdIn(ids, of);
+        PageResult<List<ArticleEs>> listPageResult = new PageResult<>();
+        listPageResult.setTotal(byIdIn.getTotalPages());
+        listPageResult.setData(byIdIn.getContent());
+        listPageResult.setPageNum(page);
+        listPageResult.setCode(200);
+        listPageResult.setMessage("搜索成功");
+        return listPageResult;
+    }
 }
 

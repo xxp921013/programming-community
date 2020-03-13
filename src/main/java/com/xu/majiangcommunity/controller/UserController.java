@@ -1,20 +1,23 @@
 package com.xu.majiangcommunity.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xu.majiangcommunity.GlobalException;
 import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.config.MinioConfig;
 import com.xu.majiangcommunity.config.MjConfig;
-import com.xu.majiangcommunity.domain.SecurityUser;
-import com.xu.majiangcommunity.domain.SecurityUserExample;
+import com.xu.majiangcommunity.domain.*;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
 import com.xu.majiangcommunity.dto.FileResponseBody;
+import com.xu.majiangcommunity.dto.PageResult;
 import com.xu.majiangcommunity.dto.UserDTO;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
 import com.xu.majiangcommunity.interceptor.UserInterceptor;
+import com.xu.majiangcommunity.service.ArticleCollectionService;
 import com.xu.majiangcommunity.service.SecurityUserService;
+import com.xu.majiangcommunity.service.impl.ArticleCollectionServiceImpl;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import com.xu.majiangcommunity.service.impl.RoundService;
 import io.minio.MinioClient;
@@ -42,7 +45,8 @@ import java.util.List;
 @EnableConfigurationProperties({MjConfig.class, MinioConfig.class})
 @Slf4j
 public class UserController {
-
+    @Autowired
+    private ArticleCollectionServiceImpl articleCollectionService;
     @Autowired
     RoundService roundService;
     @Autowired
@@ -100,9 +104,7 @@ public class UserController {
     @GetMapping("/userDetail")
     public String userDetail(Model model) {
         SecurityUser user = UserInterceptor.getUser();
-        if (user == null) {
-            throw new UserException(ExcetionEnmu.TEST_THROW);
-        }
+
         UserDTO userDTO = new UserDTO();
         BeanUtil.copyProperties(user, userDTO);
         int s = roundService.countMyRound(user.getUsername());
@@ -110,6 +112,7 @@ public class UserController {
         int y = articleService.countMyArticle(user.getUsername());
         userDTO.setArticleCount(y);
         model.addAttribute("userDetail", userDTO);
+
         return "userDetail";
     }
 
@@ -183,9 +186,7 @@ public class UserController {
     @ResponseBody
     public BaseResponseBody doUploadHead(@RequestParam("url") String url) {
         SecurityUser user = UserInterceptor.getUser();
-        if (user == null) {
-            throw new UserException(ExcetionEnmu.TEST_THROW);
-        }
+
         int i = securityUserService.updateHeadByName(user.getUsername(), url);
         if (i != 1) {
             return new BaseResponseBody<>(500, "修改失败");
@@ -201,4 +202,51 @@ public class UserController {
 //        resp.addCookie(token);
 //        return "redirect:/";
 //    }
+
+    @GetMapping("/myCollection")
+    public String getMyCollection(Model model, @RequestParam(name = "page", required = false, defaultValue = "1") Integer page) {
+        SecurityUser user = UserInterceptor.getUser();
+
+        List<Integer> articleIds = articleCollectionService.getUserCollectionArticleIds(user.getUsername());
+        PageResult<List<ArticleEs>> byIds = null;
+        if (CollectionUtil.isNotEmpty(articleIds)) {
+            byIds = articleService.findByIds(articleIds, page);
+        } else {
+            byIds = new PageResult<List<ArticleEs>>();
+            byIds.setMessage("该用户无收藏");
+            byIds.setCode(200);
+            byIds.setPageNum(1);
+            byIds.setTotal(0);
+        }
+        model.addAttribute("articles", byIds);
+        return "myCollection";
+    }
+
+    @PutMapping("/addCollection")
+    @ResponseBody
+    public BaseResponseBody addCollection(@RequestParam("articleId") Integer articleId) {
+        SecurityUser user = UserInterceptor.getUser();
+        ArticleCollection articleCollection = new ArticleCollection();
+        articleCollection.setArticleId(articleId);
+        articleCollection.setUsername(user.getUsername());
+        int i = articleCollectionService.insertSelective(articleCollection);
+        BaseResponseBody responseBody = null;
+        if (i != 1) {
+            responseBody = new BaseResponseBody(500, "添加失败");
+
+        } else {
+            responseBody = new BaseResponseBody(200, "添加成功");
+        }
+        return responseBody;
+    }
+
+    @DeleteMapping("/removeCollection")
+    @ResponseBody
+    public BaseResponseBody removeCollection(@RequestParam("articleId") Integer articleId) {
+        SecurityUser user = UserInterceptor.getUser();
+        ArticleCollectionExample articleCollectionExample = new ArticleCollectionExample();
+        articleCollectionExample.or().andArticleIdEqualTo(articleId).andUsernameEqualTo(user.getUsername());
+        articleCollectionService.deleteByExample(articleCollectionExample, user.getUsername());
+        return new BaseResponseBody(200, "删除成功");
+    }
 }

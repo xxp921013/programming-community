@@ -23,6 +23,10 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/myRound/**")
                 .addPathPatterns("/addRound/**")
                 .addPathPatterns("/localUser/doUploadHead/**")
+                .addPathPatterns("/localUser/myCollection/**")
+                .addPathPatterns("/localUser/addCollection/**")
+                .addPathPatterns("/localUser/removeCollection/**")
+                .addPathPatterns("/articleDetail/**")
         ;
     }
 }
