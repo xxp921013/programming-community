@@ -33,13 +33,14 @@
         <ul class="layui-tab-title">
             <li class="layui-this">个人资料</li>
             <li>修改头像</li>
-            <!--            <li>权限分配</li>-->
+            <li>联系方式</li>
             <!--            <li>商品管理</li>-->
             <!--            <li>订单管理</li>-->
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <span>用户名: <span th:text="${userDetail.username}" style="font-weight: bold;font-size: large"></span> </span><br>
+                <span>用户名: <span th:text="${userDetail.username}"
+                                 style="font-weight: bold;font-size: large"></span> </span><br>
                 <hr>
                 <span>我发布的文章数: <span th:text="${userDetail.articleCount}"
                                      style="font-weight: bold;font-size: large"></span> </span><br>
@@ -70,7 +71,14 @@
                            onclick="updateHead()">
                 </div>
             </div>
-            <!--            <div class="layui-tab-item">内容3</div>-->
+            <div class="layui-tab-item">
+                <span>邮箱: <span th:text="${userDetail.mail}"
+                                style="font-weight: bold;font-size: large"></span> </span><br>
+                <hr>
+                <span>手机号: <span th:text="${userDetail.phone==0? '未设置': userDetail.phone}"
+                                 style="font-weight: bold;font-size: large"></span> </span><br>
+                <hr>
+            </div>
             <!--            <div class="layui-tab-item">内容4</div>-->
             <!--            <div class="layui-tab-item">内容5</div>-->
         </div>

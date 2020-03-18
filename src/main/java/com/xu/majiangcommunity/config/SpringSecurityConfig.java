@@ -54,6 +54,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/articleDetail/**").permitAll()
                 .antMatchers("/hotTags/**").permitAll()
                 .antMatchers("/recentHot/**").permitAll()
+                .antMatchers("/mail/sendRegistryMail/**").permitAll()
                 .anyRequest()                    // 其他任意请求
                 .authenticated()
                 .and()

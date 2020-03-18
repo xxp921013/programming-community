@@ -7,24 +7,212 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
-    <script src="/js/editormd.min.js" type="application/javascript"></script>
-    <link rel="stylesheet" href="/css/editormd.css">
-    <link rel="stylesheet" href="/css/majiang.css">
-    <script>
-        function addTags(value) {
-            var val = $("#tags").val();
-            var s = $(value).text();
-            if (val.indexOf(s) != -1) {
-                return;
-            }
-            if (val) {
-                $("#tags").val(val + "," + s)
-            } else {
-                $("#tags").val(s);
-            }
+    <style type="text/css">
+        * {
+            font-family: "微软雅黑", "黑体", "宋体";
+            color: #333;
         }
-    </script>
 
+        a {
+            color: #069;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ddd;
+        }
+
+        .form-bak {
+            width: 800px;
+            height: 500px;
+            margin: 40px auto;
+            background: #eee;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #999;
+        }
+
+        .left {
+            float: left;
+            width: 500px;
+            height: 400px;
+        }
+
+        .line {
+            width: 100%;
+            height: 80px;
+            margin: 16px 0 0 0;
+        }
+
+        .info {
+            float: left;
+            height: 100%;
+            width: 200px;
+        }
+
+        .info strong, .info span {
+            display: block;
+            text-align: right;
+        }
+
+        .info strong {
+            font-size: 24px;
+            line-height: 36px;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .info span {
+            font-size: 12px;
+            line-height: 24px;
+            color: #666;
+            font-family: "微软雅黑", "宋体";
+        }
+
+        .input input {
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            line-height: 40px;
+            height: 40px;
+            width: 240px;
+            padding: 9px 0 9px 9px;
+            border-radius: 10px;
+        }
+
+        .input {
+            float: right;
+            width: 278px;
+            height: 58px;
+            background: #f6f6f6;
+            border: 1px solid #999;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px #999;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .error, .corect {
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            top: 19px;
+            right: 9px;
+            background: url("js/ICON_20.svg") no-repeat 0 -20px;
+        }
+
+        .error span {
+            display: block;
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            background: #fcc;
+            border: 1px solid #f33;
+            font-size: 12px;
+            line-height: 16px;
+            color: #600;
+            padding: 6px 10px 4px 10px;
+            border-radius: 5px;
+            opacity: .8;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .corect {
+            background-position: 0 0;
+        }
+
+        .corect span {
+            display: none;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .right {
+            float: right;
+            width: 260px;
+            height: 360px;
+            margin: 20px 0 0 0;
+            border-left: 1px solid #ccc;
+        }
+
+        input[type=submit] {
+            background: none;
+            border: none;
+            outline: none;
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+            font-size: 40px;
+            height: 200px;
+            width: 200px;
+            background: #369;
+            margin: 20px 30px 0 30px;
+            color: #eee;
+        }
+
+        input[type=submit]:disabled {
+            background: #999;
+            cursor: no-drop;
+        }
+
+        .right div {
+            margin: 0 30px;
+            width: 200px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+        }
+
+        .readagreement-wrap {
+            margin: 20px 30px !important;
+            outline: 1px solid #f99;
+        }
+
+        #top h1 {
+            font-size: 30px;
+            line-height: 40px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .agreement, #top {
+            width: 800px;
+            margin: 20px auto;
+            background: #eee;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #999;
+            text-align: center;
+        }
+
+        .agreement h1 {
+            display: block;
+            font-size: 24px;
+            line-height: 30px;
+            padding: 20px 20px 10px 20px;
+            margin: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .agreement iframe {
+            width: 760px;
+            min-height: 400px;
+            margin: 0 20px 20px 20px;
+            border: none;
+            outline: none;
+        }
+
+        .agreement .backtotop {
+            display: block;
+            line-height: 20px;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
 
 </head>
 <body class="main">
@@ -32,34 +220,92 @@
     <div th:insert="head :: copy"></div>
 </nav>
 
-<div class="container-fluid" style="margin: 40px;background-color: white">
+<div class="container-fluid" style="margin: 40px">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
             <h3><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>注册</h3>
             <hr/>
-            <form method="post" id="loginForm" action="/localUser/registry">
-                <div class="form-group">
-                    <label for="username">用户名 :</label>
-                    <input type="text" maxlength="15" minlength="6" required="true" class="form-control" name="username"
-                           id="username"
-                           placeholder="用户名 6-15位...">
-                </div>
-                <div class="form-group">
-                    <label for="password">密码 :</label>
-                    <input type="password" maxlength="15" minlength="6" required="true" class="form-control"
-                           name="password"
-                           id="password"
-                           placeholder="密码 6-15位...">
-                </div>
-                <button type="submit" class="btn btn-success"
-                        style="float: right;margin-bottom: 15px">注册
-                </button>
-            </form>
-            <br>
-            <br>
-            <div th:if="${msg != null}">
+            <div th:if="${msg != null}" style="margin-left:190px;width: 200px">
                 <div class="alert alert-danger" role="alert" th:text="${msg}"></div>
             </div>
+            <div class="form-bak">
+                <form method="post" action="/localUser/registry" onsubmit="adaptValue();">
+                    <div class="left">
+                        <div class="line" id="line_account">
+                            <div class="info">
+                                <strong>邮箱</strong>
+                                <span class="tips"></span>
+                            </div>
+                            <div class="input">
+                                <input type="text" name="mail" id="account" onblur="v_account();"
+                                       onkeyup="v_account();"/>
+                                <div class="none"><span></span></div>
+                            </div>
+                            <div style="float: right">
+                                <button type="button" class="btn btn-primary" id="code-button" onclick="sendCode();">
+                                    发送验证码
+                                </button>
+                            </div>
+                            <br>
+                        </div>
+
+                        <div class="line" id="line_code">
+                            <div class="info">
+                                <strong>验证码</strong>
+                                <span class="tips">邮箱收到的验证码<br/></span>
+                            </div>
+                            <div class="input">
+                                <input type="text" name="code" id="code" onblur="v_code();" onkeyup="v_code();"/>
+                                <div class="none"><span></span></div>
+                            </div>
+                        </div>
+                        <div class="line" id="line_name">
+                            <div class="info">
+                                <strong>用户名</strong>
+                                <span class="tips">只能由数字、文字或下划线组成<br/>最多32个字符</span>
+                            </div>
+                            <div class="input">
+                                <input type="text" name="username" id="name" onblur="v_name();" onkeyup="v_name();"/>
+                                <div class="none"><span></span></div>
+                            </div>
+                        </div>
+
+                        <div class="line" id="line_password">
+                            <div class="info">
+                                <strong>密码</strong>
+                                <span class="tips">6至16个字符</span>
+                            </div>
+                            <div class="input">
+                                <input type="password" name="password" id="password" onblur="v_password();"
+                                       onkeyup="v_password();"/>
+                                <div class="none"><span></span></div>
+                            </div>
+                        </div>
+
+                        <div class="line" id="line_repeat">
+                            <div class="info">
+                                <strong>确认密码</strong>
+                                <span class="tips">再次输入密码</span>
+                            </div>
+                            <div class="input">
+                                <input type="password" id="repeat" onblur="v_repeat();"
+                                       onkeyup="v_repeat();"/>
+                                <div class="none"><span></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <input type="submit" id="submit" value="完成注册" disabled="disabled"/>
+                        <div class="readagreement-wrap">
+                            <input type="checkbox" id="agree" onchange="v_submitbutton();"/>
+                            同意《<a id="readagreement" href="#" title="查看用户使用协议">用户使用协议</a>》
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br>
+            <br>
         </div>
 
     </div>
@@ -67,7 +313,182 @@
 <nav class="navbar navbar-default">
     <div th:insert="footer :: copy"></div>
 </nav>
+
 </body>
+<script type="text/javascript">
+    function enableSubmit(bool) {
+        if (bool) $("#submit").removeAttr("disabled");
+        else $("#submit").attr("disabled", "disabled");
+    }
+
+    function v_submitbutton() {
+        if ($("#agree").prop("checked") != true) {
+            enableSubmit(false);
+            $(".readagreement-wrap").css("outline", "1px solid #f99");
+            return;
+        } else {
+            $(".readagreement-wrap").css("outline", "1px solid #9f9");
+        }
+        for (f in flags) if (!flags[f]) {
+            enableSubmit(false);
+            return;
+        }
+        enableSubmit(true);
+    }
+
+
+    var flags = [false, false, false, false, false];
+
+    //邮箱验证，网上找到的正则
+    var RegEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+
+    function lineState(name, state, msg) {
+        if (state == "none") {
+            $("#line_" + name + " .input div").attr("class", "none");
+            return;
+        }
+        if (state == "corect") {
+            $("#line_" + name + " .input div").attr("class", "corect");
+            return;
+        }
+        $("#line_" + name + " .input span").text(msg);
+        $("#line_" + name + " .input div").attr("class", "error");
+    }
+
+    function v_account() {
+        var account = $("#account").val();
+        if (!RegEmail.test(account)) {
+            lineState("account", "error", "邮箱格式不正确");
+            flags[0] = false;
+            enableSubmit(false);
+        } else {
+            lineState("account", "corect", "");
+            flags[0] = true;
+        }
+        v_submitbutton();
+    }
+
+    function v_code() {
+        var code = $("#code").val();
+        if (code.length == 6) {
+            lineState("code", "corect", "");
+            flags[4] = true;
+        }
+        v_submitbutton();
+    }
+
+    function v_name() {
+        var name = $("#name").val();
+        if (name.length == 0) {
+            lineState("name", "error", "不得为空");
+            flags[1] = false;
+        } else {
+            if (name.length > 32) {
+                lineState("name", "error", "必须少于32个字符");
+                flags[1] = false;
+            } else {
+                lineState("name", "corect", "");
+                flags[1] = true;
+            }
+        }
+        v_submitbutton();
+    }
+
+    function v_password() {
+        var password = $("#password").val();
+        if (password.length < 6) {
+            lineState("password", "error", "必须多于或等于6个字符");
+            flags[2] = false;
+        } else {
+            if (password.length > 16) {
+                lineState("password", "error", "必须少于或等于16个字符");
+                flags[2] = false;
+            } else {
+                lineState("password", "corect", "");
+                flags[2] = true;
+            }
+        }
+        v_repeat();
+        v_submitbutton();
+    }
+
+    function v_repeat() {
+        if (!flags[2]) {
+            lineState("repeat", "none", "");
+            return;
+        }
+        if ($("#password").val() != $("#repeat").val()) {
+            lineState("repeat", "error", "密码不一致");
+            flags[3] = false;
+        } else {
+            lineState("repeat", "corect", "");
+            flags[3] = true;
+        }
+        v_submitbutton();
+    }
+
+    function adaptValue() {
+        return true;
+    }
+</script>
 <script>
+    function sendCode() {
+        var email = $("#account").val();
+        alert(email);
+        if (email == null || email.trim() == "" || email == "请输入邮箱") {
+            return;
+        } else {
+            $.ajax({
+                url: "/mail/sendRegistryMail",
+                async: true,
+                cache: false,
+                type: "get",
+                dataType: "json",
+                data: {
+                    mail: email
+                },
+                // data: JSON.stringify($("#login_form").serializeJson()),
+                success: function (data) {
+                    if (data.code == 200) {
+                        alert("发送成功");
+                        // window.location.href=result.backUrl;
+                        // $('#code-button').attr("data-loading-text", "发送成功");
+                        // $('#code-button').text("发送成功");
+
+                        document.getElementById("code-button").disabled = true;
+                        document.getElementById("code-button").value = 120;
+                        $('#code-button').text("120秒后可再次发送邮件");
+                        //  $('#code-button').attr("data-loading-text", "5");
+                        //$('#code-button').value("5");
+                        window.setTimeout("tick()", 1000);
+
+                    } else {
+                        alert(data.message);
+                        $('#code-button').text("重新发送");
+                    }
+
+                }
+
+            });
+
+        }
+    }
+
+
+    function tick() {
+        var time = new Number(document.getElementById("code-button").value);
+        console.info(time)
+        if (time > 0) {
+            document.getElementById("code-button").value = time - 1;
+            $('#code-button').text(time - 1 + "秒后可再次发送邮件");
+            // document.getElementById("code-button").value = time-1;
+            window.setTimeout("tick()", 1000);
+        } else {
+            document.getElementById("code-button").disabled = false;
+            document.getElementById("code-button").value = "发送邮件";
+            $('#code-button').text("发送邮件");
+        }
+    }
+
 </script>
 </html>

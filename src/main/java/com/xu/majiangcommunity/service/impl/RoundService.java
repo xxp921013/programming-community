@@ -9,6 +9,7 @@ import com.xu.majiangcommunity.dto.PageResult;
 import com.xu.majiangcommunity.service.SecurityUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class RoundService {
     @Autowired
     private SecurityUserService securityUserService;
 
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public void addRound(Rounds round) {
         securityUserService.plusNewRound(round.getArticleId());
         roundMapper.addRound(round);

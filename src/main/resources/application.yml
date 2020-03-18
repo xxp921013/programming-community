@@ -8,8 +8,19 @@ token:
   client_secret: e41f87cef4fd75708c7ddbd2302c5eced3cca96e
   redirect_uri: http://localhost:8080/callback
 spring:
+  mail:
+    host: smtp.qq.com
+    password: gkdrfvzpwykzbgbc
+    default-encoding: utf-8
+    username: 408395920@qq.com
+    port: 465
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
   rabbitmq:
-    host: 192.168.199.137
+    host: 192.168.199.138
     username: root
     password: root
     virtual-host: mj
@@ -26,9 +37,9 @@ spring:
   data:
     elasticsearch:
       cluster-name: xxp-cluster
-      cluster-nodes: 192.168.199.137:9301
+      cluster-nodes: 192.168.199.138:9301
   redis:
-    host: 192.168.199.137
+    host: 192.168.199.138
     jedis:
       pool:
         max-active: 10
@@ -37,7 +48,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.199.137:3306/majiang?characterEncoding=UTF8
+    url: jdbc:mysql://192.168.199.138:3306/majiang?characterEncoding=UTF8
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
@@ -58,7 +69,7 @@ mj:
       - image/png
       - image/bmp
 minio:
-  endpoint: http://192.168.199.137:9090 #MinIO服务所在地址
+  endpoint: http://192.168.199.138:9090 #MinIO服务所在地址
   bucketName: image #存储桶名称
   accessKey: minioadmin #访问的key
   secretKey: minioadmin #访问的秘钥

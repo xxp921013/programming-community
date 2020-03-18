@@ -12,5 +12,6 @@ public class UserDTO {
     private String image;
     private Integer roundCount;
     private Integer ArticleCount;
-
+    private String mail;
+    private Integer phone;
 }

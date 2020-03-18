@@ -15,8 +15,9 @@ import com.xu.majiangcommunity.dto.PageResult;
 import com.xu.majiangcommunity.dto.UserDTO;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
 import com.xu.majiangcommunity.interceptor.UserInterceptor;
-import com.xu.majiangcommunity.service.ArticleCollectionService;
+import com.xu.majiangcommunity.service.MailService;
 import com.xu.majiangcommunity.service.SecurityUserService;
+import com.xu.majiangcommunity.service.UserContactInformationService;
 import com.xu.majiangcommunity.service.impl.ArticleCollectionServiceImpl;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import com.xu.majiangcommunity.service.impl.RoundService;
@@ -59,12 +60,21 @@ public class UserController {
     BCryptPasswordEncoder encoder;
     @Autowired
     private SecurityUserService securityUserService;
+    @Autowired
+    private MailService mailService;
+    @Autowired
+    private UserContactInformationService userContactInformationService;
 
     @PostMapping("/registry")
-    public String registryLocalUser(SecurityUser user, HttpServletRequest req, HttpServletResponse resp, Model model) {
+    public String registryLocalUser(SecurityUser user, String mail, String code, HttpServletRequest req, HttpServletResponse resp, Model model) {
         if (StrUtil.isBlank(user.getPassword()) || StrUtil.isBlank(user.getUsername())) {
             log.error("[空的用户名或密码],ip:{}", req.getRemoteAddr());
-            throw new GlobalException(ExcetionEnmu.USERNAME_PASSWORD_EMPTY);
+            throw new UserException(ExcetionEnmu.USERNAME_PASSWORD_EMPTY);
+        }
+        boolean mailCode = mailService.verifyRegisry(mail, code);
+        if (!mailCode) {
+            log.error("[邮箱验证错误],ip:{},mail:{}", req.getRemoteAddr(), mail);
+            throw new UserException(ExcetionEnmu.REGISTRY_MAIL_VERIFY_ERROR);
         }
         String password = user.getPassword();
         String username = user.getUsername();
@@ -74,14 +84,10 @@ public class UserController {
         example.or().andUsernameEqualTo(username);
         List<SecurityUser> users = securityUserService.selectByExample(example);
         if (users != null && users.size() != 0) {
-            model.addAttribute("msg", "用户名重复请重新输入");
-            return "registry";
+            throw new UserException(ExcetionEnmu.REGISTRY_MAIL_VERIFY_ERROR);
         }
-        int i = securityUserService.insertSelective(user);
-        if (i != 1) {
-            model.addAttribute("msg", "注册失败,请重新注册");
-            return "registry";
-        }
+        securityUserService.insertSelective(user, mail);
+
         return "registrySuccess";
     }
 
@@ -104,8 +110,10 @@ public class UserController {
     @GetMapping("/userDetail")
     public String userDetail(Model model) {
         SecurityUser user = UserInterceptor.getUser();
-
         UserDTO userDTO = new UserDTO();
+        UserContactInformation oneByUsername = userContactInformationService.getOneByUsername(user.getUsername());
+        userDTO.setMail(oneByUsername.getMail());
+        userDTO.setPhone(oneByUsername.getPhone());
         BeanUtil.copyProperties(user, userDTO);
         int s = roundService.countMyRound(user.getUsername());
         userDTO.setRoundCount(s);
@@ -248,5 +256,10 @@ public class UserController {
         articleCollectionExample.or().andArticleIdEqualTo(articleId).andUsernameEqualTo(user.getUsername());
         articleCollectionService.deleteByExample(articleCollectionExample, user.getUsername());
         return new BaseResponseBody(200, "删除成功");
+    }
+
+    @GetMapping("/rg2")
+    public String goRg2() {
+        return "registry";
     }
 }

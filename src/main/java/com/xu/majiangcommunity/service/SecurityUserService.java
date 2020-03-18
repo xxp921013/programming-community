@@ -16,7 +16,7 @@ public interface SecurityUserService {
 
     int insert(SecurityUser record);
 
-    int insertSelective(SecurityUser record);
+    void insertSelective(SecurityUser record, String mail);
 
     List<SecurityUser> selectByExample(SecurityUserExample example);
 

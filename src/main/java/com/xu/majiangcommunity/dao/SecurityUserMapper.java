@@ -40,6 +40,6 @@ public interface SecurityUserMapper {
     @Update("update security_user set newRound = 0 where username=#{username}  ")
     void zeroRound(String username);
 
-    @Update("UPDATE security_user SET newRound = newRound +1 WHERE account_id = (SELECT creator FROM article WHERE id = #{articleId}  );")
+    @Update("UPDATE security_user SET newRound = newRound +1 WHERE username = (SELECT creator FROM article WHERE id = #{articleId}  );")
     void plusNewRound(String articleId);
 }

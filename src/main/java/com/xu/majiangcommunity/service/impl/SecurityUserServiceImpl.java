@@ -2,6 +2,11 @@ package com.xu.majiangcommunity.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.xu.majiangcommunity.UserException;
+import com.xu.majiangcommunity.domain.UserContactInformation;
+import com.xu.majiangcommunity.enums.ExcetionEnmu;
+import com.xu.majiangcommunity.service.UserContactInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,10 +22,13 @@ import com.xu.majiangcommunity.dao.SecurityUserMapper;
 import com.xu.majiangcommunity.domain.SecurityUser;
 import com.xu.majiangcommunity.domain.SecurityUserExample;
 import com.xu.majiangcommunity.service.SecurityUserService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SecurityUserServiceImpl implements SecurityUserService, UserDetailsService {
-
+    @Autowired
+    private UserContactInformationService ucis;
     @Resource
     private SecurityUserMapper securityUserMapper;
 
@@ -45,11 +53,22 @@ public class SecurityUserServiceImpl implements SecurityUserService, UserDetails
     }
 
     @Override
-    public int insertSelective(SecurityUser record) {
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void insertSelective(SecurityUser record, String mail) {
         record.setImage("http://localhost:8080/images/timg.jpg");
         record.setGmtModified(DateUtil.current(false));
         record.setGmtCreate(DateUtil.current(false));
-        return securityUserMapper.insertSelective(record);
+        int i = securityUserMapper.insertSelective(record);
+        if (i != 1) {
+            throw new UserException(ExcetionEnmu.REGISTRY_FAILED);
+        }
+        UserContactInformation userContactInformation = new UserContactInformation();
+        userContactInformation.setUsername(record.getUsername());
+        userContactInformation.setMail(mail);
+        int y = ucis.insertSelective(userContactInformation);
+        if (y != 1) {
+            throw new UserException(ExcetionEnmu.REGISTRY_FAILED);
+        }
     }
 
     @Override

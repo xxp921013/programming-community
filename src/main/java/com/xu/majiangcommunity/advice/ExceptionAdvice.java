@@ -5,6 +5,7 @@ import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,10 +29,14 @@ public class ExceptionAdvice {
 //    }
 
     @ExceptionHandler(UserException.class)
-    public String handlderUserException(UserException e) {
+    public String handlderUserException(UserException e, Model model) {
         ExcetionEnmu excetionEnmu = e.getExcetionEnmu();
-        if (excetionEnmu.getCode() == 10001) {
+        int code = excetionEnmu.getCode();
+        if (code == 10001) {
             return "redirect:/localUser/login";
+        } else if (code >= 10002 && code <= 10010) {
+            model.addAttribute("msg", excetionEnmu.getMessage());
+            return "registry";
         }
         return "redirect:/";
     }

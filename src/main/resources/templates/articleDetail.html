@@ -112,7 +112,7 @@
         <div class="col-lg-9 col-md-12 col-sm-12">
             <div class="jumbotron" style="background-color: white">
                 <h2 th:text="${articleDetail.tittle}"></h2>
-                <div><a th:href="@{/articleDetail(id=${articleDetail.user.username})}">
+                <div><a href="#">
                     <img class="media-object img-thumbnail head-image"
                          th:src="${articleDetail.user.image}">
                 </a><span th:text="${articleDetail.user.username}"></span></div>
@@ -144,7 +144,7 @@
                         <div class="media-left">
                             <img class="media-object img-thumbnail head-image"
                                  th:src="${round.image}">
-                            <span th:text="${round.name}"></span>
+                            <span style="color: #999999" th:text="${round.name}"></span>
                             <br>
                             <span style="color: #999999"
                                   th:text="${#dates.format(round.gmtCreate, 'yyyy-MM-dd mm:ss')}"></span>
