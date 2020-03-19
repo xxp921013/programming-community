@@ -101,7 +101,8 @@ public class ArticleController {
     @GetMapping("/deleteArticle")
     public String deleteArticle(@RequestParam("id") Integer id) {
         articleService.deleteArticle(id);
-        return "redirect:/";
+        articleRepo.deleteById(id);
+        return "redirect:/userArticle";
     }
 
     @GetMapping("/hotArticle")

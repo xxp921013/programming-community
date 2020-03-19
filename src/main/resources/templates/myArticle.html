@@ -9,7 +9,7 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/css/majiang.css">
-<!--    <link rel="stylesheet" href="/css/bs.css">-->
+    <!--    <link rel="stylesheet" href="/css/bs.css">-->
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -44,7 +44,7 @@
                         </a>
                     </li>
                     <li th:class="${page == myArticle.pageNum}? 'active' :''" th:each="page :${myArticle.pages}"><a
-                            th:href="@{/(page=${page})}"
+                            th:href="@{/userArticle(page=${page})}"
                             th:text="${page}"></a>
                     </li>
 
