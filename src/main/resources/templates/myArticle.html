@@ -24,7 +24,8 @@
             <hr/>
             <div class="media" th:each="article :${myArticle.data}">
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${article.tittle}"></h4>
+                    <a th:href="@{/articleDetail(id=${article.id})}"><h4 class="media-heading"
+                                                                         th:text="${article.tittle}"></h4></a>
                     <span th:text="${#strings.abbreviate(article.description,10)}"></span><br>
                     <span class="reply-desc"><span th:text="${article.commentCount}"></span> 个评论 •
                             <span th:text="${article.viewCount}"></span> 次浏览 • <span
