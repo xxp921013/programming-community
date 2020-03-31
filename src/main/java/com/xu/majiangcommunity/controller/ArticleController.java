@@ -52,6 +52,8 @@ public class ArticleController {
         articleEs.setId(idi);
         articleEs.setViewCount(view);
         articleEs.setUserImg(articleDetailDTO.getUser().getImage());
+        articleEs.setUserId(articleDetailDTO.getUser().getId());
+        articleEs.setUsername(articleDetailDTO.getUser().getUsername());
         articleRepo.save(articleEs);
         model.addAttribute("articleDetail", articleDetailDTO);
         SecurityUser user = UserInterceptor.getUser();
@@ -137,6 +139,8 @@ public class ArticleController {
             articleEs = new ArticleEs();
             BeanUtil.copyProperties(articleDTO, articleEs);
             articleEs.setUserImg(articleDTO.getUser().getImage());
+            articleEs.setUsername(articleDTO.getUser().getUsername());
+            articleEs.setUserId(articleDTO.getUser().getId());
             articleEss.add(articleEs);
         }
         articleRepo.saveAll(articleEss);

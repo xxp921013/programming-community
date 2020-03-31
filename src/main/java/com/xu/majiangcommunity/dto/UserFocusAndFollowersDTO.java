@@ -1,0 +1,14 @@
+package com.xu.majiangcommunity.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserFocusAndFollowersDTO {
+    private Integer Focus;
+    private Integer Followers;
+    private Integer isFocus;
+}

@@ -28,6 +28,8 @@ public class ArticleMq {
         ArticleEs articleEs = new ArticleEs();
         BeanUtil.copyProperties(oneById, articleEs);
         articleEs.setUserImg(oneById.getUser().getImage());
+        articleEs.setUsername(oneById.getUser().getUsername());
+        articleEs.setUserId(oneById.getUser().getId());
         articleRepo.save(articleEs);
     }
 }

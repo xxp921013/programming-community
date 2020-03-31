@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>开发社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/bs.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/majiang.css">
+    <script th:inline="javascript">
+        $(function () {
+            var total = [[${pageresult.total}]];
+            var curr = [[${pageresult.pageNum}]];
+            var username = [[${pageresult.data.username}]];
+            var image = [[${pageresult.data.image}]];
+            var userId = [[${pageresult.data.userId}]];
+            var text = '<li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+            for (var i = 1; i <= total; i++) {
+
+                if (i == curr) {
+                    text += '<li class="active" ><a href="/localUser/seeOtherUser?page=' + i + '&username=' + username + '&userId=' + userId + '&image=' + image + '" >' + i + '</a></li>';
+                } else {
+                    text += '<li  ><a href="/localUser/seeOtherUser?page=' + i + '&username=' + username + '&userId=' + userId + '&image=' + image + '" >' + i + '</a></li>';
+                }
+            }
+            text += '<li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+            $("#pagination").html(text);
+        })
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div th:insert="head :: copy"></div>
+</nav>
+<!--<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">-->
+<!--</div>-->
+<div class="container-fluid" style="margin: 40px;background-color: white;">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <div style="float: right;margin-top: 50px">
+                <a href="#"><span style="font-size: large">关注:<span th:text="${userFocus.focus}"></span></span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#"><span style="font-size: large">粉丝:<span th:text="${userFocus.followers}"></span></span></a>
+            </div>
+            <h3><img class="img-circle" th:src="${pageresult.data.image}" width="200px" height="200"/><span
+                    th:text="${pageresult.data.username}" style="color: #2aabd2"></span>
+            </h3>
+            <div sec:authorize="isAuthenticated()" style="margin-left: 65px">
+                <div th:if="${userFocus.isFocus}==2">
+                    <button type="button" class="btn btn-primary" onclick="addFocus()">&nbsp;关注&nbsp;</button>
+                </div>
+                <div th:if="${userFocus.isFocus}==1">
+                    <button type="button" class="btn btn-default" onclick="removeFocus()">取消关注</button>
+                </div>
+            </div>
+            <hr>
+            <div th:if="${pageresult.data!=null}">
+                <div class="media" th:each="article :${pageresult.data.articles}" style="margin-left: 20px">
+
+                    <div class="media-body" id="test">
+                        <a th:href="@{/articleDetail(id=${article.id})}"><h4 class="media-heading"
+                                                                             th:text="${article.tittle}"></h4></a>
+                        <span th:text="${#strings.abbreviate(article.description,10)}" style="color: black"></span><br>
+                        <span class="reply-desc"><span th:text="${article.commentCount}"></span> 个评论 •
+                            <span th:text="${article.viewCount}"></span> 次浏览 • <span
+                                    th:text="${#dates.format(article.gmtCreate, 'yyyy-MM-dd')}"></span></span>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <nav aria-label="Page navigation" style="float: right">
+                <ul class="pagination" id="pagination">
+                    <!--                                        <li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>-->
+                    <!--                                        <li th:class="${page == articles.pageNum}? 'active' :''" th:each="page :${articles.pages}"><a-->
+                    <!--                                                th:href="@{/(page=${page},keyWord=${keyWord})}" th:text="${page}"></a></li>-->
+
+                    <!--                                        <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>-->
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default">
+    <div th:insert="footer :: copy"></div>
+</nav>
+<script>
+    function addFocus() {
+        var id = [[${pageresult.data.userId}]];
+        $.ajax({
+            type: 'put',
+            dataType: 'json',
+            url: "http://localhost:8080/localUser/addFocus",
+            data: {userId: id},
+            cache: false,
+            async: true,
+            success: function (data) {
+                if (data != null && data.code == 200) {
+                    alert(data.message);
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    function removeFocus() {
+        var id = [[${pageresult.data.userId}]];
+        $.ajax({
+            type: 'delete',
+            dataType: 'json',
+            url: "http://localhost:8080/localUser/removeFocus",
+            data: {userId: id},
+            cache: false,
+            async: true,
+            success: function (data) {
+                if (data != null && data.code == 200) {
+                    alert(data.message);
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -13,6 +13,7 @@ import com.xu.majiangcommunity.domain.ArticleEs;
 import com.xu.majiangcommunity.domain.ArticleExample;
 import com.xu.majiangcommunity.dto.ArticleDTO;
 import com.xu.majiangcommunity.dto.ArticleDetailDTO;
+import com.xu.majiangcommunity.dto.OtherUserDTO;
 import com.xu.majiangcommunity.dto.PageResult;
 import com.xu.majiangcommunity.service.ArticleServiceIf;
 import lombok.extern.slf4j.Slf4j;
@@ -336,6 +337,25 @@ public class ArticleService implements ArticleServiceIf {
         listPageResult.setCode(200);
         listPageResult.setMessage("搜索成功");
         return listPageResult;
+    }
+
+    @Override
+    /*
+    查看其他用户信息,包括用户名头像和他的文章(分页)
+     */
+    public PageResult<OtherUserDTO> findByUserId(Integer id, Integer page) {
+        Sort sort = new Sort(Sort.Direction.DESC, SortConstant.BY_ARTICLE_UPDATE);
+        Pageable of = PageRequest.of(page - 1, 5, sort);
+        Page<ArticleEs> byUserId = articleRepo.findByUserId(id, of);
+        OtherUserDTO otherUserDTO = new OtherUserDTO();
+        otherUserDTO.setArticles(byUserId.getContent());
+        PageResult<OtherUserDTO> pageResult = new PageResult<OtherUserDTO>();
+        pageResult.setData(otherUserDTO);
+        pageResult.setPageNum(page);
+        pageResult.setTotal(byUserId.getTotalPages());
+        pageResult.setCode(200);
+        pageResult.setMessage("搜索成功");
+        return pageResult;
     }
 }
 

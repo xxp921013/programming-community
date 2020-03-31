@@ -24,4 +24,6 @@ public class ArticleEs {
     private Integer commentCount;
     private Integer viewCount;
     private String userImg;
+    private String username;
+    private Integer userId;
 }

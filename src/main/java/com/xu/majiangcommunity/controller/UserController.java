@@ -9,15 +9,13 @@ import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.config.MinioConfig;
 import com.xu.majiangcommunity.config.MjConfig;
 import com.xu.majiangcommunity.domain.*;
-import com.xu.majiangcommunity.dto.BaseResponseBody;
-import com.xu.majiangcommunity.dto.FileResponseBody;
-import com.xu.majiangcommunity.dto.PageResult;
-import com.xu.majiangcommunity.dto.UserDTO;
+import com.xu.majiangcommunity.dto.*;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
 import com.xu.majiangcommunity.interceptor.UserInterceptor;
 import com.xu.majiangcommunity.service.MailService;
 import com.xu.majiangcommunity.service.SecurityUserService;
 import com.xu.majiangcommunity.service.UserContactInformationService;
+import com.xu.majiangcommunity.service.UserFocusService;
 import com.xu.majiangcommunity.service.impl.ArticleCollectionServiceImpl;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import com.xu.majiangcommunity.service.impl.RoundService;
@@ -26,6 +24,7 @@ import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/localUser")
@@ -64,6 +64,8 @@ public class UserController {
     private MailService mailService;
     @Autowired
     private UserContactInformationService userContactInformationService;
+    @Autowired
+    private UserFocusService userFocusService;
 
     @PostMapping("/registry")
     public String registryLocalUser(SecurityUser user, String mail, String code, HttpServletRequest req, HttpServletResponse resp, Model model) {
@@ -261,5 +263,54 @@ public class UserController {
     @GetMapping("/rg2")
     public String goRg2() {
         return "registry";
+    }
+
+    @GetMapping("/seeOtherUser")
+    public String seeOtherUser(@RequestParam(value = "username", required = true) String username, @RequestParam("image") String image, @RequestParam(value = "userId", required = true) Integer id, @RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
+        PageResult<OtherUserDTO> pageResult = articleService.findByUserId(id, page);
+        pageResult.getData().setUsername(username);
+        pageResult.getData().setImage(image);
+        pageResult.getData().setUserId(id);
+        model.addAttribute("pageresult", pageResult);
+        UserFocusAndFollowersDTO userFocusAndFollowersDTO = new UserFocusAndFollowersDTO();
+        List<Integer> focusByUserId = userFocusService.getFocusByUserId(id);
+        userFocusAndFollowersDTO.setFocus(focusByUserId.size());
+        List<Integer> followersByUserId = userFocusService.getFollowersByUserId(id);
+        userFocusAndFollowersDTO.setFollowers(followersByUserId.size());
+        try {
+            SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (followersByUserId.contains(user.getId())) {
+                userFocusAndFollowersDTO.setIsFocus(1);
+            } else {
+                userFocusAndFollowersDTO.setIsFocus(2);
+            }
+        } catch (Exception e) {
+            userFocusAndFollowersDTO.setIsFocus(3);
+        }
+        model.addAttribute("userFocus", userFocusAndFollowersDTO);
+        return "otherUserDetail";
+    }
+
+    @PutMapping("/addFocus")
+    @ResponseBody
+    public BaseResponseBody addFocus(@RequestParam("userId") Integer userId) {
+        SecurityUser user = UserInterceptor.getUser();
+        Integer myId = user.getId();
+        if (userId.equals(myId)) {
+            return new BaseResponseBody(200, "不能关注自己");
+        }
+        int i = userFocusService.insertSelective(myId, userId);
+        if (i != 1) {
+            return new BaseResponseBody(200, "请勿重复关注");
+        }
+        return new BaseResponseBody(200, "关注成功");
+    }
+
+    @DeleteMapping("/removeFocus")
+    @ResponseBody
+    public BaseResponseBody removeFocus(@RequestParam(value = "userId") Integer userId) {
+        SecurityUser user = UserInterceptor.getUser();
+        userFocusService.removeFocus(user.getId(), userId);
+        return new BaseResponseBody(200, "取消成功");
     }
 }

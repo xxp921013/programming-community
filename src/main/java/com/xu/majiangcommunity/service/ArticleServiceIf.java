@@ -3,10 +3,7 @@ package com.xu.majiangcommunity.service;
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.ArticleEs;
 import com.xu.majiangcommunity.domain.ArticleExample;
-import com.xu.majiangcommunity.dto.ArticleDTO;
-import com.xu.majiangcommunity.dto.ArticleDetailDTO;
-import com.xu.majiangcommunity.dto.BaseResponseBody;
-import com.xu.majiangcommunity.dto.PageResult;
+import com.xu.majiangcommunity.dto.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -69,4 +66,6 @@ public interface ArticleServiceIf {
     Integer getViewCount(Integer id);
 
     PageResult<List<ArticleEs>> findByIds(List<Integer> ids, Integer page);
+
+    PageResult<OtherUserDTO> findByUserId(Integer id, Integer page);
 }

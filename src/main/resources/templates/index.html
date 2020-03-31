@@ -106,15 +106,16 @@
             </nav>
             <div class="media" th:each="article :${articles.data}">
                 <div class="media-left">
-                    <a th:href="@{/articleDetail(id=${article.id})}">
+                    <a th:href="@{/localUser/seeOtherUser(username=${article.username},image=${article.userImg},userId=${article.userId})}">
                         <img class="media-object img-thumbnail head-image"
-                             th:src="${article.userImg}">
+                             th:src="${article.userImg}"><br>
+                        <span th:text="${article.username}" style="color: #999999"></span>
                     </a>
                 </div>
                 <div class="media-body" id="test">
                     <a th:href="@{/articleDetail(id=${article.id})}"><h4 class="media-heading"
                                                                          th:text="${article.tittle}"></h4></a>
-                    <span th:text="${#strings.abbreviate(article.description,10)}"></span><br>
+                    <span th:text="${#strings.abbreviate(article.description,10)}" style="color: black"></span><br>
                     <span class="reply-desc"><span th:text="${article.commentCount}"></span> 个评论 •
                             <span th:text="${article.viewCount}"></span> 次浏览 • <span
                                 th:text="${#dates.format(article.gmtCreate, 'yyyy-MM-dd')}"></span></span>

@@ -22,7 +22,12 @@ public class UserInterceptor implements HandlerInterceptor {
     @Override
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SecurityUser user = null;
+        try {
+            user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            return true;
+        }
         //String token = request.getHeader("LY_TOKEN");
         //解析token
 

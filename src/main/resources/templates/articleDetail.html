@@ -114,8 +114,8 @@
                 <h2 th:text="${articleDetail.tittle}"></h2>
                 <div><a href="#">
                     <img class="media-object img-thumbnail head-image"
-                         th:src="${articleDetail.user.image}">
-                </a><span th:text="${articleDetail.user.username}"></span></div>
+                         th:src="${articleDetail.user.image}"></a>
+                    <span th:text="${articleDetail.user.username}" style="color: #999999"></span></div>
                 <div>                    <span class="reply-desc"><span th:text="${articleDetail.commentCount}"></span> 个评论 •
                             <span th:text="${articleDetail.viewCount}"></span> 次浏览 • <span
                             th:text="${#dates.format(articleDetail.gmtCreate, 'yyyy-MM-dd')}"></span></span></div>

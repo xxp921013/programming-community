@@ -27,6 +27,8 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/localUser/addCollection/**")
                 .addPathPatterns("/localUser/removeCollection/**")
                 .addPathPatterns("/articleDetail/**")
+                .addPathPatterns("/localUser/addFocus/**")
+                .addPathPatterns("/localUser/removeFocus/**")
         ;
     }
 }
