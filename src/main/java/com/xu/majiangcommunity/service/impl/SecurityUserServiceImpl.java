@@ -2,9 +2,13 @@ package com.xu.majiangcommunity.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.domain.UserContactInformation;
+import com.xu.majiangcommunity.domain.UserView;
+import com.xu.majiangcommunity.dto.PageResult;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
 import com.xu.majiangcommunity.service.UserContactInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.xu.majiangcommunity.dao.SecurityUserMapper;
@@ -115,6 +120,20 @@ public class SecurityUserServiceImpl implements SecurityUserService, UserDetails
     @Override
     public void plusNewRound(String articleId) {
         securityUserMapper.plusNewRound(articleId);
+    }
+
+    @Override
+    public PageResult<ArrayList<UserView>> getUserByIds(List<Integer> focusByUserId, Integer page) {
+        PageHelper.startPage(page, 10);
+        List<UserView> userViews = securityUserMapper.selectUsernameAndIdAndImagebyidIn(focusByUserId);
+        PageInfo<UserView> userViewPageInfo = new PageInfo<>(userViews);
+        PageResult<ArrayList<UserView>> arrayListPageResult = new PageResult<>();
+        arrayListPageResult.setCode(200);
+        arrayListPageResult.setMessage("查找成功");
+        arrayListPageResult.setPageNum(page);
+        arrayListPageResult.setTotal((int) userViewPageInfo.getTotal());
+        arrayListPageResult.setData(new ArrayList<>(userViews));
+        return arrayListPageResult;
     }
 
     @Override

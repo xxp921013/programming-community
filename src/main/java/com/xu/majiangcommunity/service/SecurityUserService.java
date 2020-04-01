@@ -1,9 +1,12 @@
 package com.xu.majiangcommunity.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.xu.majiangcommunity.domain.SecurityUser;
 import com.xu.majiangcommunity.domain.SecurityUserExample;
+import com.xu.majiangcommunity.domain.UserView;
+import com.xu.majiangcommunity.dto.PageResult;
 
 public interface SecurityUserService {
 
@@ -35,4 +38,6 @@ public interface SecurityUserService {
     void zeroRound(String username);
 
     void plusNewRound(String articleId);
+
+    PageResult<ArrayList<UserView>> getUserByIds(List<Integer> focusByUserId, Integer page);
 }

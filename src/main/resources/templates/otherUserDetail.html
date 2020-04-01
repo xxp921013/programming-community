@@ -43,8 +43,11 @@
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
             <div style="float: right;margin-top: 50px">
-                <a href="#"><span style="font-size: large">关注:<span th:text="${userFocus.focus}"></span></span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="#"><span style="font-size: large">粉丝:<span th:text="${userFocus.followers}"></span></span></a>
+                <a th:href="@{/localUser/hisFocus(id=${pageresult.data.userId})}"><span
+                        style="font-size: large">关注:<span
+                        th:text="${userFocus.focus}"></span></span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a th:href="@{/localUser/hisFollowers(id=${pageresult.data.userId})}"><span style="font-size: large">粉丝:<span
+                        th:text="${userFocus.followers}"></span></span></a>
             </div>
             <h3><img class="img-circle" th:src="${pageresult.data.image}" width="200px" height="200"/><span
                     th:text="${pageresult.data.username}" style="color: #2aabd2"></span>

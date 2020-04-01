@@ -1,18 +1,14 @@
 package com.xu.majiangcommunity.domain;
 
-import java.beans.Transient;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
-
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.xml.bind.annotation.XmlTransient;
+import java.beans.Transient;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +26,6 @@ public class SecurityUser implements Serializable, UserDetails {
     private Long gmtModified;
 
     private Integer newRound;
-
     private List<GrantedAuthority> authorities;
     private static final long serialVersionUID = 1L;
 

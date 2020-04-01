@@ -313,4 +313,38 @@ public class UserController {
         userFocusService.removeFocus(user.getId(), userId);
         return new BaseResponseBody(200, "取消成功");
     }
+
+    @GetMapping("/hisFocus")
+    public String getHisFocus(@RequestParam(value = "id", required = false) Integer id, @RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
+        if (id == null || id == 0) {
+            try {
+                SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                id = user.getId();
+            } catch (Exception e) {
+                throw new UserException(ExcetionEnmu.USER_NO_LOGIN);
+            }
+        }
+        List<Integer> focusByUserId = userFocusService.getFocusByUserId(id);
+        PageResult<ArrayList<UserView>> userByIds = securityUserService.getUserByIds(focusByUserId, page);
+        model.addAttribute("pageResult", userByIds);
+        model.addAttribute("currentUser", id);
+        return "hisFocus";
+    }
+
+    @GetMapping("/hisFollowers")
+    public String getHisFollowers(@RequestParam(value = "id", required = false) Integer id, @RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
+        if (id == null || id == 0) {
+            try {
+                SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                id = user.getId();
+            } catch (Exception e) {
+                throw new UserException(ExcetionEnmu.USER_NO_LOGIN);
+            }
+        }
+        List<Integer> focusByUserId = userFocusService.getFollowersByUserId(id);
+        PageResult<ArrayList<UserView>> userByIds = securityUserService.getUserByIds(focusByUserId, page);
+        model.addAttribute("pageResult", userByIds);
+        model.addAttribute("currentUser", id);
+        return "hisFollowers";
+    }
 }

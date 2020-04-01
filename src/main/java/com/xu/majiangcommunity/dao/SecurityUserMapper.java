@@ -1,8 +1,10 @@
 package com.xu.majiangcommunity.dao;
+import com.xu.majiangcommunity.domain.UserView;
 
 import com.xu.majiangcommunity.domain.SecurityUser;
 import com.xu.majiangcommunity.domain.SecurityUserExample;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -42,4 +44,10 @@ public interface SecurityUserMapper {
 
     @Update("UPDATE security_user SET newRound = newRound +1 WHERE username = (SELECT creator FROM article WHERE id = #{articleId}  );")
     void plusNewRound(String articleId);
+
+    List<UserView> selectUsernameAndIdAndImagebyidIn(@Param("idCollection")Collection<Integer> idCollection);
+
+
+
+
 }
