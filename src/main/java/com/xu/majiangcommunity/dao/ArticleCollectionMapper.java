@@ -33,4 +33,16 @@ public interface ArticleCollectionMapper {
     List<Integer> findArticleIdByUsername(@Param("username") String username);
 
 
+    List<ArticleCollection> selectByUsernameLike(@Param("likeUsername")String likeUsername);
+
+    int insertList(@Param("list")List<ArticleCollection> list);
+
+
+
+
+
+
+
+
+
 }

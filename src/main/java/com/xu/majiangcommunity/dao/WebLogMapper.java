@@ -27,4 +27,7 @@ public interface WebLogMapper {
     int updateByPrimaryKeySelective(WebLog record);
 
     int updateByPrimaryKey(WebLog record);
+    
+
+
 }

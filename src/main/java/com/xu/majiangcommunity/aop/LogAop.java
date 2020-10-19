@@ -1,6 +1,7 @@
 package com.xu.majiangcommunity.aop;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.StopWatch;
 import com.xu.majiangcommunity.domain.WebLog;
 import com.xu.majiangcommunity.service.impl.WebLogService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -29,8 +32,12 @@ public class LogAop {
     public void logPointcut() {
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogAop.class);
+
     @Around("logPointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+//        StopWatch stopWatch = new StopWatch();
+//        stopWatch.start();
         long startTime = DateUtil.current(false);
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
@@ -40,7 +47,12 @@ public class LogAop {
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();
         String desc = method.getName();
+        if ("getLogList".equals(desc)) {
+            return proceed;
+        }
         long endTime = System.currentTimeMillis();
+//        stopWatch.stop();
+//        double totalTimeSeconds = stopWatch.getTotalTimeSeconds();
         String url = request.getRequestURL().toString();
         String uri = request.getRequestURI();
         String ip = request.getRemoteHost();
@@ -50,7 +62,7 @@ public class LogAop {
         webLog.setStartTime(startTime);
         webLog.setUri(uri);
         webLog.setUrl(url);
-        log.info(webLog.toString());
+        LOGGER.info(webLog.toString());
         return proceed;
     }
 }

@@ -14,4 +14,5 @@ public interface ArticleRepo extends ElasticsearchRepository<ArticleEs, Integer>
     Page<ArticleEs> findByIdIn(List<Integer> ids, Pageable pageable);
 
     Page<ArticleEs> findByUserId(Integer userId, Pageable pageable);
+    
 }

@@ -1,8 +1,6 @@
 package com.xu.majiangcommunity.mail;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.mail.InternalMailUtil;
-import cn.hutool.extra.mail.Mail;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
 import com.xu.majiangcommunity.service.MailService;
 import lombok.extern.slf4j.Slf4j;

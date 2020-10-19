@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xu.majiangcommunity.dao.WebLogMapper">
-  <resultMap id="BaseResultMap" type="com.xu.majiangcommunity.domain.WebLog">
+<mapper namespace="com.xu.majiangcommunity.dao.TagMapper">
+  <resultMap id="BaseResultMap" type="com.xu.majiangcommunity.domain.Tag">
     <!--@mbg.generated-->
-    <!--@Table web_log-->
+    <!--@Table tag-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="weight" jdbcType="BIGINT" property="weight" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="start_time" jdbcType="BIGINT" property="startTime" />
-    <result column="spend_time" jdbcType="BIGINT" property="spendTime" />
-    <result column="uri" jdbcType="VARCHAR" property="uri" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="ip" jdbcType="VARCHAR" property="ip" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--@mbg.generated-->
@@ -75,16 +70,16 @@
   </sql>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, description, `name`, start_time, spend_time, uri, url, ip
+    id, weight, `name`
   </sql>
-  <select id="selectByExample" parameterType="com.xu.majiangcommunity.domain.WebLogExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.xu.majiangcommunity.domain.TagExample" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from web_log
+    from tag
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -96,114 +91,65 @@
     <!--@mbg.generated-->
     select 
     <include refid="Base_Column_List" />
-    from web_log
+    from tag
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
-    delete from web_log
+    delete from tag
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.xu.majiangcommunity.domain.WebLogExample">
+  <delete id="deleteByExample" parameterType="com.xu.majiangcommunity.domain.TagExample">
     <!--@mbg.generated-->
-    delete from web_log
+    delete from tag
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xu.majiangcommunity.domain.WebLog" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xu.majiangcommunity.domain.Tag" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into web_log (description, `name`, start_time, 
-      spend_time, uri, url, 
-      ip)
-    values (#{description,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{startTime,jdbcType=BIGINT}, 
-      #{spendTime,jdbcType=BIGINT}, #{uri,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{ip,jdbcType=VARCHAR})
+    insert into tag (weight, `name`)
+    values (#{weight,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xu.majiangcommunity.domain.WebLog" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xu.majiangcommunity.domain.Tag" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into web_log
+    insert into tag
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="description != null">
-        description,
+      <if test="weight != null">
+        weight,
       </if>
       <if test="name != null">
         `name`,
       </if>
-      <if test="startTime != null">
-        start_time,
-      </if>
-      <if test="spendTime != null">
-        spend_time,
-      </if>
-      <if test="uri != null">
-        uri,
-      </if>
-      <if test="url != null">
-        url,
-      </if>
-      <if test="ip != null">
-        ip,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
+      <if test="weight != null">
+        #{weight,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="startTime != null">
-        #{startTime,jdbcType=BIGINT},
-      </if>
-      <if test="spendTime != null">
-        #{spendTime,jdbcType=BIGINT},
-      </if>
-      <if test="uri != null">
-        #{uri,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="ip != null">
-        #{ip,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.xu.majiangcommunity.domain.WebLogExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.xu.majiangcommunity.domain.TagExample" resultType="java.lang.Long">
     <!--@mbg.generated-->
-    select count(*) from web_log
+    select count(*) from tag
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     <!--@mbg.generated-->
-    update web_log
+    update tag
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.description != null">
-        description = #{record.description,jdbcType=VARCHAR},
+      <if test="record.weight != null">
+        weight = #{record.weight,jdbcType=BIGINT},
       </if>
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.startTime != null">
-        start_time = #{record.startTime,jdbcType=BIGINT},
-      </if>
-      <if test="record.spendTime != null">
-        spend_time = #{record.spendTime,jdbcType=BIGINT},
-      </if>
-      <if test="record.uri != null">
-        uri = #{record.uri,jdbcType=VARCHAR},
-      </if>
-      <if test="record.url != null">
-        url = #{record.url,jdbcType=VARCHAR},
-      </if>
-      <if test="record.ip != null">
-        ip = #{record.ip,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -212,65 +158,40 @@
   </update>
   <update id="updateByExample" parameterType="map">
     <!--@mbg.generated-->
-    update web_log
+    update tag
     set id = #{record.id,jdbcType=INTEGER},
-      description = #{record.description,jdbcType=VARCHAR},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      start_time = #{record.startTime,jdbcType=BIGINT},
-      spend_time = #{record.spendTime,jdbcType=BIGINT},
-      uri = #{record.uri,jdbcType=VARCHAR},
-      url = #{record.url,jdbcType=VARCHAR},
-      ip = #{record.ip,jdbcType=VARCHAR}
+      weight = #{record.weight,jdbcType=BIGINT},
+      `name` = #{record.name,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xu.majiangcommunity.domain.WebLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xu.majiangcommunity.domain.Tag">
     <!--@mbg.generated-->
-    update web_log
+    update tag
     <set>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
+      <if test="weight != null">
+        weight = #{weight,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="startTime != null">
-        start_time = #{startTime,jdbcType=BIGINT},
-      </if>
-      <if test="spendTime != null">
-        spend_time = #{spendTime,jdbcType=BIGINT},
-      </if>
-      <if test="uri != null">
-        uri = #{uri,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="ip != null">
-        ip = #{ip,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xu.majiangcommunity.domain.WebLog">
+  <update id="updateByPrimaryKey" parameterType="com.xu.majiangcommunity.domain.Tag">
     <!--@mbg.generated-->
-    update web_log
-    set description = #{description,jdbcType=VARCHAR},
-      `name` = #{name,jdbcType=VARCHAR},
-      start_time = #{startTime,jdbcType=BIGINT},
-      spend_time = #{spendTime,jdbcType=BIGINT},
-      uri = #{uri,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      ip = #{ip,jdbcType=VARCHAR}
+    update tag
+    set weight = #{weight,jdbcType=BIGINT},
+      `name` = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-<!--auto generated by MybatisCodeHelper on 2020-09-21-->
-  <select id="findAllByIdOrderByDescription" resultMap="BaseResultMap">
+<!--auto generated by MybatisCodeHelper on 2020-10-19-->
+  <select id="findAllByNameNotNull" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from web_log
-        where id=#{id,jdbcType=INTEGER} order by description asc
+        from tag
+        where `name` is not null
     </select>
 </mapper>

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8083
   tomcat:
     max-threads: 1000
     min-spare-threads: 500
@@ -20,10 +20,16 @@ spring:
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory
   rabbitmq:
-    host: 192.168.199.138
+    host: 192.168.161.129
     username: root
     password: root
     virtual-host: mj
+    # 手动提交消息
+    listener:
+      simple:
+        acknowledge-mode: manual
+      direct:
+        acknowledge-mode: manual
     template:
       #重试参数
       retry:
@@ -37,9 +43,9 @@ spring:
   data:
     elasticsearch:
       cluster-name: xxp-cluster
-      cluster-nodes: 192.168.199.138:9301
+      cluster-nodes: 192.168.161.129:9301
   redis:
-    host: 192.168.199.138
+    host: 192.168.161.129
     jedis:
       pool:
         max-active: 10
@@ -48,20 +54,20 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.199.138:3306/majiang?characterEncoding=UTF8
+    url: jdbc:mysql://192.168.161.129:3306/majiang?characterEncoding=UTF8
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
-logging:
-  file:
-    max-size: 2MB
-  level:
-    root: info
-    com:
-      xu:
-        majiangcommunity:
-          dao: debug
-  path: K:\log\
+#logging:
+#  file:
+#    max-size: 2MB
+#  level:
+#    root: info
+#    com:
+#      xu:
+#        majiangcommunity:
+#          dao: info
+#  path: F:\log\
 mj:
   upload:
     agreeTypes:
@@ -69,7 +75,7 @@ mj:
       - image/png
       - image/bmp
 minio:
-  endpoint: http://192.168.199.138:9090 #MinIO服务所在地址
+  endpoint: http://192.168.161.129:9090 #MinIO服务所在地址
   bucketName: image #存储桶名称
   accessKey: minioadmin #访问的key
   secretKey: minioadmin #访问的秘钥

@@ -5,10 +5,12 @@ import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.Rounds;
 import com.xu.majiangcommunity.domain.SecurityUser;
+import com.xu.majiangcommunity.domain.Tag;
 import com.xu.majiangcommunity.dto.PageResult;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
 import com.xu.majiangcommunity.interceptor.UserInterceptor;
 import com.xu.majiangcommunity.service.SecurityUserService;
+import com.xu.majiangcommunity.service.TagService;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import com.xu.majiangcommunity.service.impl.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class PublishController {
@@ -32,23 +35,14 @@ public class PublishController {
     private RoundService roundService;
     @Autowired
     private SecurityUserService securityUserService;
+    @Autowired
+    private TagService tagService;
 
     @GetMapping("/publish")
     public String getPublish(Model model) {
-        List<String> tags = new ArrayList<>();
-        tags.add("java");
-        tags.add("spring");
-        tags.add("springBoot");
-        tags.add("springMvc");
-        tags.add("jvm");
-        tags.add("html");
-        tags.add("css");
-        tags.add("redis");
-        tags.add("mq");
-        tags.add("mysql");
-        tags.add("juc");
-        tags.add("es");
-        model.addAttribute("allowedtags", tags);
+        List<Tag> tagList = tagService.getList();
+        List<String> strings = tagList.parallelStream().map(Tag::getName).collect(Collectors.toList());
+        model.addAttribute("allowedtags", strings);
         return "publish";
     }
 

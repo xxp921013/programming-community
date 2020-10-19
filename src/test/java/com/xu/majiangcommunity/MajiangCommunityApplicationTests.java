@@ -16,9 +16,12 @@ import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.CORBA.PUBLIC_MEMBER;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,7 +39,8 @@ public class MajiangCommunityApplicationTests {
     @Autowired
     private StringRedisTemplate srt;
     private static final Long DAYS = 86400000L;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Test
     public void contextLoads() {
@@ -94,5 +98,18 @@ public class MajiangCommunityApplicationTests {
     public void demo6() {
         DateTime dateTime = DateUtil.offsetSecond(new Date(), 7);
         System.out.println(dateTime);
+    }
+
+    @Test
+    public void demo7() {
+        BoundValueOperations decrText = redisTemplate.boundValueOps("decrText");
+        decrText.set(100);
+        for (int i = 0; i < 100; i++) {
+            Thread thread = new Thread(() -> {
+                Long decrement = decrText.decrement();
+                System.out.println(decrement);
+            });
+            thread.start();
+        }
     }
 }

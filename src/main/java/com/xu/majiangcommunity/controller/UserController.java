@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,6 +68,9 @@ public class UserController {
     @Autowired
     private UserFocusService userFocusService;
 
+//    @Autowired
+//    SessionRegistry sessionRegistry;
+
     @PostMapping("/registry")
     public String registryLocalUser(SecurityUser user, String mail, String code, HttpServletRequest req, HttpServletResponse resp, Model model) {
         if (StrUtil.isBlank(user.getPassword()) || StrUtil.isBlank(user.getUsername())) {
@@ -89,7 +93,6 @@ public class UserController {
             throw new UserException(ExcetionEnmu.REGISTRY_MAIL_VERIFY_ERROR);
         }
         securityUserService.insertSelective(user, mail);
-
         return "registrySuccess";
     }
 

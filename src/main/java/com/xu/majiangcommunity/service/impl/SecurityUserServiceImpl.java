@@ -4,31 +4,29 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.xu.majiangcommunity.UserException;
+import com.xu.majiangcommunity.dao.SecurityUserMapper;
+import com.xu.majiangcommunity.domain.SecurityUser;
+import com.xu.majiangcommunity.domain.SecurityUserExample;
 import com.xu.majiangcommunity.domain.UserContactInformation;
 import com.xu.majiangcommunity.domain.UserView;
 import com.xu.majiangcommunity.dto.PageResult;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
+import com.xu.majiangcommunity.service.SecurityUserService;
 import com.xu.majiangcommunity.service.UserContactInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.xu.majiangcommunity.dao.SecurityUserMapper;
-import com.xu.majiangcommunity.domain.SecurityUser;
-import com.xu.majiangcommunity.domain.SecurityUserExample;
-import com.xu.majiangcommunity.service.SecurityUserService;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SecurityUserServiceImpl implements SecurityUserService, UserDetailsService {
@@ -138,6 +136,7 @@ public class SecurityUserServiceImpl implements SecurityUserService, UserDetails
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        System.out.println("走登录流程！");
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUsername(s);
         SecurityUserExample securityUserExample = new SecurityUserExample();
@@ -147,6 +146,10 @@ public class SecurityUserServiceImpl implements SecurityUserService, UserDetails
             throw new UsernameNotFoundException("用户名不存在");
         }
         SecurityUser user = securityUsers.get(0);
+        ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("USER");
+        grantedAuthorities.add(authority);
+        user.setAuthorities(grantedAuthorities);
         return user;
     }
 }
