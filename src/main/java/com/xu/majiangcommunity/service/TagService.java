@@ -1,6 +1,8 @@
 package com.xu.majiangcommunity.service;
 
 import com.xu.majiangcommunity.domain.Tag;
+
+import java.util.HashSet;
 import java.util.List;
 import com.xu.majiangcommunity.domain.TagExample;
 public interface TagService{
@@ -30,4 +32,5 @@ public interface TagService{
 
     List<Tag> getList();
 
+    List<Tag> getNameIn(HashSet<String> set);
 }

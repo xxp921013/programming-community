@@ -1,6 +1,7 @@
 package com.xu.majiangcommunity.domain;
 
 import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tag implements Serializable {
-    private final static String BASE_URL = "http://localhost:8080/?keyWord=";
     private Integer id;
 
     /**

@@ -1,4 +1,5 @@
 package com.xu.majiangcommunity.dao;
+import java.util.Collection;
 
 import com.xu.majiangcommunity.domain.Tag;
 import com.xu.majiangcommunity.domain.TagExample;
@@ -29,6 +30,10 @@ public interface TagMapper {
     int updateByPrimaryKey(Tag record);
 
     List<Tag> findAllByNameNotNull();
+
+
+    List<Tag> findAllByNameIn(@Param("nameCollection")Collection<String> nameCollection);
+
 
 
 }

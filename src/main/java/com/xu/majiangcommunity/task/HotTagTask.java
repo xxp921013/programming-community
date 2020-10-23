@@ -4,6 +4,8 @@ package com.xu.majiangcommunity.task;
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.HotArticle;
 import com.xu.majiangcommunity.domain.Tag;
+import com.xu.majiangcommunity.dto.TagDto;
+import com.xu.majiangcommunity.service.TagService;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,9 +33,11 @@ public class HotTagTask {
     private ArticleService articleService;
     @Autowired
     private RedisTemplate<String, Serializable> redisCacheTemplate;
+    @Autowired
+    private TagService tagService;
 
-    @Scheduled(cron = "0 0/15 * * * * ")
-    //@Scheduled(cron = "* 0/15 * * * ? ")
+    //    @Scheduled(cron = "0 0/15 * * * * ")
+    @Scheduled(cron = "* 0/15 * * * ? ")
     public void getHotTask() {
         log.info("热门文章定时任务执行");
         System.out.println("热门文章定时任务执行");
@@ -57,8 +62,8 @@ public class HotTagTask {
         return hotArticle;
     }
 
-    // @Scheduled(cron = "0/60 * * * * * ")
-    @Scheduled(cron = "* * 0/12 * * ? ")
+    @Scheduled(cron = "0/60 * * * * * ")
+//    @Scheduled(cron = "* * 0/12 * * ? ")
     public void getHotTags() {
         log.info("热门标签定时任务执行");
         System.out.println("热门标签定时任务执行");
@@ -66,20 +71,31 @@ public class HotTagTask {
         long t = l - (DAYS * 7);
         List<Article> lastDayArticle = articleService.getLastDayArticle(t);
         HashMap<String, Integer> tags = new HashMap<>();
+        HashSet<String> set = new HashSet<>();
         for (Article article : lastDayArticle) {
             String tags1 = article.getTags();
             String[] split = tags1.split(",");
             for (String s : split) {
                 if (StringUtils.isNotBlank(s)) {
                     tags.put(s, tags.getOrDefault(s, 0) + 1);
+                    set.add(s);
                 }
             }
         }
+        List<Tag> tagList = tagService.getNameIn(set);
+        HashMap<String, Long> databaseMap = new HashMap<>();
+        for (Tag tag : tagList) {
+            databaseMap.put(tag.getName(), tag.getWeight());
+        }
         BoundZSetOperations<String, Serializable> zSetOps = redisCacheTemplate.boundZSetOps(HOT_TAG);
-        Tag tag = null;
+        if (zSetOps.size() > 0) {
+            zSetOps.removeRange(0, zSetOps.size());
+        }
+        TagDto tagDto = null;
         for (Map.Entry<String, Integer> stringIntegerEntry : tags.entrySet()) {
-            tag = new Tag(stringIntegerEntry.getKey());
-            zSetOps.add(tag, stringIntegerEntry.getValue());
+            long score = stringIntegerEntry.getValue() + databaseMap.get(stringIntegerEntry.getKey());
+            tagDto = new TagDto(stringIntegerEntry.getKey(), score);
+            zSetOps.add(tagDto, score);
         }
     }
 

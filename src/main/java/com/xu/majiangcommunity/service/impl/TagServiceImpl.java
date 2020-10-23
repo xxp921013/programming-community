@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import com.xu.majiangcommunity.domain.Tag;
 
+import java.util.HashSet;
 import java.util.List;
 
 import com.xu.majiangcommunity.dao.TagMapper;
@@ -76,6 +77,11 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> getList() {
         return tagMapper.findAllByNameNotNull();
+    }
+
+    @Override
+    public List<Tag> getNameIn(HashSet<String> set) {
+        return tagMapper.findAllByNameIn(set);
     }
 
 }
