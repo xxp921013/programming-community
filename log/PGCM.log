@@ -1,116 +1,65 @@
-20:37:14.142 INFO  org.springframework.core.KotlinDetector 57 <clinit> - Kotlin reflection implementation not found at runtime, related features won't be available.
-20:37:14.748 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ProgrammingCommunityApplication on ST9M6YAUI06J0H9 with PID 38788 (F:\bootdemo\programming-community\target\classes started by Administrator in F:\bootdemo\programming-community)
-20:37:14.748 INFO  org.springframework.boot.SpringApplication 648 logStartupProfileInfo - No active profile set, falling back to default profiles: default
-20:37:14.862 INFO  org.springframework.boot.logging.DeferredLog 225 logTo - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-20:37:14.863 INFO  org.springframework.boot.logging.DeferredLog 225 logTo - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-20:37:14.904 WARN  org.springframework.core.log.CompositeLog 127 warn - For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
-20:37:15.957 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 247 multipleStoresDetected - Multiple Spring Data modules found, entering strict repository configuration mode!
-20:37:15.960 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 127 registerRepositoriesIn - Bootstrapping Spring Data Elasticsearch repositories in DEFAULT mode.
-20:37:16.046 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 185 registerRepositoriesIn - Finished Spring Data repository scanning in 81ms. Found 1 Elasticsearch repository interfaces.
-20:37:16.060 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 247 multipleStoresDetected - Multiple Spring Data modules found, entering strict repository configuration mode!
-20:37:16.061 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 127 registerRepositoriesIn - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-20:37:16.084 INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport 392 isStrictRepositoryCandidate - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xu.majiangcommunity.dao.ArticleRepo. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
-20:37:16.084 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 185 registerRepositoriesIn - Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
-20:37:16.268 WARN  org.mybatis.logging.Logger 44 warn - Skipping MapperFactoryBean with name 'articleRepo' and 'com.xu.majiangcommunity.dao.ArticleRepo' mapperInterface. Bean already defined with the same name!
-20:37:16.555 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5562d822] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-20:37:16.682 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration' of type [org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration$$EnhancerBySpringCGLIB$$ee10a05c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-20:37:16.688 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'objectPostProcessor' of type [org.springframework.security.config.annotation.configuration.AutowireBeanFactoryObjectPostProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-20:37:16.692 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@7e3200fc' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-20:37:16.694 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration' of type [org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration$$EnhancerBySpringCGLIB$$12e5430e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-20:37:16.702 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-20:37:17.172 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 8083 (http)
-20:37:17.189 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Initializing ProtocolHandler ["http-nio-8083"]
-20:37:17.198 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Starting service [Tomcat]
-20:37:17.199 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Starting Servlet engine: [Apache Tomcat/9.0.29]
-20:37:17.306 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Initializing Spring embedded WebApplicationContext
-20:37:17.307 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 284 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 2444 ms
-20:37:18.545 INFO  org.elasticsearch.plugins.PluginsService 190 logPluginInfo - no modules loaded
-20:37:18.546 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.index.reindex.ReindexPlugin]
-20:37:18.547 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.join.ParentJoinPlugin]
-20:37:18.547 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.percolator.PercolatorPlugin]
-20:37:18.547 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.script.mustache.MustachePlugin]
-20:37:18.547 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.transport.Netty4Plugin]
-20:37:19.659 INFO  org.springframework.data.elasticsearch.client.TransportClientFactoryBean 88 lambda$buildClient$0 - Adding transport node : 192.168.161.129:9301
-20:37:20.420 WARN  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer 60 startServer - Unable to start LiveReload server
-20:37:21.341 INFO  org.springframework.security.web.DefaultSecurityFilterChain 43 <init> - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@746616ac, org.springframework.security.web.context.SecurityContextPersistenceFilter@7204bc2d, org.springframework.security.web.header.HeaderWriterFilter@30178f13, org.springframework.security.web.authentication.logout.LogoutFilter@6b8dac5a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3c49da6e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1beb64dd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@695b471f, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@556bd0c3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@14e75cc5, org.springframework.security.web.session.SessionManagementFilter@162ae233, org.springframework.security.web.access.ExceptionTranslationFilter@19e59966, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4d47d78a]
-20:37:21.353 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService
-20:37:21.354 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'taskSch'
-20:37:21.462 INFO  org.elasticsearch.transport.netty4.Netty4InternalESLogger 104 info - Starting without optional epoll library
-20:37:21.463 INFO  org.elasticsearch.transport.netty4.Netty4InternalESLogger 104 info - Starting without optional kqueue library
-20:37:21.864 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 58 <init> - Adding welcome page template: index
-20:37:23.467 INFO  org.springframework.amqp.rabbit.connection.AbstractConnectionFactory 482 createBareConnection - Attempting to connect to: [192.168.161.129:5672]
-20:37:23.522 INFO  org.springframework.amqp.rabbit.connection.AbstractConnectionFactory 517 createBareConnection - Created new connection: rabbitConnectionFactory#65865c86:0/SimpleConnection@dbbf364 [delegate=amqp://root@192.168.161.129:5672/mj, localPort= 6583]
-20:37:23.700 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Starting ProtocolHandler ["http-nio-8083"]
-20:37:23.855 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 202 start - Tomcat started on port(s): 8083 (http) with context path ''
-20:37:23.861 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ProgrammingCommunityApplication in 9.597 seconds (JVM running for 11.012)
-20:38:00.000 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
-20:38:00.006 INFO  com.zaxxer.hikari.HikariDataSource 110 getConnection - HikariPool-1 - Starting...
-20:38:00.258 INFO  com.zaxxer.hikari.HikariDataSource 123 getConnection - HikariPool-1 - Start completed.
-20:39:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
-20:40:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
-20:41:00.000 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
-20:42:00.002 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
-20:43:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
-20:44:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
-20:45:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
-20:45:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:01.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:02.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:03.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:04.000 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:05.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:06.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:07.002 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:08.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:09.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:10.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:11.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:12.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:13.002 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:14.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:15.000 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:16.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:17.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:18.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:19.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:20.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:21.002 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:22.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:23.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:24.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:25.002 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:26.000 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:27.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:28.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:29.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:30.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:31.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:32.002 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:33.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:34.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:35.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:36.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:37.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:38.000 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:39.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:40.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:41.002 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:42.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:43.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:44.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:45.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:46.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:47.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:48.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:49.000 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:50.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:51.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:52.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:53.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:54.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:55.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:56.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:57.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:58.002 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:45:59.001 INFO  com.xu.majiangcommunity.task.HotTagTask 42 getHotTask - 热门文章定时任务执行
-20:46:00.000 INFO  com.xu.majiangcommunity.task.HotTagTask 68 getHotTags - 热门标签定时任务执行
+14:36:32.570 INFO  org.springframework.core.KotlinDetector 57 <clinit> - Kotlin reflection implementation not found at runtime, related features won't be available.
+14:36:33.006 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ProgrammingCommunityApplication on ST9M6YAUI06J0H9 with PID 49140 (F:\bootdemo\programming-community\target\classes started by Administrator in F:\bootdemo\programming-community)
+14:36:33.006 INFO  org.springframework.boot.SpringApplication 648 logStartupProfileInfo - No active profile set, falling back to default profiles: default
+14:36:33.055 INFO  org.springframework.boot.logging.DeferredLog 225 logTo - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+14:36:33.056 INFO  org.springframework.boot.logging.DeferredLog 225 logTo - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+14:36:33.066 WARN  org.springframework.core.log.CompositeLog 127 warn - For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
+14:36:33.904 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 247 multipleStoresDetected - Multiple Spring Data modules found, entering strict repository configuration mode!
+14:36:33.907 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 127 registerRepositoriesIn - Bootstrapping Spring Data Elasticsearch repositories in DEFAULT mode.
+14:36:33.979 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 185 registerRepositoriesIn - Finished Spring Data repository scanning in 68ms. Found 1 Elasticsearch repository interfaces.
+14:36:33.990 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 247 multipleStoresDetected - Multiple Spring Data modules found, entering strict repository configuration mode!
+14:36:33.992 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 127 registerRepositoriesIn - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+14:36:34.011 INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport 392 isStrictRepositoryCandidate - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.xu.majiangcommunity.dao.ArticleRepo. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+14:36:34.011 INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate 185 registerRepositoriesIn - Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+14:36:34.169 WARN  org.mybatis.logging.Logger 44 warn - Skipping MapperFactoryBean with name 'articleRepo' and 'com.xu.majiangcommunity.dao.ArticleRepo' mapperInterface. Bean already defined with the same name!
+14:36:34.436 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b1ca8a60] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+14:36:34.545 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration' of type [org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration$$EnhancerBySpringCGLIB$$4a78529a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+14:36:34.550 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'objectPostProcessor' of type [org.springframework.security.config.annotation.configuration.AutowireBeanFactoryObjectPostProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+14:36:34.554 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@632e4dfc' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+14:36:34.557 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration' of type [org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration$$EnhancerBySpringCGLIB$$6f4cf54c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+14:36:34.564 INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 330 postProcessAfterInitialization - Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+14:36:34.974 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 8083 (http)
+14:36:34.986 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Initializing ProtocolHandler ["http-nio-8083"]
+14:36:34.994 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Starting service [Tomcat]
+14:36:34.995 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Starting Servlet engine: [Apache Tomcat/9.0.29]
+14:36:35.100 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Initializing Spring embedded WebApplicationContext
+14:36:35.100 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 284 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 2044 ms
+14:36:36.248 INFO  org.elasticsearch.plugins.PluginsService 190 logPluginInfo - no modules loaded
+14:36:36.249 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.index.reindex.ReindexPlugin]
+14:36:36.250 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.join.ParentJoinPlugin]
+14:36:36.250 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.percolator.PercolatorPlugin]
+14:36:36.250 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.script.mustache.MustachePlugin]
+14:36:36.250 INFO  org.elasticsearch.plugins.PluginsService 193 logPluginInfo - loaded plugin [org.elasticsearch.transport.Netty4Plugin]
+14:36:37.204 INFO  org.springframework.data.elasticsearch.client.TransportClientFactoryBean 88 lambda$buildClient$0 - Adding transport node : 192.168.161.129:9301
+14:36:37.811 WARN  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer 60 startServer - Unable to start LiveReload server
+14:36:38.518 INFO  org.springframework.security.web.DefaultSecurityFilterChain 43 <init> - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7758beeb, org.springframework.security.web.context.SecurityContextPersistenceFilter@316ef1fd, org.springframework.security.web.header.HeaderWriterFilter@6303258d, org.springframework.security.web.authentication.logout.LogoutFilter@100df62a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@92d8baa, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@d5c8bd6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7a36a603, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@30940c7f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6bc0b0d9, org.springframework.security.web.session.SessionManagementFilter@3c13f2e6, org.springframework.security.web.access.ExceptionTranslationFilter@564e5b39, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2f91b219]
+14:36:38.527 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService
+14:36:38.529 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'taskSch'
+14:36:38.623 INFO  org.elasticsearch.transport.netty4.Netty4InternalESLogger 104 info - Starting without optional epoll library
+14:36:38.624 INFO  org.elasticsearch.transport.netty4.Netty4InternalESLogger 104 info - Starting without optional kqueue library
+14:36:39.021 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 58 <init> - Adding welcome page template: index
+14:36:40.490 INFO  org.springframework.amqp.rabbit.connection.AbstractConnectionFactory 482 createBareConnection - Attempting to connect to: [192.168.161.129:5672]
+14:36:40.522 INFO  org.springframework.amqp.rabbit.connection.AbstractConnectionFactory 517 createBareConnection - Created new connection: rabbitConnectionFactory#5ff88638:0/SimpleConnection@534ce9cb [delegate=amqp://root@192.168.161.129:5672/mj, localPort= 7189]
+14:36:40.598 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Starting ProtocolHandler ["http-nio-8083"]
+14:36:40.722 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 202 start - Tomcat started on port(s): 8083 (http) with context path ''
+14:36:40.724 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ProgrammingCommunityApplication in 8.057 seconds (JVM running for 9.314)
+14:36:46.645 INFO  org.apache.juli.logging.DirectJDKLog 173 log - Initializing Spring DispatcherServlet 'dispatcherServlet'
+14:36:46.646 INFO  org.springframework.web.servlet.FrameworkServlet 525 initServletBean - Initializing Servlet 'dispatcherServlet'
+14:36:46.656 INFO  org.springframework.web.servlet.FrameworkServlet 547 initServletBean - Completed initialization in 10 ms
+14:37:18.609 INFO  com.zaxxer.hikari.HikariDataSource 110 getConnection - HikariPool-1 - Starting...
+14:37:18.890 INFO  com.zaxxer.hikari.HikariDataSource 123 getConnection - HikariPool-1 - Start completed.
+14:37:19.023 INFO  com.xu.majiangcommunity.aop.LogAop 65 logAround - WebLog(id=null, description=registryLocalUser, name=null, startTime=1603953434610, spendTime=4413, uri=/localUser/registry, url=http://localhost:8083/localUser/registry, ip=0:0:0:0:0:0:0:1)
+14:37:25.319 INFO  com.xu.majiangcommunity.aop.LogAop 65 logAround - WebLog(id=null, description=getIndex, name=null, startTime=1603953445244, spendTime=74, uri=/, url=http://localhost:8083/, ip=0:0:0:0:0:0:0:1)
+14:37:25.438 INFO  com.xu.majiangcommunity.aop.LogAop 65 logAround - WebLog(id=null, description=hotTags, name=null, startTime=1603953445408, spendTime=30, uri=/hotTags, url=http://localhost:8083/hotTags, ip=0:0:0:0:0:0:0:1)
+14:37:25.442 INFO  com.xu.majiangcommunity.aop.LogAop 65 logAround - WebLog(id=null, description=getRecent, name=null, startTime=1603953445407, spendTime=35, uri=/recentHot, url=http://localhost:8083/recentHot, ip=0:0:0:0:0:0:0:1)
+14:40:00.000 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+14:50:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+15:00:00.002 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+15:00:00.002 INFO  com.xu.majiangcommunity.task.HotTagTask 43 getHotTask - 热门文章定时任务执行
+15:10:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+15:20:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+15:30:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+15:40:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+15:50:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+16:00:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 99 getHotTags - 热门标签定时任务执行
+16:00:00.001 INFO  com.xu.majiangcommunity.task.HotTagTask 43 getHotTask - 热门文章定时任务执行

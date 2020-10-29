@@ -1,15 +1,20 @@
 package com.xu.majiangcommunity.config;
 
 import cn.hutool.core.date.DateUtil;
+import com.xu.majiangcommunity.constant.RedisPrefix;
+import com.xu.majiangcommunity.domain.SecurityUser;
 import com.xu.majiangcommunity.service.impl.SecurityUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -28,6 +33,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+    @Autowired
+    private StringRedisTemplate srt;
 
     @Override
     //
@@ -68,6 +75,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        //记录当日登录用户
+                        SetOperations<String, String> stringStringSetOperations = srt.opsForSet();
+                        SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                        stringStringSetOperations.add(RedisPrefix.TODAY_LOGIN_USER, user.getUsername());
                         response.sendRedirect("/localUser/loginSuccess");
                     }
                 })

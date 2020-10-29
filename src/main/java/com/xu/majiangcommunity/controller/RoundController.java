@@ -1,6 +1,7 @@
 package com.xu.majiangcommunity.controller;
 
 import com.xu.majiangcommunity.UserException;
+import com.xu.majiangcommunity.constant.RedisPrefix;
 import com.xu.majiangcommunity.domain.Rounds;
 import com.xu.majiangcommunity.domain.SecurityUser;
 import com.xu.majiangcommunity.dto.BaseResponseBody;
@@ -9,6 +10,7 @@ import com.xu.majiangcommunity.interceptor.UserInterceptor;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import com.xu.majiangcommunity.service.impl.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +23,8 @@ public class RoundController {
     private RoundService roundService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private StringRedisTemplate srt;
 
     @PostMapping("/addRound")
     public String addRound(Rounds rounds) {
@@ -35,6 +39,7 @@ public class RoundController {
         rounds.setGmtModified(System.currentTimeMillis());
         roundService.addRound(rounds);
         articleService.commentArticle(rounds.getArticleId());
+        srt.opsForValue().increment(RedisPrefix.TODAY_ROUND_ADD, 1);
         return "redirect:/articleDetail?id=" + rounds.getArticleId();
     }
 

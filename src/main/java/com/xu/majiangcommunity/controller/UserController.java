@@ -8,6 +8,7 @@ import com.xu.majiangcommunity.GlobalException;
 import com.xu.majiangcommunity.UserException;
 import com.xu.majiangcommunity.config.MinioConfig;
 import com.xu.majiangcommunity.config.MjConfig;
+import com.xu.majiangcommunity.constant.RedisPrefix;
 import com.xu.majiangcommunity.domain.*;
 import com.xu.majiangcommunity.dto.*;
 import com.xu.majiangcommunity.enums.ExcetionEnmu;
@@ -24,6 +25,7 @@ import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -67,6 +69,8 @@ public class UserController {
     private UserContactInformationService userContactInformationService;
     @Autowired
     private UserFocusService userFocusService;
+    @Autowired
+    private StringRedisTemplate srt;
 
 //    @Autowired
 //    SessionRegistry sessionRegistry;
@@ -93,6 +97,7 @@ public class UserController {
             throw new UserException(ExcetionEnmu.REGISTRY_MAIL_VERIFY_ERROR);
         }
         securityUserService.insertSelective(user, mail);
+        srt.opsForValue().increment(RedisPrefix.TODAY_NEW_USER, 1);
         return "registrySuccess";
     }
 

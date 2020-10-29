@@ -2,6 +2,7 @@ package com.xu.majiangcommunity.controller;
 
 import cn.hutool.core.date.DateUtil;
 import com.xu.majiangcommunity.UserException;
+import com.xu.majiangcommunity.constant.RedisPrefix;
 import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.Rounds;
 import com.xu.majiangcommunity.domain.SecurityUser;
@@ -14,6 +15,7 @@ import com.xu.majiangcommunity.service.TagService;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import com.xu.majiangcommunity.service.impl.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,8 @@ public class PublishController {
     private SecurityUserService securityUserService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private StringRedisTemplate srt;
 
     @GetMapping("/publish")
     public String getPublish(Model model) {
@@ -57,6 +61,7 @@ public class PublishController {
         article.setLikeCount(0);
         article.setCreator(user.getUsername());
         articleService.addArticle(article);
+        srt.opsForValue().increment(RedisPrefix.TODAY_ARTICLE_ADD, 1);
         return "redirect:/";
     }
 

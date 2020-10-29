@@ -357,5 +357,6 @@ public class ArticleService implements ArticleServiceIf {
         pageResult.setMessage("搜索成功");
         return pageResult;
     }
+
 }
 

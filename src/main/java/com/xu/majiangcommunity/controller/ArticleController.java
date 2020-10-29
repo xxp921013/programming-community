@@ -1,6 +1,7 @@
 package com.xu.majiangcommunity.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.xu.majiangcommunity.constant.RedisPrefix;
 import com.xu.majiangcommunity.dao.ArticleMapper;
 import com.xu.majiangcommunity.dao.ArticleRepo;
 import com.xu.majiangcommunity.domain.Article;
@@ -17,6 +18,7 @@ import com.xu.majiangcommunity.service.impl.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +47,8 @@ public class ArticleController {
     private ArticleCollectionService articleCollectionService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private StringRedisTemplate srt;
 
     @GetMapping("/articleDetail")
     public String getArticleDetail(@RequestParam("id") String id, Model model) {
@@ -75,7 +79,7 @@ public class ArticleController {
         } else {
             model.addAttribute("collectionType", "1");
         }
-
+        srt.opsForValue().increment(RedisPrefix.TODAY_ARTICLE_READ, 1);
         return "articleDetail";
     }
 

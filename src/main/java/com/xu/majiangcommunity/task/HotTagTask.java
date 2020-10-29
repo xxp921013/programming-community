@@ -5,6 +5,7 @@ import com.xu.majiangcommunity.domain.Article;
 import com.xu.majiangcommunity.domain.HotArticle;
 import com.xu.majiangcommunity.domain.Tag;
 import com.xu.majiangcommunity.dto.TagDto;
+import com.xu.majiangcommunity.service.HotArticleService;
 import com.xu.majiangcommunity.service.TagService;
 import com.xu.majiangcommunity.service.impl.ArticleService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -35,23 +33,56 @@ public class HotTagTask {
     private RedisTemplate<String, Serializable> redisCacheTemplate;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private HotArticleService hotArticleService;
 
-    //    @Scheduled(cron = "0 0/15 * * * * ")
-    @Scheduled(cron = "* 0/15 * * * ? ")
+
+    @Scheduled(cron = "0 0 0/1 * * ? ")
+//    @Scheduled(cron = "0 0/1 * * * ? ")
     public void getHotTask() {
         log.info("热门文章定时任务执行");
         System.out.println("热门文章定时任务执行");
         long l = System.currentTimeMillis();
         long t = l - DAYS;
         List<Article> lastDayArticle = articleService.getLastDayArticle(t);
-        List<HotArticle> collect = lastDayArticle.parallelStream().map(article -> getHotArticle(article)).collect(Collectors.toList());
+        List<Integer> ids = lastDayArticle.parallelStream().map(Article::getId).collect(Collectors.toList());
+        List<HotArticle> hotArticles = hotArticleService.selectByArticleIdIn(ids);
+        HashMap<Integer, Long> weights = getWeightMap(hotArticles);
+        List<HotArticle> collect = getHotArticles(weights, lastDayArticle);
         BoundZSetOperations<String, Serializable> zSetOps = redisCacheTemplate.boundZSetOps(HOTARTICLE);
+        if (zSetOps.size() != 0) {
+            zSetOps.removeRange(0, zSetOps.size());
+        }
         for (HotArticle hotArticle : collect) {
             Long score = hotArticle.getWeights();
-            hotArticle.setWeights((long) 0);
             zSetOps.add(hotArticle, score);
         }
     }
+
+    private List<HotArticle> getHotArticles(HashMap<Integer, Long> weights, List<Article> lastDayArticle) {
+        List<HotArticle> articles = new ArrayList<>();
+        for (Article article : lastDayArticle) {
+            Long weight = null;
+            weight = Long.valueOf(article.getViewCount() + (article.getCommentCount() * 10));
+            if (weights.containsKey(article.getId())) {
+                weight += weights.get(article.getId());
+            }
+            HotArticle hotArticle = new HotArticle(article.getId(), article.getTittle(), weight);
+            articles.add(hotArticle);
+        }
+        return articles;
+    }
+
+
+    private HashMap<Integer, Long> getWeightMap(List<HotArticle> hotArticles) {
+
+        HashMap<Integer, Long> map = new HashMap<>();
+        for (HotArticle hotArticle : hotArticles) {
+            map.put(hotArticle.getArticleId(), hotArticle.getWeights());
+        }
+        return map;
+    }
+
 
     public static HotArticle getHotArticle(Article article) {
         HotArticle hotArticle = new HotArticle();
@@ -62,7 +93,7 @@ public class HotTagTask {
         return hotArticle;
     }
 
-    @Scheduled(cron = "0/60 * * * * * ")
+    @Scheduled(cron = "0 0/10 * * * ? ")
 //    @Scheduled(cron = "* * 0/12 * * ? ")
     public void getHotTags() {
         log.info("热门标签定时任务执行");
